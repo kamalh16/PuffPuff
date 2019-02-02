@@ -4,6 +4,7 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 28
@@ -37,15 +38,17 @@ dependencies {
     // Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
 
+    // Room
     implementation "androidx.room:room-runtime:$room_version"
-    implementation "androidx.room:room-compiler:$room_version" // use kapt for Kotlin
-
-    // ViewModel and LiveData
-    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
-    annotationProcessor "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
-
-    // optional - Coroutines support for Room
+    kapt "androidx.room:room-compiler:$room_version" // use kapt for Kotlin
+    // Coroutines support for Room
     implementation "androidx.room:room-coroutines:$room_version"
+
+    // Lifecycle components
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
+
+
 
     // region Test helpers
     testImplementation 'junit:junit:4.12'
