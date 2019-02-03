@@ -19,7 +19,7 @@ class HitListAdapter internal constructor(context: Context): RecyclerView.Adapte
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HitViewHolder {
-        val itemView = inflater.inflate(R.layout.recyclerview_hit_item, parent, false)
+        val itemView = inflater.inflate(R.layout.item_hit, parent, false)
         return HitViewHolder(itemView)
     }
 
