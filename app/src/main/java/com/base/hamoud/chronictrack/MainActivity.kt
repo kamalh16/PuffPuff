@@ -1,9 +1,11 @@
 package com.base.hamoud.chronictrack
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.base.hamoud.chronictrack.data.TokesDatabase
@@ -11,6 +13,7 @@ import com.base.hamoud.chronictrack.data.entity.Hit
 import com.base.hamoud.chronictrack.data.entity.User
 import com.base.hamoud.chronictrack.data.repository.HitRepo
 import com.base.hamoud.chronictrack.data.repository.UserRepo
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -40,31 +43,47 @@ class MainActivity : AppCompatActivity() {
         userRepo = UserRepo(db.userDao())
         hitRepo = HitRepo(db.hitDao())
 
-        val userId = UUID.randomUUID().toString()
-        scope.launch {
-            userRepo.insert(User(userId, "kamal"))
-            hits = hitRepo.getAllHits()!!
-            hitCount = hits.size
-        }
-
         val recyclerView = findViewById<RecyclerView>(R.id.hits_recyclerview)
         val adapter = HitListAdapter(this)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
+        val userId = UUID.randomUUID().toString()
+        scope.launch {
+            userRepo.insert(User(userId, "kamal"))
+            hits = hitRepo.getAllHits()
+            hitCount = hits.size
+            adapter.setHits(hits)
+        }
+
         val hitTextView = findViewById<TextView>(R.id.hit_count)
         hitTextView.text = hitCount.toString()
-        val hitBtn = findViewById<Button>(R.id.hit_btn)
+        val hitBtn = findViewById<FloatingActionButton>(R.id.hit_btn)
         hitBtn.setOnClickListener {
-            val hit = Hit(userId)
+            val hit = Hit(userId = userId)
             scope.launch {
                 hitRepo.insert(hit)
-                hits = hitRepo.getAllHits()!!
+                hits = hitRepo.getAllHits().reversed()
                 hitCount = hits.size
-                adapter.setHits(hits)
             }
+            adapter.setHits(hits)
 
             hitTextView.text = (++hitCount).toString()
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.menu_app_bar, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.dark_theme -> Toast.makeText(this, "Settings menu item is clicked!", Toast.LENGTH_SHORT).show()
+            R.id.about -> Toast.makeText(this, "About menu item is clicked!", Toast.LENGTH_SHORT).show()
+        }
+
+        return true
     }
 }

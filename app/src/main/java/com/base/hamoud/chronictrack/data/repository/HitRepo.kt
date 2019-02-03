@@ -13,7 +13,7 @@ class HitRepo(private val hitDao: HitDao) {
     }
 
     @WorkerThread
-    fun getAllHits(): List<Hit>? {
+    fun getAllHits(): List<Hit> {
         return hitDao.getAllHits()
     }
 
