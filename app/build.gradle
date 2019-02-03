@@ -36,6 +36,7 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.1.0-alpha04'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation "com.google.android.material:material:$material_comps_version"
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
 
     // Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
@@ -58,6 +59,5 @@ dependencies {
     testImplementation "androidx.room:room-testing:$room_version"
     //  Test helpers for LiveData
     testImplementation "androidx.arch.core:core-testing:$lifecycle_version"
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
     // endregion Test helpers
 }

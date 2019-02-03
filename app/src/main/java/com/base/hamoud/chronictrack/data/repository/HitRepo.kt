@@ -4,7 +4,13 @@ import androidx.annotation.WorkerThread
 import com.base.hamoud.chronictrack.data.dao.HitDao
 import com.base.hamoud.chronictrack.data.entity.Hit
 
-class HitReposiroty(private val hitDao: HitDao) {
+class HitRepo(private val hitDao: HitDao) {
+
+
+    @WorkerThread
+    fun insert(hit: Hit): Long {
+        return hitDao.insert(hit)
+    }
 
     @WorkerThread
     fun getAllHits(): List<Hit>? {

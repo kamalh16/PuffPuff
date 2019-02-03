@@ -10,6 +10,34 @@
             style="@style/hit_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:background="@color/colorAccent"
-            android:id="@+id/hit_item_title_textView"/>
+            android:id="@+id/hit_time_text_tiew"/>
+
+    <TextView
+            android:text="TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/chronic_type_text_view"
+            android:gravity="center"
+            android:background="@color/colorAccent"
+            style="@style/hit_title"/>
+
+    <TextView
+            android:text="TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/chronic_strain_text_view"
+            android:gravity="center"
+            android:background="@color/colorAccent"
+            style="@style/hit_title"/>
+
+    <TextView
+            android:text="TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tool_used_text_view"
+            android:gravity="center"
+            android:background="@color/colorAccent"
+            style="@style/hit_title"/>
 </LinearLayout>
