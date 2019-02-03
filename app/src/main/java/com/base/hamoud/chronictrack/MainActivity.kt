@@ -1,10 +1,10 @@
 package com.base.hamoud.chronictrack
 
+import android.content.Context
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
+import android.util.AttributeSet
+import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,6 +13,8 @@ import com.base.hamoud.chronictrack.data.entity.Hit
 import com.base.hamoud.chronictrack.data.entity.User
 import com.base.hamoud.chronictrack.data.repository.HitRepo
 import com.base.hamoud.chronictrack.data.repository.UserRepo
+import com.base.hamoud.chronictrack.ui.drawer.BottomAppDrawerFragment
+import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -70,20 +72,12 @@ class MainActivity : AppCompatActivity() {
 
             hitTextView.text = (++hitCount).toString()
         }
-    }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.menu_app_bar, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
-            R.id.dark_theme -> Toast.makeText(this, "Settings menu item is clicked!", Toast.LENGTH_SHORT).show()
-            R.id.about -> Toast.makeText(this, "About menu item is clicked!", Toast.LENGTH_SHORT).show()
+        val bottomAppBar = findViewById<BottomAppBar>(R.id.bottom_app_bar)
+        bottomAppBar.setNavigationOnClickListener {
+            val bottomNavDrawerFragment = BottomAppDrawerFragment()
+            bottomNavDrawerFragment.show(supportFragmentManager, bottomNavDrawerFragment.tag)
         }
-
-        return true
     }
+
 }
