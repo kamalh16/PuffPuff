@@ -8,8 +8,8 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "hit_table",
     foreignKeys = arrayOf(
         ForeignKey(entity = User::class,
-            parentColumns = arrayOf("id"),
-            childColumns = arrayOf("userId")
+            parentColumns =["id"],
+            childColumns = arrayOf("user_id")
         )
     ))
 data class Hit(
