@@ -15,7 +15,10 @@ class HitListAdapter internal constructor(context: Context): RecyclerView.Adapte
     private var hits = emptyList<Hit>() // cached copy of hits
 
     inner class HitViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        val hitItemView: TextView = itemView.findViewById(R.id.hit_item_title_textView)
+        val hitTimeTV: TextView = itemView.findViewById(R.id.hit_time_text_tiew)
+        val chronicTypeTV: TextView = itemView.findViewById(R.id.chronic_type_text_view)
+        val chronicStrainTV: TextView = itemView.findViewById(R.id.chronic_strain_text_view)
+        val toolUsedTV: TextView = itemView.findViewById(R.id.tool_used_text_view)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HitViewHolder {
@@ -29,7 +32,10 @@ class HitListAdapter internal constructor(context: Context): RecyclerView.Adapte
 
     override fun onBindViewHolder(holder: HitViewHolder, position: Int) {
         val current = hits[position]
-        holder.hitItemView.text = current.hitTime
+        holder.hitTimeTV.text = current.hitTime
+        holder.chronicTypeTV.text = current.hitType
+        holder.chronicStrainTV.text = current.strain
+        holder.toolUsedTV.text = current.toolUsed
     }
 
     internal fun setHits(hits: List<Hit>) {

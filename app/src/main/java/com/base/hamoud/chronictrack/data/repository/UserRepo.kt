@@ -4,11 +4,11 @@ import androidx.annotation.WorkerThread
 import com.base.hamoud.chronictrack.data.dao.UserDao
 import com.base.hamoud.chronictrack.data.entity.User
 
-class UserRepository(private val userDao: UserDao) {
+class UserRepo(private val userDao: UserDao) {
 
     @WorkerThread
-    fun insert(user: User) {
-        userDao.insert(user)
+    fun insert(user: User): Long {
+        return userDao.insert(user)
     }
 
     @WorkerThread
