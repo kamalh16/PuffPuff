@@ -1,11 +1,9 @@
 package com.base.hamoud.chronictrack
 
-import android.content.Context
 import android.os.Bundle
-import android.util.AttributeSet
-import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.base.hamoud.chronictrack.data.TokesDatabase
@@ -49,6 +47,8 @@ class MainActivity : AppCompatActivity() {
         val adapter = HitListAdapter(this)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.addItemDecoration(DividerItemDecoration(
+                this, (recyclerView.layoutManager as LinearLayoutManager).orientation))
 
         val userId = UUID.randomUUID().toString()
         scope.launch {
@@ -59,7 +59,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         val hitTextView = findViewById<TextView>(R.id.hit_count)
-        hitTextView.text = hitCount.toString()
+        scope.launch {
+            hitCount = hitRepo.getAllHits().count()
+            hitTextView.text = hitCount.toString()
+        }
+
         val hitBtn = findViewById<FloatingActionButton>(R.id.hit_btn)
         hitBtn.setOnClickListener {
             val hit = Hit(userId = userId)
@@ -73,6 +77,10 @@ class MainActivity : AppCompatActivity() {
             hitTextView.text = (++hitCount).toString()
         }
 
+        prepareBottomAppBar()
+    }
+
+    private fun prepareBottomAppBar() {
         val bottomAppBar = findViewById<BottomAppBar>(R.id.bottom_app_bar)
         bottomAppBar.setNavigationOnClickListener {
             val bottomNavDrawerFragment = BottomAppDrawerFragment()

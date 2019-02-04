@@ -1,42 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <TextView
-            android:text="0"
-            style="@style/hit_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:background="@color/colorAccent"
-            android:id="@+id/hit_time_text_tiew"/>
+        android:id="@+id/hit_time_text_tiew"
+        style="@style/hit_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="0"
+        app:layout_constraintBottom_toTopOf="@id/chronic_type_text_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-            android:text="TextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/chronic_type_text_view"
-            android:gravity="center"
-            android:background="@color/colorAccent"
-            style="@style/hit_title"/>
+        android:id="@+id/chronic_type_text_view"
+        style="@style/hit_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@id/chronic_strain_text_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/hit_time_text_tiew" />
 
     <TextView
-            android:text="TextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/chronic_strain_text_view"
-            android:gravity="center"
-            android:background="@color/colorAccent"
-            style="@style/hit_title"/>
+        android:id="@+id/chronic_strain_text_view"
+        style="@style/hit_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@id/tool_used_text_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/chronic_type_text_view" />
 
     <TextView
-            android:text="TextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/tool_used_text_view"
-            android:gravity="center"
-            android:background="@color/colorAccent"
-            style="@style/hit_title"/>
-</LinearLayout>
+        android:id="@+id/tool_used_text_view"
+        style="@style/hit_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/chronic_strain_text_view" />
+</androidx.constraintlayout.widget.ConstraintLayout>
