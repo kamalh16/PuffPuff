@@ -39,6 +39,7 @@ class MainActivity : AppCompatActivity(), LifecycleOwner  {
     private var hitCount = 0
     private lateinit var hitTextView: TextView
     private lateinit var lifecycleRegistry: LifecycleRegistry
+    private lateinit var recyclerView: RecyclerView
 
     private val parentJob = Job()
     private val coroutineContext: CoroutineContext
@@ -55,8 +56,13 @@ class MainActivity : AppCompatActivity(), LifecycleOwner  {
         userRepo = UserRepo(db.userDao())
         hitRepo = HitRepo(db.hitDao())
 
-        val recyclerView = findViewById<RecyclerView>(R.id.hits_recyclerview)
+        recyclerView = findViewById<RecyclerView>(R.id.hits_recyclerview)
         adapter = HitListAdapter(this)
+        adapter.hitsLiveData.observe(this, androidx.lifecycle.Observer { hitsRefreshed: Boolean ->
+            if (hitsRefreshed) {
+                resetRecyclerView()
+            }
+        })
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.addItemDecoration(DividerItemDecoration(
@@ -79,21 +85,22 @@ class MainActivity : AppCompatActivity(), LifecycleOwner  {
 
         val hitBtn = findViewById<FloatingActionButton>(R.id.hit_btn)
         hitBtn.setOnClickListener {
-            bottomNavDrawerFragment.show(supportFragmentManager, bottomNavDrawerFragment.tag)
+            hitFormAppDrawerFragment.show(supportFragmentManager, hitFormAppDrawerFragment.tag)
         }
 
         prepareBottomAppSheet()
         prepareHitFormBottomAppSheet()
     }
 
-    fun resetRecyclerView() {
+    private fun resetRecyclerView() {
         scope.launch {
             hits = hitRepo.getAllHits()
         }
         hits.let {
             hitCount = hits.size
             hitTextView.text = hitCount.toString()
-            adapter.setHits(hits)
+            (recyclerView.adapter as HitListAdapter).setHits(it)
+            recyclerView.adapter?.notifyDataSetChanged()
         }
     }
 
@@ -123,7 +130,6 @@ class MainActivity : AppCompatActivity(), LifecycleOwner  {
                 hitRepo.insert(hit)
             }
             Toast.makeText(this, "Hit Saved!", Toast.LENGTH_LONG).show()
-            resetRecyclerView()
         })
     }
 
