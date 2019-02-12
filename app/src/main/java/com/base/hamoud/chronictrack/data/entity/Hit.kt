@@ -16,7 +16,7 @@ import java.util.*
 )
 data class Hit(
         @PrimaryKey @ColumnInfo(name = "id") val id: String = UUID.randomUUID().toString(),
-        @ColumnInfo(name = "user_id") val userId: String,
+        @ColumnInfo(name = "user_id") var userId: String,
         @ColumnInfo(name = "hit_time") val hitTime: String = Date().toString(),
         @ColumnInfo(name = "weed_type") val hitType: String = arrayOf(
                 "Sativa",

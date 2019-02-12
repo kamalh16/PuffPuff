@@ -3,4 +3,19 @@
 
     <string name="label_dark_theme">Dark Theme</string>
     <string name="label_about">About</string>
+    
+    <string-array name="chronic_type">
+        <item>Indica</item>
+        <item>Hybrid</item>
+        <item>Sativa</item>
+    </string-array>
+
+    <string-array name="ingestion_method">
+        <item>Joint</item>
+        <item>Vape</item>
+        <item>Water Bong</item>
+        <item>Pipe</item>
+        <item>Edible</item>
+        <item>Dab</item>
+    </string-array>
 </resources>
