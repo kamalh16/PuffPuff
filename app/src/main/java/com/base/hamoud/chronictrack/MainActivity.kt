@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity(), LifecycleOwner  {
         scope.launch {
             userRepo.insert(User(userId, "kamal"))
             user = userRepo.getUserById(userId)
-            hits = hitRepo.getAllHits()
+            hits = hitRepo.getAllHits().asReversed()
             hitCount = hits.size
             adapter.setHits(hits)
         }
@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity(), LifecycleOwner  {
 
     private fun resetRecyclerView() {
         scope.launch {
-            hits = hitRepo.getAllHits()
+            hits = hitRepo.getAllHits().asReversed()
         }
         hits.let {
             hitCount = hits.size
