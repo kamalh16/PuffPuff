@@ -62,5 +62,6 @@ dependencies {
     testImplementation "androidx.room:room-testing:$room_version"
     //  Test helpers for LiveData
     testImplementation "androidx.arch.core:core-testing:$lifecycle_version"
+    implementation 'androidx.cardview:cardview:1.0.0'
     // endregion Test helpers
 }

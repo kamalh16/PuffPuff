@@ -49,7 +49,7 @@ class HitFormAppDrawerFragment : BottomSheetDialogFragment() {
         val hours: String = now.get(Calendar.HOUR_OF_DAY).toString()
         val minuteCalendar = now.get(Calendar.MINUTE)
         val minutes: String = if (minuteCalendar < 10) {
-             "0${minuteCalendar}"
+             "0$minuteCalendar"
         } else {
             minuteCalendar.toString()
         }
