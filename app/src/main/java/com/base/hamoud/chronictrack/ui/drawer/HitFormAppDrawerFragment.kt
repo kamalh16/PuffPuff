@@ -46,7 +46,14 @@ class HitFormAppDrawerFragment : BottomSheetDialogFragment() {
         dateInputTextView.text = date
 
         timeInputTextView = view.findViewById(R.id.time_textview)
-        time = "${now.get(Calendar.HOUR)}:${now.get(Calendar.MINUTE)}"
+        val hours: String = now.get(Calendar.HOUR_OF_DAY).toString()
+        val minuteCalendar = now.get(Calendar.MINUTE)
+        val minutes: String = if (minuteCalendar < 10) {
+             "0${minuteCalendar}"
+        } else {
+            minuteCalendar.toString()
+        }
+        time = "$hours:$minutes"
         timeInputTextView.text = time
 
         // prepare type spinner

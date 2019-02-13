@@ -123,11 +123,11 @@ class MainActivity : AppCompatActivity(), LifecycleOwner  {
 
     private fun prepareHitFormBottomAppSheet() {
         hitFormAppDrawerFragment = HitFormAppDrawerFragment()
-        hitFormAppDrawerFragment.show(supportFragmentManager, hitFormAppDrawerFragment.tag)
         hitFormAppDrawerFragment.saveHit.observe(this, androidx.lifecycle.Observer { hit ->
             scope.launch {
                 hit.userId = user.id
                 hitRepo.insert(hit)
+                hitFormAppDrawerFragment.dismiss()
             }
             Toast.makeText(this, "Hit Saved!", Toast.LENGTH_LONG).show()
         })
