@@ -72,7 +72,8 @@ class MainActivity : AppCompatActivity(), LifecycleOwner  {
         scope.launch {
             userRepo.insert(User(userId, "kamal"))
             user = userRepo.getUserById(userId)
-            hits = hitRepo.getAllHits().asReversed()
+            val today = Calendar.getInstance().get(Calendar.DATE)
+            hits = hitRepo.getTodaysHits(today).asReversed()
             hitCount = hits.size
             adapter.setHits(hits)
         }

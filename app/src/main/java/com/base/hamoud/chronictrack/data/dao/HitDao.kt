@@ -31,4 +31,6 @@ abstract class HitDao: BaseDao<Hit> {
      */
     @Query("DELETE FROM HIT_TABLE WHERE user_id = :userId")
     abstract fun deleteHitByUserId(userId: String)
+
+
 }
