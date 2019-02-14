@@ -27,8 +27,8 @@
                     android:text="@string/zero"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="8dp"
-                    app:layout_constraintTop_toBottomOf="@+id/hit_time_text_tiew"/>
+                    app:layout_constraintStart_toStartOf="parent"
+            />
             <TextView
                     android:id="@+id/chronic_type_text_view"
                     style="@style/hit_title"
@@ -38,8 +38,8 @@
                     android:text="@string/zero"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginBottom="8dp" app:layout_constraintStart_toEndOf="@+id/tool_used_text_view"
-                    android:layout_marginStart="16dp"/>
+                    android:layout_marginBottom="8dp"
+                    tools:layout_editor_absoluteX="46dp"/>
             <TextView
                     android:id="@+id/chronic_strain_text_view"
                     style="@style/hit_title"
@@ -52,7 +52,7 @@
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/hit_date_text_tiew"/>
+            />
             <TextView
                     android:id="@+id/hit_time_text_tiew"
                     style="@style/hit_title"
@@ -64,7 +64,8 @@
                     android:text="@string/zero"
                     android:textSize="14sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toTopOf="@+id/tool_used_text_view"/>
             <TextView
                     android:id="@+id/hit_date_text_tiew"
                     style="@style/hit_title"
@@ -75,7 +76,9 @@
                     android:text="@string/zero"
                     android:textSize="14sp"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"/>
+                    android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toTopOf="@+id/chronic_strain_text_view"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
