@@ -70,13 +70,15 @@ class MainActivity : AppCompatActivity(), LifecycleOwner  {
         recyclerView.addItemDecoration(DividerItemDecoration(
                 this, (recyclerView.layoutManager as LinearLayoutManager).orientation))
 
-        val userId = UUID.randomUUID().toString()
+//        val userId = UUID.randomUUID().toString()
         scope.launch {
-            userRepo.insert(User(userId, "kamal"))
-            user = userRepo.getUserById(userId)
-            hits = hitRepo.getTodaysHits(userId).asReversed()
-            hitCount = hits.size
-            adapter.setHits(hits)
+//            userRepo.insert(User(userId, "kamal"))
+            user = userRepo.getUserByUsername("kamal")
+            user.let {
+                hits = hitRepo.getTodaysHits(it.id).asReversed()
+                hitCount = hits.size
+                adapter.setHits(hits)
+            }
         }
 
         hitTextView = findViewById<TextView>(R.id.todays_hit_count)

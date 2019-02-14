@@ -16,6 +16,14 @@ abstract class UserDao: BaseDao<User> {
     abstract fun getUserById(id: String): User
 
     /**
+     * Get a user by id
+     *
+     * @return user from the user_table with that id
+     */
+    @Query("SELECT * FROM USER_TABLE WHERE username = :username")
+    abstract fun getUserByUsername(username: String): User
+
+    /**
      * Delete user with id
      */
     @Query("DELETE FROM USER_TABLE WHERE id = :id")
