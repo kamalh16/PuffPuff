@@ -23,6 +23,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.util.*
 import kotlin.coroutines.CoroutineContext
 
@@ -50,6 +51,7 @@ class MainActivity : AppCompatActivity(), LifecycleOwner  {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        Timber.plant(Timber.DebugTree())
         lifecycleRegistry = LifecycleRegistry(this)
         lifecycleRegistry.markState(Lifecycle.State.CREATED)
         this.db = TokesDatabase.getDatabase(this)
@@ -72,13 +74,12 @@ class MainActivity : AppCompatActivity(), LifecycleOwner  {
         scope.launch {
             userRepo.insert(User(userId, "kamal"))
             user = userRepo.getUserById(userId)
-            val today = Calendar.getInstance().get(Calendar.DATE)
-            hits = hitRepo.getTodaysHits(today).asReversed()
+            hits = hitRepo.getTodaysHits(userId).asReversed()
             hitCount = hits.size
             adapter.setHits(hits)
         }
 
-        hitTextView = findViewById<TextView>(R.id.hit_count)
+        hitTextView = findViewById<TextView>(R.id.todays_hit_count)
         scope.launch {
             hitCount = hitRepo.getAllHits().count()
             hitTextView.text = hitCount.toString()

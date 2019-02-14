@@ -25,6 +25,12 @@ abstract class HitDao: BaseDao<Hit> {
     abstract fun getAllHits(): List<Hit>
 
     /**
+     * Get all hits by user for specific date dd-mm-yyyy
+     */
+    @Query("SELECT * FROM HIT_TABLE WHERE user_id = :userId AND hit_date = :date")
+    abstract fun getHitByUserIdAndDate(userId: String, date: String): List<Hit>
+
+    /**
      * Delete all hits in the table by the user with the userId
      *
      * @param userId to look for

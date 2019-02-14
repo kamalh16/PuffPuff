@@ -18,6 +18,7 @@ class HitListAdapter internal constructor(var context: Context): RecyclerView.Ad
 
     inner class HitViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val hitTimeTV: TextView = itemView.findViewById(R.id.hit_time_text_tiew)
+        val hitDateTV: TextView = itemView.findViewById(R.id.hit_date_text_tiew)
         val chronicTypeTV: TextView = itemView.findViewById(R.id.chronic_type_text_view)
         val chronicStrainTV: TextView = itemView.findViewById(R.id.chronic_strain_text_view)
         val toolUsedTV: TextView = itemView.findViewById(R.id.tool_used_text_view)
@@ -35,6 +36,7 @@ class HitListAdapter internal constructor(var context: Context): RecyclerView.Ad
     override fun onBindViewHolder(holder: HitViewHolder, position: Int) {
         val current = hits[position]
         holder.hitTimeTV.text = current.hitTime
+        holder.hitDateTV.text = current.hitDate
         holder.chronicTypeTV.text = current.hitType
         holder.chronicStrainTV.text = current.strain
         holder.toolUsedTV.text = current.toolUsed

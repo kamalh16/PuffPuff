@@ -1,9 +1,6 @@
 package com.base.hamoud.chronictrack.data.dao
 
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Transaction
-import androidx.room.Update
+import androidx.room.*
 
 interface BaseDao<T> {
 
@@ -12,7 +9,7 @@ interface BaseDao<T> {
      *
      * @param obj the object to be inserted.
      */
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(obj: T): Long
 
     /**

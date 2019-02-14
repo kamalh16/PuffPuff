@@ -38,8 +38,8 @@ dependencies {
     implementation "com.google.android.material:material:$material_comps_version"
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
 
-    // date/time picker
-    implementation 'com.wdullaer:materialdatetimepicker:4.1.2'
+    // Timber
+    implementation 'com.jakewharton.timber:timber:4.7.1'
 
     // Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"

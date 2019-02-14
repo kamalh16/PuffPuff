@@ -53,7 +53,13 @@ class HitFormAppDrawerFragment : BottomSheetDialogFragment() {
         } else {
             minuteCalendar.toString()
         }
-        time = "$hours:$minutes"
+        val secondsCalendar = now.get(Calendar.SECOND)
+        val seconds: String = if (secondsCalendar < 10) {
+            "0$secondsCalendar"
+        } else {
+            secondsCalendar.toString()
+        }
+        time = "$hours:$minutes:$seconds"
         timeInputTextView.text = time
 
         // prepare type spinner
@@ -69,7 +75,8 @@ class HitFormAppDrawerFragment : BottomSheetDialogFragment() {
             strainSelection = strainEditText.text.toString()
             val hit = Hit(
                 userId = "kamal",
-                hitTime = "$date - $time",
+                hitTime = "$time",
+                hitDate = "$date",
                 hitType = typeSelection,
                 strain = strainSelection,
                 toolUsed = methodSelection

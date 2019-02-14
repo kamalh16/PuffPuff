@@ -3,7 +3,9 @@
 
     <string name="label_dark_theme">Dark Theme</string>
     <string name="label_about">About</string>
-    
+    <string name="zero">0</string>
+    <string name="today">Today</string>
+
     <string-array name="chronic_type">
         <item>Indica</item>
         <item>Hybrid</item>
