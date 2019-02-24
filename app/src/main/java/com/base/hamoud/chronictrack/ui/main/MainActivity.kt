@@ -102,7 +102,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun prepareHitsRecyclerView() {
-        hitListView = findViewById<RecyclerView>(R.id.hits_recyclerview)
+        hitListView = findViewById(R.id.hits_recyclerview)
         adapter = HitListAdapter(this)
         hitListView.adapter = adapter
         hitListView.layoutManager = LinearLayoutManager(this)

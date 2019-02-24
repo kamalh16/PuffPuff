@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-              android:layout_height="match_parent">
+        xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
 
     <TextView
@@ -10,7 +10,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:padding="8dp"
-            android:gravity="left"
+            android:gravity="start"
             android:id="@+id/date_textview"
             android:layout_marginTop="16dp"
             app:layout_constraintTop_toTopOf="parent" android:layout_marginStart="16dp"
@@ -22,12 +22,12 @@
             android:ems="10"
             android:padding="8dp"
             android:id="@+id/time_textview"
-            android:gravity="right"
+            android:gravity="end"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="16dp" android:layout_marginTop="16dp" app:layout_constraintTop_toTopOf="parent"/>
 
     <Spinner
-            android:text="Indica"
+            android:text="@string/indica"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:id="@+id/type_spinner"
@@ -43,12 +43,12 @@
     />
 
     <AutoCompleteTextView
-            android:hint="Strain Name"
+            android:hint="@string/strain_name"
             android:layout_width="wrap_content"
             android:minWidth="100dp"
             android:layout_height="50dp"
             android:id="@+id/strain_text"
-            android:contentDescription="Strain"
+            android:inputType="textCapWords"
             android:visibility="visible"
             android:layout_marginStart="16dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -56,7 +56,7 @@
             android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"/>
 
     <Button
-            android:text="Save"
+            android:text="@string/save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/save_button"
