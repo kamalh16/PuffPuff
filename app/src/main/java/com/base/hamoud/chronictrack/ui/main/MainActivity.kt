@@ -91,7 +91,7 @@ class MainActivity : AppCompatActivity() {
     private fun prepareHitBtn() {
         val hitBtn = findViewById<FloatingActionButton>(R.id.hit_btn)
         hitBtn.setOnClickListener {
-            hitFormBottomDrawerFragment.show(supportFragmentManager, "HitFormBottomDrawer")
+            hitFormBottomDrawerFragment.show(supportFragmentManager, HitFormBottomDrawerFragment::javaClass.name)
         }
     }
 

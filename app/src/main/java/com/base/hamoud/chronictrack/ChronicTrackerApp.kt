@@ -1,9 +1,13 @@
 package com.base.hamoud.chronictrack
 
 import android.app.Application
+import com.base.hamoud.chronictrack.data.TokesDatabase
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
 import com.orhanobut.logger.PrettyFormatStrategy
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 
@@ -12,6 +16,7 @@ class ChronicTrackerApp : Application() {
     override fun onCreate() {
         super.onCreate()
 
+        forceInitDatabase()
         initLogger()
     }
 
@@ -52,6 +57,16 @@ class ChronicTrackerApp : Application() {
                 Logger.log(priority, tag, message, t)
             }
         })
+    }
+
+    /**
+     * Force the Room database to create it's tables.
+     */
+    private fun forceInitDatabase() {
+        GlobalScope.launch(Dispatchers.IO) {
+            TokesDatabase.getInstance(applicationContext).beginTransaction()
+            TokesDatabase.getInstance(applicationContext).endTransaction()
+        }
     }
 
 }

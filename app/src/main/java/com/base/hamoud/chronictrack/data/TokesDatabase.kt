@@ -25,7 +25,7 @@ abstract class TokesDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: TokesDatabase? = null
 
-        fun getDatabase(context: Context): TokesDatabase {
+        fun getInstance(context: Context): TokesDatabase {
             if (INSTANCE == null) {
                 synchronized(TokesDatabase::class.java) {
                     if (INSTANCE == null) {

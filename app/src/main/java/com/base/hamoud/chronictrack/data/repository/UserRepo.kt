@@ -7,8 +7,8 @@ import com.base.hamoud.chronictrack.data.entity.User
 class UserRepo(private val userDao: UserDao) {
 
     @WorkerThread
-    fun insert(user: User): Long {
-        return userDao.insert(user)
+    fun insert(user: User) {
+        userDao.upsert(user)
     }
 
     @WorkerThread

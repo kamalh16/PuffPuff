@@ -28,7 +28,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     var userRepo: UserRepo
     var hitRepo: HitRepo
-    var db: TokesDatabase = TokesDatabase.getDatabase(application)
+    var db: TokesDatabase = TokesDatabase.getInstance(application)
 
     var userHitsListLive: MutableLiveData<List<Hit>> = MutableLiveData()
 
