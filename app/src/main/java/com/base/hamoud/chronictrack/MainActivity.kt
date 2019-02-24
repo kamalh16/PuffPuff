@@ -23,11 +23,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import java.util.*
 import kotlin.coroutines.CoroutineContext
 
-class MainActivity : AppCompatActivity(), LifecycleOwner  {
+class MainActivity : AppCompatActivity()  {
 
     private lateinit var db: TokesDatabase
     private lateinit var adapter: HitListAdapter
@@ -39,7 +38,6 @@ class MainActivity : AppCompatActivity(), LifecycleOwner  {
     private lateinit var hitFormAppDrawerFragment: HitFormAppDrawerFragment
     private var hitCount = 0
     private lateinit var hitTextView: TextView
-    private lateinit var lifecycleRegistry: LifecycleRegistry
     private lateinit var recyclerView: RecyclerView
 
     private val parentJob = Job()
@@ -51,9 +49,6 @@ class MainActivity : AppCompatActivity(), LifecycleOwner  {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        Timber.plant(Timber.DebugTree())
-        lifecycleRegistry = LifecycleRegistry(this)
-        lifecycleRegistry.markState(Lifecycle.State.CREATED)
         this.db = TokesDatabase.getDatabase(this)
         userRepo = UserRepo(db.userDao())
         hitRepo = HitRepo(db.hitDao())
@@ -110,11 +105,9 @@ class MainActivity : AppCompatActivity(), LifecycleOwner  {
 
     override fun onStart() {
         super.onStart()
-        lifecycleRegistry.markState(Lifecycle.State.STARTED)
     }
 
     override fun onDestroy() {
-        lifecycleRegistry.markState(Lifecycle.State.DESTROYED)
         super.onDestroy()
     }
 
@@ -137,7 +130,4 @@ class MainActivity : AppCompatActivity(), LifecycleOwner  {
         })
     }
 
-    override fun getLifecycle(): Lifecycle {
-        return lifecycleRegistry
-    }
 }

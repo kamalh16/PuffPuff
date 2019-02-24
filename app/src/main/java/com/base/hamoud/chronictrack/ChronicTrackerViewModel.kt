@@ -7,10 +7,8 @@ import com.base.hamoud.chronictrack.data.entity.Hit
 import com.base.hamoud.chronictrack.data.entity.User
 import com.base.hamoud.chronictrack.data.repository.HitRepo
 import com.base.hamoud.chronictrack.data.repository.UserRepo
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 
 class ChronicTrackerViewModel(application: Application): AndroidViewModel(application) {
@@ -30,7 +28,8 @@ class ChronicTrackerViewModel(application: Application): AndroidViewModel(applic
     init {
         userRepo = UserRepo(db.userDao())
         hitRepo = HitRepo(db.hitDao())
-        allUserHits = hitRepo.getAllHits()!!
+        allUserHits = hitRepo.getAllHits()
+        Timber.i("start")
     }
 
     fun insertUser(user: User) = scope.launch(Dispatchers.IO) {
