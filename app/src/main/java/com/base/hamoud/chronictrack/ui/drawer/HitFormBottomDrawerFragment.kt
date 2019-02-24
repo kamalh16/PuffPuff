@@ -12,7 +12,7 @@ import com.base.hamoud.chronictrack.data.repository.HitRepo
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.util.*
 
-class HitFormAppDrawerFragment : BottomSheetDialogFragment() {
+class HitFormBottomDrawerFragment : BottomSheetDialogFragment() {
 
     lateinit var date: String
     lateinit var time: String

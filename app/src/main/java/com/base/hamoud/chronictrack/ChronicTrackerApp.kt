@@ -24,8 +24,7 @@ class ChronicTrackerApp : Application() {
     private fun initLogger() {
         val formatStrategy = PrettyFormatStrategy.newBuilder()
             .showThreadInfo(false)// (Optional) Whether to show thread info or not. Default true
-            .methodCount(0)// (Optional) How many method line to show. Default 2
-            .methodOffset(5)// (Optional) Hides internal method calls up to offset. Default 5 (for Timber too)
+            .methodCount(1)// (Optional) How many method line to show. Default 2
             .tag("PRTY_LOG")// (Optional) Global tag for every log. Default PRETTY_LOGGER
             .build()
 
