@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.base.hamoud.chronictrack.R
 import com.base.hamoud.chronictrack.data.entity.User
-import com.base.hamoud.chronictrack.ui.drawer.BottomAppDrawerFragment
+import com.base.hamoud.chronictrack.ui.drawer.NavDrawerBottomSheetFragment
 import com.base.hamoud.chronictrack.ui.drawer.HitFormBottomDrawerFragment
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var adapter: HitListAdapter
     private lateinit var hitCountTextView: TextView
 
-    private lateinit var bottomNavDrawerFragment: BottomAppDrawerFragment
+    private lateinit var navDrawerBottomSheetFragment: NavDrawerBottomSheetFragment
     private lateinit var hitFormBottomDrawerFragment: HitFormBottomDrawerFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -100,8 +100,8 @@ class MainActivity : AppCompatActivity() {
     private fun prepareBottomAppSheet() {
         val bottomAppBar = findViewById<BottomAppBar>(R.id.bottom_app_bar)
         bottomAppBar.setNavigationOnClickListener {
-            bottomNavDrawerFragment = BottomAppDrawerFragment()
-            bottomNavDrawerFragment.show(supportFragmentManager, BottomAppDrawerFragment::javaClass.name)
+            navDrawerBottomSheetFragment = NavDrawerBottomSheetFragment()
+            navDrawerBottomSheetFragment.show(supportFragmentManager, NavDrawerBottomSheetFragment::javaClass.name)
         }
     }
 

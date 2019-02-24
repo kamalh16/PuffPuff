@@ -9,10 +9,10 @@ import com.base.hamoud.chronictrack.R
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.navigation.NavigationView
 
-class BottomAppDrawerFragment : BottomSheetDialogFragment() {
+class NavDrawerBottomSheetFragment : BottomSheetDialogFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_bottom_sheet, container, false)
+        return inflater.inflate(R.layout.fragment_nav_drawer_bottom_sheet, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
