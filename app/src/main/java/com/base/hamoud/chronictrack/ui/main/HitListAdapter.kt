@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.base.hamoud.chronictrack.R
 import com.base.hamoud.chronictrack.data.entity.Hit
@@ -14,7 +13,6 @@ class HitListAdapter internal constructor(var context: Context) : RecyclerView.A
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var hits = emptyList<Hit>() // cached copy of hits
-    var hitsLiveData: MutableLiveData<Boolean> = MutableLiveData()
 
     inner class HitViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val hitTimeTV: TextView = itemView.findViewById(R.id.hit_time_text_tiew)
@@ -44,7 +42,6 @@ class HitListAdapter internal constructor(var context: Context) : RecyclerView.A
 
     internal fun setHits(hits: List<Hit>) {
         this.hits = hits
-        hitsLiveData.postValue(true)
         notifyDataSetChanged()
     }
 }
