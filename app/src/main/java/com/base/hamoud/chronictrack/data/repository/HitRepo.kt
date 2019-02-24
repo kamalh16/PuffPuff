@@ -15,7 +15,7 @@ class HitRepo(private val hitDao: HitDao) {
 
     @WorkerThread
     fun getAllHits(): List<Hit> {
-        return hitDao.getAllHits()
+        return hitDao.getAllHits().asReversed()
     }
 
     @WorkerThread

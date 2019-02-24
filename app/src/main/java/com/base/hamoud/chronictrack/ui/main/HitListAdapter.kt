@@ -12,7 +12,6 @@ import com.base.hamoud.chronictrack.data.entity.Hit
 
 class HitListAdapter internal constructor(var context: Context): RecyclerView.Adapter<HitListAdapter.HitViewHolder>() {
 
-
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var hits = emptyList<Hit>() // cached copy of hits
     var hitsLiveData: MutableLiveData<Boolean> = MutableLiveData()

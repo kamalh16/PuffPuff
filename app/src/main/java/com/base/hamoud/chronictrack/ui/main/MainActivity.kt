@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,6 +23,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import java.util.*
 import kotlin.coroutines.CoroutineContext
 
 
@@ -30,7 +32,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var db: TokesDatabase
     private lateinit var adapter: HitListAdapter
     private lateinit var userRepo: UserRepo
-    private var user: User? = null
+    private var user: User = User(UUID.randomUUID().toString(), "Chron")
     private lateinit var hitRepo: HitRepo
     private lateinit var hits: List<Hit>
     private lateinit var bottomNavDrawerFragment: BottomAppDrawerFragment
@@ -55,11 +57,18 @@ class MainActivity : AppCompatActivity() {
         hitRepo = HitRepo(db.hitDao())
 
         viewModel = ViewModelProviders.of(this).get(ChronicTrackerViewModel::class.java)
+        viewModel.insertUser(user)
 
+        // prepare ui
+        prepareBottomAppSheet()
+        prepareHitFormBottomAppSheet()
         prepareTodaysHitCountView()
         prepareHitsRecyclerView()
         prepareHitBtn()
 
+
+        // observe
+        observeOnUserHitsLive()
 
 //        val userId = UUID.randomUUID().toString()
 //        scope.launch {
@@ -73,9 +82,6 @@ class MainActivity : AppCompatActivity() {
 //                }
 //            }
 //        }
-
-        prepareBottomAppSheet()
-        prepareHitFormBottomAppSheet()
     }
 
     override fun onStart() {
@@ -86,16 +92,24 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
+    private fun observeOnUserHitsLive() {
+        viewModel.userHitsListLive.observe(this, Observer {
+            if (it != null) {
+                adapter.setHits(it)
+            }
+        })
+    }
+
     private fun resetRecyclerView() {
-        scope.launch {
-            hits = hitRepo.getAllHits().asReversed()
-        }
-        hits.let {
-            hitCount = hits.size
-            hitTextView.text = hitCount.toString()
-            (recyclerView.adapter as HitListAdapter).setHits(it)
-            recyclerView.adapter?.notifyDataSetChanged()
-        }
+//        scope.launch {
+//            hits = hitRepo.refreshHitsList().asReversed()
+//        }
+//        hits.let {
+//            hitCount = hits.size
+//            hitTextView.text = hitCount.toString()
+//            (recyclerView.adapter as HitListAdapter).setHits(it)
+//            recyclerView.adapter?.notifyDataSetChanged()
+//        }
     }
 
     private fun prepareTodaysHitCountView() {
@@ -142,8 +156,9 @@ class MainActivity : AppCompatActivity() {
         hitFormBottomDrawerFragment = HitFormBottomDrawerFragment()
         hitFormBottomDrawerFragment.saveHit.observe(this, androidx.lifecycle.Observer { hit ->
             scope.launch {
-                hit.userId = user!!.id
+                hit.userId = user.id
                 hitRepo.insert(hit)
+                viewModel.refreshHitsList()
                 hitFormBottomDrawerFragment.dismiss()
             }
             Toast.makeText(this, "Hit Saved!", Toast.LENGTH_LONG).show()

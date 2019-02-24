@@ -74,7 +74,7 @@ class HitFormBottomDrawerFragment : BottomSheetDialogFragment() {
         saveButton.setOnClickListener {
             strainSelection = strainEditText.text.toString()
             val hit = Hit(
-                userId = "kamal",
+                userId = "Chron",
                 hitTime = "$time",
                 hitDate = "$date",
                 hitType = typeSelection,

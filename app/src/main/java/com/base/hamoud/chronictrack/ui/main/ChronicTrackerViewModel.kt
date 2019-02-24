@@ -20,25 +20,34 @@ class ChronicTrackerViewModel(application: Application) : AndroidViewModel(appli
     private var parentJob = Job()
 
     private val coroutineContext: CoroutineContext
-        get() = parentJob + Dispatchers.Main
+        get() = parentJob + Dispatchers.IO
 
     private val scope = CoroutineScope(coroutineContext)
+
+    private val uiScope = CoroutineScope(Dispatchers.Main)
 
     var userRepo: UserRepo
     var hitRepo: HitRepo
     var db: TokesDatabase = TokesDatabase.getDatabase(application)
 
-    //    var allUserHits: List<Hit>
-
-    var userHitsLive: MutableLiveData<List<Hit>>? = null
+    var userHitsListLive: MutableLiveData<List<Hit>> = MutableLiveData()
 
     init {
         userRepo = UserRepo(db.userDao())
         hitRepo = HitRepo(db.hitDao())
-//        allUserHits = hitRepo.getAllHits() // FIXME: crashes
 
-        Timber.i("start")
+        refreshHitsList()
+        Timber.i("init")
     }
+
+    fun refreshHitsList() {
+        scope.launch {
+            val hits = hitRepo.getAllHits()
+            Timber.i("hit count: ${hits.count()}")
+            userHitsListLive.postValue(hits)
+        }
+    }
+
 
     fun insertUser(user: User) = scope.launch(Dispatchers.IO) {
         userRepo.insert(user)
