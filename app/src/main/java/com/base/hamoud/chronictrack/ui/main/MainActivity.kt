@@ -98,6 +98,13 @@ class MainActivity : AppCompatActivity() {
         prepareHitFormBottomAppSheet()
     }
 
+    override fun onStart() {
+        super.onStart()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+    }
 
     private fun resetRecyclerView() {
         scope.launch {
@@ -109,14 +116,6 @@ class MainActivity : AppCompatActivity() {
             (recyclerView.adapter as HitListAdapter).setHits(it)
             recyclerView.adapter?.notifyDataSetChanged()
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
     }
 
     private fun prepareBottomAppSheet() {
