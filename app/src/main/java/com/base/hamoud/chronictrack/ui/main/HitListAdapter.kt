@@ -1,4 +1,4 @@
-package com.base.hamoud.chronictrack
+package com.base.hamoud.chronictrack.ui.main
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
+import com.base.hamoud.chronictrack.R
 import com.base.hamoud.chronictrack.data.entity.Hit
 
 class HitListAdapter internal constructor(var context: Context): RecyclerView.Adapter<HitListAdapter.HitViewHolder>() {

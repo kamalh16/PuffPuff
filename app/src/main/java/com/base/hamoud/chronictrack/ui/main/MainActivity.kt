@@ -1,15 +1,14 @@
-package com.base.hamoud.chronictrack
+package com.base.hamoud.chronictrack.ui.main
 
 import android.os.Bundle
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LifecycleRegistry
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.base.hamoud.chronictrack.R
 import com.base.hamoud.chronictrack.data.TokesDatabase
 import com.base.hamoud.chronictrack.data.entity.Hit
 import com.base.hamoud.chronictrack.data.entity.User
@@ -26,7 +25,8 @@ import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.coroutines.CoroutineContext
 
-class MainActivity : AppCompatActivity()  {
+
+class MainActivity : AppCompatActivity() {
 
     private lateinit var db: TokesDatabase
     private lateinit var adapter: HitListAdapter
@@ -46,12 +46,16 @@ class MainActivity : AppCompatActivity()  {
 
     private val scope = CoroutineScope(coroutineContext)
 
+    private lateinit var viewModel: ChronicTrackerViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         this.db = TokesDatabase.getDatabase(this)
         userRepo = UserRepo(db.userDao())
         hitRepo = HitRepo(db.hitDao())
+
+        viewModel = ViewModelProviders.of(this).get(ChronicTrackerViewModel::class.java)
 
         recyclerView = findViewById<RecyclerView>(R.id.hits_recyclerview)
         adapter = HitListAdapter(this)
@@ -62,8 +66,11 @@ class MainActivity : AppCompatActivity()  {
         })
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.addItemDecoration(DividerItemDecoration(
-                this, (recyclerView.layoutManager as LinearLayoutManager).orientation))
+        recyclerView.addItemDecoration(
+            DividerItemDecoration(
+                this, (recyclerView.layoutManager as LinearLayoutManager).orientation
+            )
+        )
 
 //        val userId = UUID.randomUUID().toString()
         scope.launch {
@@ -90,6 +97,7 @@ class MainActivity : AppCompatActivity()  {
         prepareBottomAppSheet()
         prepareHitFormBottomAppSheet()
     }
+
 
     private fun resetRecyclerView() {
         scope.launch {
