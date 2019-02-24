@@ -13,9 +13,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.util.*
 import kotlin.coroutines.CoroutineContext
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
+
+    // set logged in user
+    private var user: User = User(UUID.randomUUID().toString(), "Chron")
 
     private var parentJob = Job()
 
@@ -30,11 +34,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     var hitRepo: HitRepo
     var db: TokesDatabase = TokesDatabase.getInstance(application)
 
+    var loggedInUserLive: MutableLiveData<User> = MutableLiveData()
     var userHitsListLive: MutableLiveData<List<Hit>> = MutableLiveData()
 
     init {
         userRepo = UserRepo(db.userDao())
         hitRepo = HitRepo(db.hitDao())
+
+        attemptInsertUser(user)
 
         Timber.i("init")
     }
@@ -52,8 +59,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         refreshHitsList()
     }
 
-    fun insertUser(user: User) = scope.launch(Dispatchers.IO) {
-        userRepo.insert(user)
+    fun attemptInsertUser(user: User) {
+        scope.launch(Dispatchers.IO) {
+            loggedInUserLive.postValue(
+                userRepo.insert(user)
+            )
+        }
     }
 
     override fun onCleared() {

@@ -10,13 +10,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.base.hamoud.chronictrack.R
 import com.base.hamoud.chronictrack.data.entity.Hit
 
-class HitListAdapter internal constructor(var context: Context): RecyclerView.Adapter<HitListAdapter.HitViewHolder>() {
+class HitListAdapter internal constructor(var context: Context) : RecyclerView.Adapter<HitListAdapter.HitViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var hits = emptyList<Hit>() // cached copy of hits
     var hitsLiveData: MutableLiveData<Boolean> = MutableLiveData()
 
-    inner class HitViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    inner class HitViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val hitTimeTV: TextView = itemView.findViewById(R.id.hit_time_text_tiew)
         val hitDateTV: TextView = itemView.findViewById(R.id.hit_date_text_tiew)
         val chronicTypeTV: TextView = itemView.findViewById(R.id.chronic_type_text_view)

@@ -17,16 +17,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import java.util.*
 import kotlin.coroutines.CoroutineContext
 
 
 class MainActivity : AppCompatActivity() {
 
-    // set logged in user
-    private var user: User = User(UUID.randomUUID().toString(), "Chron")
-
     private lateinit var viewModel: MainViewModel
+
+    private lateinit var loggedInUser: User
 
     private lateinit var hitListView: RecyclerView
     private lateinit var adapter: HitListAdapter
@@ -46,7 +44,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
-        viewModel.insertUser(user)
 
         // prepare ui
         prepareBottomAppSheet()
@@ -55,8 +52,8 @@ class MainActivity : AppCompatActivity() {
         prepareHitsRecyclerView()
         prepareHitBtn()
 
-
         // observe
+        observeOnUserLoggedIn()
         observeOnGetUserHitsLive()
 
         viewModel.refreshHitsList()
@@ -70,6 +67,14 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
+    private fun observeOnUserLoggedIn() {
+        viewModel.loggedInUserLive.observe(this, Observer {
+            if (it != null) {
+                loggedInUser = it
+            }
+        })
+    }
+
     private fun observeOnGetUserHitsLive() {
         viewModel.userHitsListLive.observe(this, Observer {
             if (it != null) {
@@ -80,12 +85,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun prepareTodaysHitCountView() {
-        // TODO
-        hitCountTextView = findViewById<TextView>(R.id.todays_hit_count)
-//        scope.launch {
-//            hitCount = hitRepo.getAllHits().count()
-//            hitCountTextView.text = hitCount.toString()
-//        }
+        hitCountTextView = findViewById(R.id.todays_hit_count)
     }
 
     private fun prepareHitBtn() {
@@ -114,7 +114,8 @@ class MainActivity : AppCompatActivity() {
         hitFormBottomDrawerFragment = HitFormBottomDrawerFragment()
         hitFormBottomDrawerFragment.saveHit.observe(this, androidx.lifecycle.Observer { hit ->
             if (hit != null) {
-                hit.userId = user.id
+                hit.userId = loggedInUser.id
+                hitListView.scrollToPosition(0)
                 viewModel.insertHit(hit)
                 hitFormBottomDrawerFragment.dismiss()
                 Toast.makeText(this, "Hit Saved!", Toast.LENGTH_LONG).show()
