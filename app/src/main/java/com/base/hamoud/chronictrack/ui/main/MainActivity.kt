@@ -39,8 +39,8 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
 
         // prepare ui
-        prepareBottomAppSheet()
-        prepareHitFormBottomAppSheet()
+        prepareNavDrawerBottomSheet()
+        prepareHitFormBottomSheet()
         prepareTodaysHitCountView()
         prepareHitsRecyclerView()
         prepareHitBtn()
@@ -97,7 +97,7 @@ class MainActivity : AppCompatActivity() {
         hitListView.layoutManager = LinearLayoutManager(this)
     }
 
-    private fun prepareBottomAppSheet() {
+    private fun prepareNavDrawerBottomSheet() {
         val bottomAppBar = findViewById<BottomAppBar>(R.id.bottom_app_bar)
         bottomAppBar.setNavigationOnClickListener {
             navDrawerBottomSheetFragment = NavDrawerBottomSheetFragment()
@@ -105,7 +105,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun prepareHitFormBottomAppSheet() {
+    private fun prepareHitFormBottomSheet() {
         hitFormBottomDrawerFragment = HitFormBottomDrawerFragment()
         hitFormBottomDrawerFragment.saveHit.observe(this, androidx.lifecycle.Observer { hit ->
             if (hit != null) {
