@@ -1,6 +1,8 @@
 package com.base.hamoud.chronictrack.ui.main
 
+import android.graphics.Color
 import android.os.Bundle
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -41,6 +43,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setStatusBarColorToInvertedIcons()
         setContentView(R.layout.activity_main)
 
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
@@ -82,6 +85,13 @@ class MainActivity : AppCompatActivity() {
                 adapter.setHits(it)
             }
         })
+    }
+
+    private fun setStatusBarColorToInvertedIcons() {
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        window.statusBarColor = Color.parseColor("#1A000000")
     }
 
     private fun prepareTodaysHitCountView() {
