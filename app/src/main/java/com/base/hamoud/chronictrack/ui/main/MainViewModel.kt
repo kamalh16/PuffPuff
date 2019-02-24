@@ -18,9 +18,6 @@ import kotlin.coroutines.CoroutineContext
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
-    // set logged in user
-    private var user: User = User(UUID.randomUUID().toString(), "Chron")
-
     private var parentJob = Job()
 
     private val coroutineContext: CoroutineContext
@@ -30,6 +27,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val uiScope = CoroutineScope(Dispatchers.Main)
 
+    // set logged in user
+    private var user: User = User(UUID.randomUUID().toString(), "Chron")
+    
     var userRepo: UserRepo
     var hitRepo: HitRepo
     var db: TokesDatabase = TokesDatabase.getInstance(application)
