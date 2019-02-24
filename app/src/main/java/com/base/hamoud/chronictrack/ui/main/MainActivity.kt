@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var bottomNavDrawerFragment: BottomAppDrawerFragment
     private lateinit var hitFormBottomDrawerFragment: HitFormBottomDrawerFragment
     private var hitCount = 0
-    private lateinit var hitTextView: TextView
+    private lateinit var hitCountTextView: TextView
     private lateinit var recyclerView: RecyclerView
 
     private val parentJob = Job()
@@ -95,28 +95,17 @@ class MainActivity : AppCompatActivity() {
     private fun observeOnUserHitsLive() {
         viewModel.userHitsListLive.observe(this, Observer {
             if (it != null) {
+                hitCountTextView.text = it.count().toString()
                 adapter.setHits(it)
             }
         })
     }
 
-    private fun resetRecyclerView() {
-//        scope.launch {
-//            hits = hitRepo.refreshHitsList().asReversed()
-//        }
-//        hits.let {
-//            hitCount = hits.size
-//            hitTextView.text = hitCount.toString()
-//            (recyclerView.adapter as HitListAdapter).setHits(it)
-//            recyclerView.adapter?.notifyDataSetChanged()
-//        }
-    }
-
     private fun prepareTodaysHitCountView() {
-        hitTextView = findViewById<TextView>(R.id.todays_hit_count)
+        hitCountTextView = findViewById<TextView>(R.id.todays_hit_count)
         scope.launch {
             hitCount = hitRepo.getAllHits().count()
-            hitTextView.text = hitCount.toString()
+            hitCountTextView.text = hitCount.toString()
         }
     }
 
@@ -130,18 +119,13 @@ class MainActivity : AppCompatActivity() {
     private fun prepareHitsRecyclerView() {
         recyclerView = findViewById<RecyclerView>(R.id.hits_recyclerview)
         adapter = HitListAdapter(this)
-        adapter.hitsLiveData.observe(this, androidx.lifecycle.Observer { hitsRefreshed: Boolean ->
-            if (hitsRefreshed) {
-                resetRecyclerView()
-            }
-        })
+//        adapter.hitsLiveData.observe(this, androidx.lifecycle.Observer { hitsRefreshed: Boolean ->
+//            if (hitsRefreshed) {
+//                resetRecyclerView()
+//            }
+//        })
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.addItemDecoration(
-            DividerItemDecoration(
-                this, (recyclerView.layoutManager as LinearLayoutManager).orientation
-            )
-        )
     }
 
     private fun prepareBottomAppSheet() {
