@@ -57,22 +57,9 @@ class MainActivity : AppCompatActivity() {
 
 
         // observe
-        observeOnUserHitsLive()
+        observeOnGetUserHitsLive()
 
         viewModel.refreshHitsList()
-
-//        val userId = UUID.randomUUID().toString()
-//        scope.launch {
-//            userRepo.insert(User(UUID.randomUUID().toString(), "kamal"))
-//            user = userRepo.getUserByUsername("kamal")
-//            scope.launch(Dispatchers.Main) {
-//                user?.let {
-//                    hits = hitRepo.getTodaysHits(it.id).asReversed()
-//                    hitCount = hits.size
-//                    adapter.setHits(hits)
-//                }
-//            }
-//        }
     }
 
     override fun onStart() {
@@ -83,7 +70,7 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
-    private fun observeOnUserHitsLive() {
+    private fun observeOnGetUserHitsLive() {
         viewModel.userHitsListLive.observe(this, Observer {
             if (it != null) {
                 hitCountTextView.text = it.count().toString()
@@ -93,6 +80,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun prepareTodaysHitCountView() {
+        // TODO
         hitCountTextView = findViewById<TextView>(R.id.todays_hit_count)
 //        scope.launch {
 //            hitCount = hitRepo.getAllHits().count()
