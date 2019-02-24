@@ -87,6 +87,11 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    /**
+     * Invert the status bar icon colors (like Google Keep or Calendar).
+     *
+     * @see <a href="https://stackoverflow.com/a/45196710/2340813">StackOverFlow source</a>
+     */
     private fun setStatusBarColorToInvertedIcons() {
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
                 View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
