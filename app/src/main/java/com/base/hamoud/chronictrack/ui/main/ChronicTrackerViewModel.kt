@@ -36,7 +36,6 @@ class ChronicTrackerViewModel(application: Application) : AndroidViewModel(appli
         userRepo = UserRepo(db.userDao())
         hitRepo = HitRepo(db.hitDao())
 
-        refreshHitsList()
         Timber.i("init")
     }
 
@@ -48,6 +47,10 @@ class ChronicTrackerViewModel(application: Application) : AndroidViewModel(appli
         }
     }
 
+    fun insertHit(hit: Hit) = scope.launch(Dispatchers.IO) {
+        hitRepo.insert(hit)
+        refreshHitsList()
+    }
 
     fun insertUser(user: User) = scope.launch(Dispatchers.IO) {
         userRepo.insert(user)
