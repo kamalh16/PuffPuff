@@ -13,7 +13,7 @@ abstract class UserDao: BaseDao<User> {
      * @return user from the user_table with that id
      */
     @Query("SELECT * FROM USER_TABLE WHERE id = :id")
-    abstract fun getUserById(id: String): User
+    abstract fun getUserById(id: String): User?
 
     /**
      * Get a user by id

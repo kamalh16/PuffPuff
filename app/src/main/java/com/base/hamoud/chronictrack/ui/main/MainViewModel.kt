@@ -46,6 +46,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         Timber.i("init")
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        parentJob.cancel()
+    }
+
     fun refreshHitsList() {
         scope.launch {
             val hits = hitRepo.getAllHits()
@@ -59,7 +64,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         refreshHitsList()
     }
 
-    fun attemptInsertUser(user: User) {
+    private fun attemptInsertUser(user: User) {
         scope.launch(Dispatchers.IO) {
             loggedInUserLive.postValue(
                 userRepo.insert(user)
@@ -67,8 +72,4 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        parentJob.cancel()
-    }
 }

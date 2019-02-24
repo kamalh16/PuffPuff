@@ -6,6 +6,11 @@ import com.base.hamoud.chronictrack.data.entity.User
 
 class UserRepo(private val userDao: UserDao) {
 
+    /**
+     * Insert a user if they don't already exist in the database.
+     *
+     * @return [User] existing user if exists
+     */
     @WorkerThread
     fun insert(user: User): User? {
         val existingUser = userDao.getUserByUsername(user.username)
@@ -16,7 +21,7 @@ class UserRepo(private val userDao: UserDao) {
     }
 
     @WorkerThread
-    fun getUserById(userId: String): User {
+    fun getUserById(userId: String): User? {
         return userDao.getUserById(userId)
     }
 
