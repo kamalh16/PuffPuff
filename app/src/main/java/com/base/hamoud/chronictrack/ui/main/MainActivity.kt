@@ -16,10 +16,6 @@ import com.base.hamoud.chronictrack.ui.drawer.BottomAppDrawerFragment
 import com.base.hamoud.chronictrack.ui.drawer.HitFormBottomDrawerFragment
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlin.coroutines.CoroutineContext
 
 
 class MainActivity : AppCompatActivity() {
@@ -34,12 +30,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var bottomNavDrawerFragment: BottomAppDrawerFragment
     private lateinit var hitFormBottomDrawerFragment: HitFormBottomDrawerFragment
-
-    private val parentJob = Job()
-    private val coroutineContext: CoroutineContext
-        get() = parentJob + Dispatchers.Default
-
-    private val scope = CoroutineScope(coroutineContext)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,6 +63,7 @@ class MainActivity : AppCompatActivity() {
     private fun observeOnUserLoggedIn() {
         viewModel.loggedInUserLive.observe(this, Observer {
             if (it != null) {
+                // set user, set profile, etc.
                 loggedInUser = it
             }
         })
