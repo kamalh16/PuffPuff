@@ -49,6 +49,7 @@ class MainActivity : AppCompatActivity() {
         observeOnUserLoggedIn()
         observeOnGetUserHitsLive()
 
+        // trigger
         viewModel.refreshHitsList()
     }
 
@@ -76,18 +77,6 @@ class MainActivity : AppCompatActivity() {
                 adapter.setHits(it)
             }
         })
-    }
-
-    /**
-     * Invert the status bar icon colors (like Google Keep or Calendar).
-     *
-     * @see <a href="https://stackoverflow.com/a/45196710/2340813">StackOverFlow source</a>
-     */
-    private fun setStatusBarColorToInvertedIcons() {
-        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
-                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        window.statusBarColor = Color.parseColor("#1A000000")
     }
 
     private fun prepareTodaysHitCountView() {
@@ -127,6 +116,18 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Hit Saved!", Toast.LENGTH_LONG).show()
             }
         })
+    }
+
+    /**
+     * Invert the status bar icon colors (like Google Keep or Calendar).
+     *
+     * @see <a href="https://stackoverflow.com/a/45196710/2340813">StackOverFlow source</a>
+     */
+    private fun setStatusBarColorToInvertedIcons() {
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        window.statusBarColor = Color.parseColor("#1A000000")
     }
 
 }

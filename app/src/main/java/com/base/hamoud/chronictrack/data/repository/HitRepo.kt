@@ -20,6 +20,7 @@ class HitRepo(private val hitDao: HitDao) {
 
     @WorkerThread
     fun getTodaysHits(userId: String): List<Hit> {
+        // FIXME
         val today = Calendar.getInstance().get(Calendar.DATE)
         val thisMonth = Calendar.getInstance().get(Calendar.MONTH)
         val thisYear = Calendar.getInstance().get(Calendar.YEAR)
