@@ -9,13 +9,19 @@ import com.base.hamoud.chronictrack.data.dao.UserDao
 import com.base.hamoud.chronictrack.data.entity.Hit
 import com.base.hamoud.chronictrack.data.entity.User
 
-@Database(entities = [User::class, Hit::class], version = 1)
-public abstract class TokesDatabase: RoomDatabase() {
+@Database(
+    entities = [
+        User::class,
+        Hit::class],
+    version = 2
+)
+abstract class TokesDatabase : RoomDatabase() {
 
     abstract fun userDao(): UserDao
     abstract fun hitDao(): HitDao
 
     companion object {
+        
         @Volatile
         private var INSTANCE: TokesDatabase? = null
 
@@ -32,7 +38,9 @@ public abstract class TokesDatabase: RoomDatabase() {
                     context.applicationContext,
                     TokesDatabase::class.java,
                     "Tokes_database"
-                ).build()
+                )
+                    .fallbackToDestructiveMigration()
+                    .build()
                 INSTANCE = instance
                 return instance
             }

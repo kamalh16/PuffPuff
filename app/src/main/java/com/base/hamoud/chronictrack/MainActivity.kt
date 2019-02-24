@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity(), LifecycleOwner  {
     private lateinit var db: TokesDatabase
     private lateinit var adapter: HitListAdapter
     private lateinit var userRepo: UserRepo
-    private lateinit var user: User
+    private var user: User? = null
     private lateinit var hitRepo: HitRepo
     private lateinit var hits: List<Hit>
     private lateinit var bottomNavDrawerFragment: BottomAppDrawerFragment
@@ -72,9 +72,9 @@ class MainActivity : AppCompatActivity(), LifecycleOwner  {
 
 //        val userId = UUID.randomUUID().toString()
         scope.launch {
-//            userRepo.insert(User(userId, "kamal"))
+            userRepo.insert(User(UUID.randomUUID().toString(), "kamal"))
             user = userRepo.getUserByUsername("kamal")
-            user.let {
+            user?.let {
                 hits = hitRepo.getTodaysHits(it.id).asReversed()
                 hitCount = hits.size
                 adapter.setHits(hits)
@@ -129,7 +129,7 @@ class MainActivity : AppCompatActivity(), LifecycleOwner  {
         hitFormAppDrawerFragment = HitFormAppDrawerFragment()
         hitFormAppDrawerFragment.saveHit.observe(this, androidx.lifecycle.Observer { hit ->
             scope.launch {
-                hit.userId = user.id
+                hit.userId = user!!.id
                 hitRepo.insert(hit)
                 hitFormAppDrawerFragment.dismiss()
             }

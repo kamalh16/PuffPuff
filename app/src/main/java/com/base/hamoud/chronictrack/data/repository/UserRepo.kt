@@ -17,7 +17,7 @@ class UserRepo(private val userDao: UserDao) {
     }
 
     @WorkerThread
-    fun getUserByUsername(username: String): User {
+    fun getUserByUsername(username: String): User? {
         return userDao.getUserByUsername(username)
     }
 }
