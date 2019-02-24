@@ -21,15 +21,15 @@
 
     <TextView
             android:id="@+id/todays_hit_count"
-            android:layout_width="62dp"
-            android:layout_height="66dp"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
             android:gravity="center"
             android:padding="16dp"
             android:text="@string/zero"
             android:textSize="38sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintHorizontal_bias="0.498" android:layout_marginTop="8dp"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintTop_toBottomOf="@+id/todays_hit_count_title"/>
 
     <androidx.recyclerview.widget.RecyclerView
