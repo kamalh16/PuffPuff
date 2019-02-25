@@ -12,12 +12,12 @@ class UserRepo(private val userDao: UserDao) {
     }
 
     @WorkerThread
-    fun getUserById(userId: String): User {
+    suspend fun getUserById(userId: String): User {
         return userDao.getUserById(userId)
     }
 
     @WorkerThread
-    fun getUserByUsername(username: String): User {
+    suspend fun getUserByUsername(username: String): User {
         return userDao.getUserByUsername(username)
     }
 }

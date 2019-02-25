@@ -47,6 +47,8 @@ dependencies {
     // Room
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version" // use kapt for Kotlin
+    implementation "androidx.room:room-coroutines:$room_version"
+
     // Coroutines support for Room
     implementation "androidx.room:room-coroutines:$room_version"
 

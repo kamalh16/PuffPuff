@@ -13,7 +13,7 @@ abstract class UserDao: BaseDao<User> {
      * @return user from the user_table with that id
      */
     @Query("SELECT * FROM USER_TABLE WHERE id = :id")
-    abstract fun getUserById(id: String): User
+    abstract suspend fun getUserById(id: String): User
 
     /**
      * Get a user by id
@@ -21,18 +21,18 @@ abstract class UserDao: BaseDao<User> {
      * @return user from the user_table with that id
      */
     @Query("SELECT * FROM USER_TABLE WHERE username = :username")
-    abstract fun getUserByUsername(username: String): User
+    abstract suspend fun getUserByUsername(username: String): User
 
     /**
      * Delete user with id
      */
     @Query("DELETE FROM USER_TABLE WHERE id = :id")
-    abstract fun deleteUserById(id: String)
+    abstract suspend fun deleteUserById(id: String)
 
     /**
      * Delete all users
      */
     @Query("DELETE FROM USER_TABLE")
-    abstract fun deleteAllUsers()
+    abstract suspend fun deleteAllUsers()
 
 }
