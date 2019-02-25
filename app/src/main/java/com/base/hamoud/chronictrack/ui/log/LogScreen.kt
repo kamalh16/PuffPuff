@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.base.hamoud.chronictrack.R
 import com.base.hamoud.chronictrack.data.entity.User
 import com.base.hamoud.chronictrack.ui.drawer.HitFormBottomDrawerFragment
-import com.base.hamoud.chronictrack.ui.main.HitListAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class LogScreen : Fragment() {
@@ -25,7 +24,7 @@ class LogScreen : Fragment() {
     private var hitListRecyclerView: RecyclerView? = null
     private var hitCountTextView: TextView? = null
 
-    private lateinit var adapter: HitListAdapter
+    private lateinit var adapter: LogListAdapter
 
     companion object {
         fun newInstance(): LogScreen = LogScreen()
@@ -85,7 +84,7 @@ class LogScreen : Fragment() {
 
     private fun prepareHitsRecyclerView() {
         hitListRecyclerView = view?.findViewById(R.id.hits_recyclerview)
-        adapter = HitListAdapter(context!!)
+        adapter = LogListAdapter(context!!)
 
         // setup RecyclerView
         hitListRecyclerView?.adapter = adapter

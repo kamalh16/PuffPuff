@@ -1,4 +1,4 @@
-package com.base.hamoud.chronictrack.ui.main
+package com.base.hamoud.chronictrack.ui.log
 
 import android.graphics.Canvas
 import android.graphics.drawable.ColorDrawable
@@ -9,19 +9,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.base.hamoud.chronictrack.R
 
 
-class SwipeToDeleteCallback(adapter: HitListAdapter) :
+class SwipeToDeleteCallback(adapter: LogListAdapter) :
       ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
     // to add both left AND right support
     // constructor: ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT)
 
-    private val hitListAdapter: HitListAdapter = adapter
+    private val logListAdapter: LogListAdapter = adapter
 
     private val icon: Drawable?
     private val background: ColorDrawable
 
     init {
         icon = ContextCompat.getDrawable(
-              hitListAdapter.context, R.drawable.ic_delete_white_24dp)
+              logListAdapter.context, R.drawable.ic_delete_white_24dp)
         background = ColorDrawable(
               ContextCompat.getColor(adapter.context, R.color.colorSwipeToDeleteBg))
     }
@@ -35,7 +35,7 @@ class SwipeToDeleteCallback(adapter: HitListAdapter) :
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         val position = viewHolder.adapterPosition
-        hitListAdapter.deleteItem(position)
+        logListAdapter.deleteItem(position)
     }
 
     override fun onChildDraw(

@@ -1,19 +1,17 @@
-package com.base.hamoud.chronictrack.ui.main
+package com.base.hamoud.chronictrack.ui.log
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.base.hamoud.chronictrack.R
 import com.base.hamoud.chronictrack.data.entity.Hit
-import com.google.android.material.snackbar.Snackbar
 
 
-class HitListAdapter internal constructor(
-      var context: Context) : RecyclerView.Adapter<HitListAdapter.HitViewHolder>() {
+class LogListAdapter internal constructor(
+      var context: Context) : RecyclerView.Adapter<LogListAdapter.HitViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var hits = mutableListOf<Hit>()// cached copy of hits
