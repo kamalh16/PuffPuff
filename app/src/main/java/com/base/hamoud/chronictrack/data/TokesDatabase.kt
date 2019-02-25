@@ -21,29 +21,24 @@ abstract class TokesDatabase : RoomDatabase() {
     abstract fun hitDao(): HitDao
 
     companion object {
-        
+
         @Volatile
         private var INSTANCE: TokesDatabase? = null
 
-        fun getDatabase(context: Context): TokesDatabase {
-
-            val tempInstance = INSTANCE
-            if (tempInstance != null) {
-                return tempInstance
+        fun getInstance(context: Context): TokesDatabase {
+            if (INSTANCE == null) {
+                synchronized(TokesDatabase::class.java) {
+                    if (INSTANCE == null) {
+                        INSTANCE = Room.databaseBuilder(
+                            context.applicationContext,
+                            TokesDatabase::class.java, "Tokes_database"
+                        )
+                            .fallbackToDestructiveMigration()
+                            .build()
+                    }
+                }
             }
-
-            synchronized(this) {
-                // create db here
-                val instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    TokesDatabase::class.java,
-                    "Tokes_database"
-                )
-                    .fallbackToDestructiveMigration()
-                    .build()
-                INSTANCE = instance
-                return instance
-            }
+            return INSTANCE!!
         }
     }
 }

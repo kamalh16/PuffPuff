@@ -12,7 +12,7 @@ import com.base.hamoud.chronictrack.data.repository.HitRepo
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.util.*
 
-class HitFormAppDrawerFragment : BottomSheetDialogFragment() {
+class HitFormBottomDrawerFragment : BottomSheetDialogFragment() {
 
     lateinit var date: String
     lateinit var time: String
@@ -74,7 +74,7 @@ class HitFormAppDrawerFragment : BottomSheetDialogFragment() {
         saveButton.setOnClickListener {
             strainSelection = strainEditText.text.toString()
             val hit = Hit(
-                userId = "kamal",
+                userId = "Chron",
                 hitTime = "$time",
                 hitDate = "$date",
                 hitType = typeSelection,
