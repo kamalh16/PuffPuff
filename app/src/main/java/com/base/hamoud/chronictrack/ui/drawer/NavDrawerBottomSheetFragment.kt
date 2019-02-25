@@ -22,22 +22,22 @@ class NavDrawerBottomSheetFragment : BottomSheetDialogFragment() {
     }
 
     private fun prepareNavigationView(view: View) {
-//        val navigationView = view.findViewById<NavigationView>(R.id.navigation_view)
-//        navigationView.setNavigationItemSelectedListener { menuItem ->
-//            // Bottom Navigation Drawer menu item clicks
-//            when (menuItem.itemId) {
-//                R.id.dark_theme -> {
-//                    this.dismiss()
-//                    Toast.makeText(
-//                            activity, "Dark theme menu item clicked!", Toast.LENGTH_SHORT).show()
-//                }
-//                R.id.about -> {
-//                    this.dismiss()
-//                    Toast.makeText(
-//                            activity, "About menu item clicked!", Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//            true
-//        }
+        val navigationView = view.findViewById<NavigationView>(R.id.navigation_view)
+        navigationView.setNavigationItemSelectedListener { menuItem ->
+            // Bottom Navigation Drawer menu item clicks
+            when (menuItem.itemId) {
+                R.id.dark_theme -> {
+                    this.dismiss()
+                    Toast.makeText(
+                          activity, "Dark theme menu item clicked!", Toast.LENGTH_SHORT).show()
+                }
+                R.id.about -> {
+                    this.dismiss()
+                    Toast.makeText(
+                          activity, "About menu item clicked!", Toast.LENGTH_SHORT).show()
+                }
+            }
+            true
+        }
     }
 }

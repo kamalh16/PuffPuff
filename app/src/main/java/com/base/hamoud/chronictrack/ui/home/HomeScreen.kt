@@ -29,7 +29,6 @@ class HomeScreen : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         viewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
 
         // prepare ui
