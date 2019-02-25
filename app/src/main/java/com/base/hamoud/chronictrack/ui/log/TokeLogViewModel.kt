@@ -10,7 +10,7 @@ import com.base.hamoud.chronictrack.data.repository.UserRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class LogViewModel(application: Application) : BaseAndroidViewModel(application) {
+class TokeLogViewModel(application: Application) : BaseAndroidViewModel(application) {
 
     var userRepo: UserRepo = UserRepo(db.userDao())
     var hitRepo: HitRepo = HitRepo(db.hitDao())

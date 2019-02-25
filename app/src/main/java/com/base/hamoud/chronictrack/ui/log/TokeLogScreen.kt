@@ -15,29 +15,29 @@ import com.base.hamoud.chronictrack.data.entity.User
 import com.base.hamoud.chronictrack.ui.drawer.HitFormBottomDrawerFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class LogScreen : Fragment() {
+class TokeLogScreen : Fragment() {
 
-    private lateinit var viewModel: LogViewModel
+    private lateinit var viewModel: TokeLogViewModel
 
     private lateinit var loggedInUser: User
 
     private var hitListRecyclerView: RecyclerView? = null
     private var hitCountTextView: TextView? = null
 
-    private lateinit var adapter: LogListAdapter
+    private lateinit var adapter: TokeLogListAdapter
 
     companion object {
-        fun newInstance(): LogScreen = LogScreen()
+        fun newInstance(): TokeLogScreen = TokeLogScreen()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_log, container, false)
+        return inflater.inflate(R.layout.fragment_toke_log, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProviders.of(this).get(LogViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(TokeLogViewModel::class.java)
 
         prepareTodaysHitCountView()
         prepareHitsRecyclerView()
@@ -83,8 +83,8 @@ class LogScreen : Fragment() {
     }
 
     private fun prepareHitsRecyclerView() {
-        hitListRecyclerView = view?.findViewById(R.id.hits_recyclerview)
-        adapter = LogListAdapter(context!!)
+        hitListRecyclerView = view?.findViewById(R.id.toke_log_recycler_view)
+        adapter = TokeLogListAdapter(context!!)
 
         // setup RecyclerView
         hitListRecyclerView?.adapter = adapter
@@ -96,7 +96,7 @@ class LogScreen : Fragment() {
     }
 
     private fun prepareHitBtn() {
-        val hitBtn = view?.findViewById<FloatingActionButton>(R.id.hit_btn)
+        val hitBtn = view?.findViewById<FloatingActionButton>(R.id.toke_log_add_hit_btn)
         hitBtn?.setOnClickListener {
             HitFormBottomDrawerFragment().show(fragmentManager!!, HitFormBottomDrawerFragment::javaClass.name)
         }

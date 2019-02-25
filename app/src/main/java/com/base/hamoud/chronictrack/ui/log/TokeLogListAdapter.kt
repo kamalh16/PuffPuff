@@ -10,8 +10,8 @@ import com.base.hamoud.chronictrack.R
 import com.base.hamoud.chronictrack.data.entity.Hit
 
 
-class LogListAdapter internal constructor(
-      var context: Context) : RecyclerView.Adapter<LogListAdapter.HitViewHolder>() {
+class TokeLogListAdapter internal constructor(
+      var context: Context) : RecyclerView.Adapter<TokeLogListAdapter.HitViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var hits = mutableListOf<Hit>()// cached copy of hits

@@ -6,47 +6,37 @@
     android:layout_height="match_parent"
     tools:context=".ui.main.MainActivity">
 
+    <!-- Screen Label -->
     <TextView
-        android:id="@+id/todays_hit_count_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
-        android:gravity="center"
-        android:text="@string/today"
-        android:textSize="28sp"
-        app:layout_constraintBottom_toTopOf="@id/todays_hit_count"
+        android:id="@+id/toke_log_screen_label"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="56dp"
+        android:gravity="start"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="16dp"
+        android:text="@string/label_toke_log"
+        android:textColor="@android:color/black"
+        android:textSize="38sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/todays_hit_count"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:gravity="center"
-        android:padding="8dp"
-        android:text="@string/zero"
-        android:textSize="38sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/todays_hit_count_title" />
-
+    <!-- Toke Log List -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/hits_recyclerview"
+        android:id="@+id/toke_log_recycler_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/todays_hit_count"
+        app:layout_constraintTop_toBottomOf="@+id/toke_log_screen_label"
         tools:listitem="@layout/item_hit" />
 
     <!-- Floating Action Bottom -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/hit_btn"
+        android:id="@+id/toke_log_add_hit_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"

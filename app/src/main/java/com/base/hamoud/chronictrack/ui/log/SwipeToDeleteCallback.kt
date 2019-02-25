@@ -9,12 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.base.hamoud.chronictrack.R
 
 
-class SwipeToDeleteCallback(adapter: LogListAdapter) :
+class SwipeToDeleteCallback(adapter: TokeLogListAdapter) :
       ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
     // to add both left AND right support
     // constructor: ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT)
 
-    private val logListAdapter: LogListAdapter = adapter
+    private val logListAdapter: TokeLogListAdapter = adapter
 
     private val icon: Drawable?
     private val background: ColorDrawable
