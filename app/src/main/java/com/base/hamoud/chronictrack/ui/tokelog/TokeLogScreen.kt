@@ -1,4 +1,4 @@
-package com.base.hamoud.chronictrack.ui.log
+package com.base.hamoud.chronictrack.ui.tokelog
 
 import android.os.Bundle
 import android.view.LayoutInflater

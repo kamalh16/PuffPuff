@@ -1,4 +1,4 @@
-package com.base.hamoud.chronictrack.ui.log
+package com.base.hamoud.chronictrack.ui.tokelog
 
 import android.graphics.Canvas
 import android.graphics.drawable.ColorDrawable

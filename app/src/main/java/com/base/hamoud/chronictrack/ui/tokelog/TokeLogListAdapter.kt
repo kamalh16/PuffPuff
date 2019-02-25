@@ -1,4 +1,4 @@
-package com.base.hamoud.chronictrack.ui.log
+package com.base.hamoud.chronictrack.ui.tokelog
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -15,9 +15,6 @@ class TokeLogListAdapter internal constructor(
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var hits = mutableListOf<Hit>()// cached copy of hits
-
-    private var tempDeletedItem: Hit? = null
-    private var tempDeletedItemPosition: Int = -1
 
     inner class HitViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val hitTimeTV: TextView = itemView.findViewById(R.id.hit_time_text_tiew)
@@ -50,34 +47,4 @@ class TokeLogListAdapter internal constructor(
         notifyDataSetChanged()
     }
 
-    fun deleteItem(position: Int) {
-        // store item to delete in temp
-        val hit = hits[position]
-        tempDeletedItem = hit
-        tempDeletedItemPosition = position
-
-        // delete item from list
-        hits.removeAt(position)
-        notifyItemRemoved(position)
-
-//        showUndoSnackbar()
-    }
-
-
-    private fun showUndoSnackbar() {
-//        val activity = (context as MainActivity)
-//        val view = activity.findViewById<CoordinatorLayout>(R.id.snackbar_view)
-//
-//        Snackbar
-//              .make(view, "Item deleted.", Snackbar.LENGTH_SHORT)
-//              .setAction("Undo") { undoDeleteItem() }
-//              .show()
-    }
-
-    private fun undoDeleteItem() {
-        tempDeletedItem?.let {
-            hits.add(tempDeletedItemPosition, it)
-            notifyItemInserted(tempDeletedItemPosition)
-        }
-    }
 }

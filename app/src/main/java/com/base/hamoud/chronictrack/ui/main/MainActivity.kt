@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.base.hamoud.chronictrack.R
 import com.base.hamoud.chronictrack.data.entity.User
 import com.base.hamoud.chronictrack.ui.home.HomeScreen
-import com.base.hamoud.chronictrack.ui.log.TokeLogScreen
+import com.base.hamoud.chronictrack.ui.tokelog.TokeLogScreen
 import com.base.hamoud.chronictrack.ui.settings.SettingsScreen
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import timber.log.Timber
