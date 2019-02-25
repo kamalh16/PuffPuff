@@ -15,11 +15,12 @@ class HitRepo(private val hitDao: HitDao) {
 
     @WorkerThread
     suspend fun getAllHits(): List<Hit> {
-        return hitDao.getAllHits()
+        return hitDao.getAllHits().asReversed()
     }
 
     @WorkerThread
     suspend fun getTodaysHits(userId: String): List<Hit> {
+        // FIXME
         val today = Calendar.getInstance().get(Calendar.DATE)
         val thisMonth = Calendar.getInstance().get(Calendar.MONTH)
         val thisYear = Calendar.getInstance().get(Calendar.YEAR)

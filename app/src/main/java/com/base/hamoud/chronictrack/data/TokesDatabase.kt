@@ -9,33 +9,36 @@ import com.base.hamoud.chronictrack.data.dao.UserDao
 import com.base.hamoud.chronictrack.data.entity.Hit
 import com.base.hamoud.chronictrack.data.entity.User
 
-@Database(entities = [User::class, Hit::class], version = 1)
-public abstract class TokesDatabase: RoomDatabase() {
+@Database(
+    entities = [
+        User::class,
+        Hit::class],
+    version = 2
+)
+abstract class TokesDatabase : RoomDatabase() {
 
     abstract fun userDao(): UserDao
     abstract fun hitDao(): HitDao
 
     companion object {
+
         @Volatile
         private var INSTANCE: TokesDatabase? = null
 
-        fun getDatabase(context: Context): TokesDatabase {
-
-            val tempInstance = INSTANCE
-            if (tempInstance != null) {
-                return tempInstance
+        fun getInstance(context: Context): TokesDatabase {
+            if (INSTANCE == null) {
+                synchronized(TokesDatabase::class.java) {
+                    if (INSTANCE == null) {
+                        INSTANCE = Room.databaseBuilder(
+                            context.applicationContext,
+                            TokesDatabase::class.java, "Tokes_database"
+                        )
+                            .fallbackToDestructiveMigration()
+                            .build()
+                    }
+                }
             }
-
-            synchronized(this) {
-                // create db here
-                val instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    TokesDatabase::class.java,
-                    "Tokes_database"
-                ).build()
-                INSTANCE = instance
-                return instance
-            }
+            return INSTANCE!!
         }
     }
 }

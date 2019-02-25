@@ -5,26 +5,26 @@ import androidx.room.Query
 import com.base.hamoud.chronictrack.data.entity.User
 
 @Dao
-abstract class UserDao: BaseDao<User> {
+abstract class UserDao : BaseDao<User> {
 
     /**
-     * Get a user by id
+     * Get a user by [id]
      *
-     * @return user from the user_table with that id
+     * @return user from the user_table with that [id]
      */
     @Query("SELECT * FROM USER_TABLE WHERE id = :id")
-    abstract suspend fun getUserById(id: String): User
+    abstract suspend fun getUserById(id: String): User?
 
     /**
-     * Get a user by id
+     * Get a user by [username]
      *
-     * @return user from the user_table with that id
+     * @return user from the user_table with that [username]
      */
     @Query("SELECT * FROM USER_TABLE WHERE username = :username")
-    abstract suspend fun getUserByUsername(username: String): User
+    abstract suspend fun getUserByUsername(username: String): User?
 
     /**
-     * Delete user with id
+     * Delete user with [id]
      */
     @Query("DELETE FROM USER_TABLE WHERE id = :id")
     abstract suspend fun deleteUserById(id: String)
