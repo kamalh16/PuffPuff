@@ -8,12 +8,13 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.base.hamoud.chronictrack.R
 import com.base.hamoud.chronictrack.data.entity.User
-import com.base.hamoud.chronictrack.ui.drawer.NavDrawerBottomSheetFragment
 import com.base.hamoud.chronictrack.ui.drawer.HitFormBottomDrawerFragment
+import com.base.hamoud.chronictrack.ui.drawer.NavDrawerBottomSheetFragment
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -24,7 +25,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var loggedInUser: User
 
-    private lateinit var hitListView: RecyclerView
+    private lateinit var hitListRecyclerView: RecyclerView
     private lateinit var adapter: HitListAdapter
     private lateinit var hitCountTextView: TextView
 
@@ -47,9 +48,11 @@ class MainActivity : AppCompatActivity() {
 
         // observe
         observeOnUserLoggedIn()
-        observeOnGetUserHitsLive()
+        observeOnGetUserHitsCountLive()
+        observeOnGetUserHitsListLive()
 
         // trigger
+        viewModel.refreshHitsTotalCount()
         viewModel.refreshHitsList()
     }
 
@@ -70,10 +73,17 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun observeOnGetUserHitsLive() {
+    private fun observeOnGetUserHitsCountLive() {
+        viewModel.userHitsCount.observe(this, Observer {
+            if (it != null) {
+                hitCountTextView.text = it.toString()
+            }
+        })
+    }
+
+    private fun observeOnGetUserHitsListLive() {
         viewModel.userHitsListLive.observe(this, Observer {
             if (it != null) {
-                hitCountTextView.text = it.count().toString()
                 adapter.setHits(it)
             }
         })
@@ -91,10 +101,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun prepareHitsRecyclerView() {
-        hitListView = findViewById(R.id.hits_recyclerview)
+        hitListRecyclerView = findViewById(R.id.hits_recyclerview)
         adapter = HitListAdapter(this)
-        hitListView.adapter = adapter
-        hitListView.layoutManager = LinearLayoutManager(this)
+
+        // setup RecyclerView
+        hitListRecyclerView.adapter = adapter
+        hitListRecyclerView.layoutManager = LinearLayoutManager(this) as RecyclerView.LayoutManager?
+
+        // add swipe-to-delete support
+//        val itemTouchHelper = ItemTouchHelper(SwipeToDeleteCallback(adapter))
+//        itemTouchHelper.attachToRecyclerView(hitListRecyclerView)
     }
 
     private fun prepareNavDrawerBottomSheet() {
@@ -110,8 +126,9 @@ class MainActivity : AppCompatActivity() {
         hitFormBottomDrawerFragment.saveHit.observe(this, androidx.lifecycle.Observer { hit ->
             if (hit != null) {
                 hit.userId = loggedInUser.id
-                hitListView.scrollToPosition(0)
                 viewModel.insertHit(hit)
+                viewModel.refreshHitsList()
+                hitListRecyclerView.scrollToPosition(0)
                 hitFormBottomDrawerFragment.dismiss()
                 Toast.makeText(this, "Hit Saved!", Toast.LENGTH_LONG).show()
             }
@@ -125,8 +142,8 @@ class MainActivity : AppCompatActivity() {
      */
     private fun setStatusBarColorToInvertedIcons() {
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
-                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+              View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+              View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         window.statusBarColor = Color.parseColor("#1A000000")
     }
 

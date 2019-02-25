@@ -21,7 +21,8 @@ class MainViewModel(application: Application) : BaseAndroidViewModel(application
     var hitRepo: HitRepo = HitRepo(db.hitDao())
 
     var loggedInUserLive: MutableLiveData<User> = MutableLiveData()
-    var userHitsListLive: MutableLiveData<List<Hit>> = MutableLiveData()
+    var userHitsListLive: MutableLiveData<MutableList<Hit>> = MutableLiveData()
+    var userHitsCount: MutableLiveData<Int> = MutableLiveData()
 
     init {
         attemptInsertUser(user)
@@ -36,20 +37,31 @@ class MainViewModel(application: Application) : BaseAndroidViewModel(application
     fun refreshHitsList() {
         ioScope.launch {
             val hits = hitRepo.getAllHits()
-            Timber.i("hit count: ${hits.count()}")
             userHitsListLive.postValue(hits)
+        }
+    }
+
+    fun refreshHitsTotalCount() {
+        ioScope.launch {
+            val hitCount = hitRepo.getAllHits().count()
+            userHitsCount.postValue(hitCount)
         }
     }
 
     fun insertHit(hit: Hit) = ioScope.launch {
         hitRepo.insert(hit)
-        refreshHitsList()
+        refreshHitsTotalCount()
+    }
+
+    fun deleteHit(hit: Hit) = ioScope.launch {
+        hitRepo.deleteHit(hit)
+        refreshHitsTotalCount()
     }
 
     private fun attemptInsertUser(user: User) {
         ioScope.launch(Dispatchers.IO) {
             loggedInUserLive.postValue(
-                userRepo.insert(user)
+                  userRepo.insert(user)
             )
         }
     }
