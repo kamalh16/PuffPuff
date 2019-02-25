@@ -11,7 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.base.hamoud.chronictrack.R
 import com.base.hamoud.chronictrack.data.entity.User
-import com.base.hamoud.chronictrack.ui.drawer.HitFormBottomDrawerFragment
+import com.base.hamoud.chronictrack.ui.addtoke.AddTokeScreen
+import com.base.hamoud.chronictrack.ui.main.MainActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import timber.log.Timber
 
@@ -20,7 +21,6 @@ class TokeLogScreen : Fragment() {
     private var loggedInUser: User? = null
     private lateinit var viewModel: TokeLogViewModel
 
-    private lateinit var hitFormBottomDrawerFragment: HitFormBottomDrawerFragment
     private var hitListRecyclerView: RecyclerView? = null
 
     private lateinit var adapter: TokeLogListAdapter
@@ -38,7 +38,6 @@ class TokeLogScreen : Fragment() {
         viewModel = ViewModelProviders.of(this).get(TokeLogViewModel::class.java)
 
         // prepare ui
-        prepareHitFormBottomSheet()
         prepareHitsRecyclerView()
         prepareHitBtn()
 
@@ -79,22 +78,11 @@ class TokeLogScreen : Fragment() {
     private fun prepareHitBtn() {
         val hitBtn = view?.findViewById<FloatingActionButton>(R.id.toke_log_add_hit_btn)
         hitBtn?.setOnClickListener {
-            hitFormBottomDrawerFragment.show(fragmentManager!!, HitFormBottomDrawerFragment::javaClass.name)
+            val addTokeScreen = AddTokeScreen.newInstance()
+            (activity as MainActivity).goToScreen(
+                  screen = addTokeScreen,
+                  shouldAddToBackStack = true)
         }
     }
 
-    private fun prepareHitFormBottomSheet() {
-        hitFormBottomDrawerFragment = HitFormBottomDrawerFragment()
-        hitFormBottomDrawerFragment.saveHit.observe(this, androidx.lifecycle.Observer { hit ->
-            if (hit != null) {
-                loggedInUser?.let {
-                    hit.userId = it.id
-                    viewModel.insertHit(hit)
-                    viewModel.refreshHitsList()
-                    hitListRecyclerView?.scrollToPosition(0)
-                }
-                hitFormBottomDrawerFragment.dismiss()
-            }
-        })
-    }
 }

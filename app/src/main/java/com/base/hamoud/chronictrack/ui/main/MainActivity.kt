@@ -47,9 +47,12 @@ class MainActivity : AppCompatActivity() {
     /**
      * Replaces the current screen with the passed in [screen]
      */
-    private fun goToScreen(screen: Fragment) {
+    public fun goToScreen(screen: Fragment, shouldAddToBackStack: Boolean) {
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.container, screen)
+        if (shouldAddToBackStack) {
+            transaction.addToBackStack(null)
+        }
         transaction.commit()
     }
 
@@ -63,17 +66,17 @@ class MainActivity : AppCompatActivity() {
             when (it.itemId) {
                 R.id.navigate_home_screen -> {
                     val homeScreen = HomeScreen.newInstance()
-                    goToScreen(homeScreen)
+                    goToScreen(homeScreen, false)
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.navigate_log_screen -> {
                     val logScreen = TokeLogScreen.newInstance()
-                    goToScreen(logScreen)
+                    goToScreen(logScreen, false)
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.navigate_settings_screen -> {
                     val settingsScreen = SettingsScreen.newInstance()
-                    goToScreen(settingsScreen)
+                    goToScreen(settingsScreen, false)
                     return@setOnNavigationItemSelectedListener true
                 }
             }

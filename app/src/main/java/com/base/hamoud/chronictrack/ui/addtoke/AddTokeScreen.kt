@@ -1,18 +1,21 @@
-package com.base.hamoud.chronictrack.ui.drawer
+package com.base.hamoud.chronictrack.ui.addtoke
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.lifecycle.MutableLiveData
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import com.base.hamoud.chronictrack.R
 import com.base.hamoud.chronictrack.data.entity.Hit
-import com.base.hamoud.chronictrack.data.repository.HitRepo
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.base.hamoud.chronictrack.ui.main.MainActivity
+import com.base.hamoud.chronictrack.ui.tokelog.TokeLogScreen
 import java.util.*
 
-class HitFormBottomDrawerFragment : BottomSheetDialogFragment() {
+class AddTokeScreen : Fragment() {
+
+    private lateinit var viewModel: AddTokeViewModel
 
     lateinit var date: String
     lateinit var time: String
@@ -20,12 +23,14 @@ class HitFormBottomDrawerFragment : BottomSheetDialogFragment() {
     lateinit var methodSelection: String
     lateinit var strainSelection: String
 
-    lateinit var saveButton: Button
-    lateinit var strainEditText: EditText
-    lateinit var timeInputTextView: TextView
-    lateinit var dateInputTextView: TextView
+    private var saveButton: Button? = null
+    private var strainEditText: EditText? = null
+    private var timeInputTextView: TextView? = null
+    private var dateInputTextView: TextView? = null
 
-    var saveHit: MutableLiveData<Hit> = MutableLiveData()
+    companion object {
+        fun newInstance(): AddTokeScreen = AddTokeScreen()
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_hit_form_bottom_sheet, container, false)
@@ -33,23 +38,35 @@ class HitFormBottomDrawerFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProviders.of(this).get(AddTokeViewModel::class.java)
 
+        // prepare ui
         prepareFormView(view)
     }
 
-    fun prepareFormView(view: View) {
-        // prepare date and time
-        // todays date and time always set
-        val now: Calendar = Calendar.getInstance()
-        dateInputTextView = view.findViewById(R.id.date_textview)
-        date = "${now.get(Calendar.DATE)} / ${now.get(Calendar.MONTH)} / ${now.get(Calendar.YEAR)}"
-        dateInputTextView.text = date
+    private fun prepareFormView(view: View) {
+        prepareDateField()
+        prepareTimeField()
+        prepareTypeSpinner(view)
+        prepareMethodSpinner(view)
+        prepareStrainField()
+        prepareSaveBtn()
+    }
 
-        timeInputTextView = view.findViewById(R.id.time_textview)
+    private fun prepareDateField() {
+        val now: Calendar = Calendar.getInstance()
+        dateInputTextView = view?.findViewById(R.id.date_textview)
+        date = "${now.get(Calendar.DATE)} / ${now.get(Calendar.MONTH)} / ${now.get(Calendar.YEAR)}"
+        dateInputTextView?.text = date
+    }
+
+    private fun prepareTimeField() {
+        val now: Calendar = Calendar.getInstance()
+        timeInputTextView = view?.findViewById(R.id.time_textview)
         val hours: String = now.get(Calendar.HOUR_OF_DAY).toString()
         val minuteCalendar = now.get(Calendar.MINUTE)
         val minutes: String = if (minuteCalendar < 10) {
-             "0$minuteCalendar"
+            "0$minuteCalendar"
         } else {
             minuteCalendar.toString()
         }
@@ -60,37 +77,39 @@ class HitFormBottomDrawerFragment : BottomSheetDialogFragment() {
             secondsCalendar.toString()
         }
         time = "$hours:$minutes:$seconds"
-        timeInputTextView.text = time
+        timeInputTextView?.text = time
+    }
 
-        // prepare type spinner
-        // indica/hybrid/sativas
-        prepareTypeSpinner(view)
-        // prepare method spinner
-        prepareMethodSpinner(view)
-        // prepare strain edittext
-        strainEditText = view.findViewById(R.id.strain_text)
+    private fun prepareStrainField() {
+        strainEditText = view?.findViewById(R.id.strain_text)
+    }
+
+    private fun prepareSaveBtn() {
         // prepare save button
-        saveButton = view.findViewById(R.id.save_button)
-        saveButton.setOnClickListener {
-            strainSelection = strainEditText.text.toString()
+        saveButton = view?.findViewById(R.id.save_button)
+        saveButton?.setOnClickListener {
+            strainSelection = strainEditText?.text.toString()
             val hit = Hit(
-                userId = "Chron",
-                hitTime = "$time",
-                hitDate = "$date",
-                hitType = typeSelection,
-                strain = strainSelection,
-                toolUsed = methodSelection
+                  userId = "Chron",
+                  hitTime = time,
+                  hitDate = date,
+                  hitType = typeSelection,
+                  strain = strainSelection,
+                  toolUsed = methodSelection
             )
-            saveHit.postValue(hit)
+            viewModel.insertHit(hit)
+            (activity as MainActivity).goToScreen(
+                  screen = TokeLogScreen.newInstance(),
+                  shouldAddToBackStack = false)
         }
     }
 
     private fun prepareMethodSpinner(view: View) {
         val methodSpinner: Spinner = view.findViewById(R.id.ingestion_method_spinner)
         ArrayAdapter.createFromResource(
-            activity?.applicationContext,
-            R.array.ingestion_method,
-            android.R.layout.simple_spinner_item
+              context!!,
+              R.array.ingestion_method,
+              android.R.layout.simple_spinner_item
         ).also {
             it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             methodSpinner.adapter = it
@@ -109,9 +128,9 @@ class HitFormBottomDrawerFragment : BottomSheetDialogFragment() {
     private fun prepareTypeSpinner(view: View) {
         val typeSpinner: Spinner = view.findViewById(R.id.type_spinner)
         ArrayAdapter.createFromResource(
-            activity?.applicationContext,
-            R.array.chronic_type,
-            android.R.layout.simple_spinner_item
+              context!!,
+              R.array.chronic_type,
+              android.R.layout.simple_spinner_item
         ).also {
             it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             typeSpinner.adapter = it
