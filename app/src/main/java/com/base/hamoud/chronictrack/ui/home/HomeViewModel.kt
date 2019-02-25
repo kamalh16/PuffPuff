@@ -1,22 +1,21 @@
-package com.base.hamoud.chronictrack.ui.tokelog
+package com.base.hamoud.chronictrack.ui.home
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.base.hamoud.chronictrack.BaseAndroidViewModel
-import com.base.hamoud.chronictrack.data.entity.Hit
 import com.base.hamoud.chronictrack.data.entity.User
 import com.base.hamoud.chronictrack.data.repository.HitRepo
 import com.base.hamoud.chronictrack.data.repository.UserRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class TokeLogViewModel(application: Application) : BaseAndroidViewModel(application) {
+class HomeViewModel(application: Application) : BaseAndroidViewModel(application) {
 
     var userRepo: UserRepo = UserRepo(db.userDao())
     var hitRepo: HitRepo = HitRepo(db.hitDao())
 
     var loggedInUserLive: MutableLiveData<User> = MutableLiveData()
-    var userHitsListLive: MutableLiveData<MutableList<Hit>> = MutableLiveData()
+    var userHitsCount: MutableLiveData<Int> = MutableLiveData()
 
     init {
         getLoggedInUser()
@@ -27,15 +26,11 @@ class TokeLogViewModel(application: Application) : BaseAndroidViewModel(applicat
         parentJob.cancel()
     }
 
-    fun refreshHitsList() {
+    fun refreshHitsTotalCount() {
         ioScope.launch {
-            val hits = hitRepo.getAllHits()
-            userHitsListLive.postValue(hits)
+            val hitCount = hitRepo.getAllHits().count()
+            userHitsCount.postValue(hitCount)
         }
-    }
-
-    fun insertHit(hit: Hit) = ioScope.launch {
-        hitRepo.insert(hit)
     }
 
     private fun getLoggedInUser() {

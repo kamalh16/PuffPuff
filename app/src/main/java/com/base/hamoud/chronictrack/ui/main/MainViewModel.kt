@@ -7,7 +7,6 @@ import com.base.hamoud.chronictrack.data.entity.User
 import com.base.hamoud.chronictrack.data.repository.UserRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import java.util.*
 
 class MainViewModel(application: Application) : BaseAndroidViewModel(application) {
@@ -21,7 +20,6 @@ class MainViewModel(application: Application) : BaseAndroidViewModel(application
 
     init {
         attemptInsertUser(user)
-        Timber.i("attemptInsertUser: $user")
     }
 
     override fun onCleared() {

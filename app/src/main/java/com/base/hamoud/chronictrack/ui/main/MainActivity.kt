@@ -10,15 +10,15 @@ import androidx.lifecycle.ViewModelProviders
 import com.base.hamoud.chronictrack.R
 import com.base.hamoud.chronictrack.data.entity.User
 import com.base.hamoud.chronictrack.ui.home.HomeScreen
-import com.base.hamoud.chronictrack.ui.tokelog.TokeLogScreen
 import com.base.hamoud.chronictrack.ui.settings.SettingsScreen
+import com.base.hamoud.chronictrack.ui.tokelog.TokeLogScreen
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import timber.log.Timber
 
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var loggedInUser: User
+    private var loggedInUser: User? = null
     private lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,15 +27,21 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+
+        // prepare ui
+        prepareBottomNavigation()
+
+        // observe
+        observeOnUserLoggedInLive()
+    }
+
+    private fun observeOnUserLoggedInLive() {
         viewModel.loggedInUserLive.observe(this, Observer {
             if (it != null) {
                 Timber.i("logged in user: ${it.username}, ${it.id}")
                 loggedInUser = it
             }
         })
-
-        // prepare ui
-        prepareBottomNavigation()
     }
 
     /**

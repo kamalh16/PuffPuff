@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -13,18 +12,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.base.hamoud.chronictrack.R
 import com.base.hamoud.chronictrack.data.entity.User
 import com.base.hamoud.chronictrack.ui.drawer.HitFormBottomDrawerFragment
-import com.base.hamoud.chronictrack.ui.main.MainActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import timber.log.Timber
 
 class TokeLogScreen : Fragment() {
 
-    private lateinit var loggedInUser: User
-
+    private var loggedInUser: User? = null
     private lateinit var viewModel: TokeLogViewModel
 
     private lateinit var hitFormBottomDrawerFragment: HitFormBottomDrawerFragment
     private var hitListRecyclerView: RecyclerView? = null
-    private var hitCountTextView: TextView? = null
 
     private lateinit var adapter: TokeLogListAdapter
 
@@ -38,39 +35,26 @@ class TokeLogScreen : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        loggedInUser = (activity as MainActivity).loggedInUser
-
         viewModel = ViewModelProviders.of(this).get(TokeLogViewModel::class.java)
 
         // prepare ui
         prepareHitFormBottomSheet()
-        prepareTodaysHitCountView()
         prepareHitsRecyclerView()
         prepareHitBtn()
 
         // observe
-        observeOnUserLoggedIn()
-        observeOnGetUserHitsCountLive()
+        observeOnUserLoggedInLive()
         observeOnGetUserHitsListLive()
 
         // trigger
-        viewModel.refreshHitsTotalCount()
         viewModel.refreshHitsList()
     }
 
-    private fun observeOnUserLoggedIn() {
+    private fun observeOnUserLoggedInLive() {
         viewModel.loggedInUserLive.observe(this, Observer {
             if (it != null) {
-                // set user, set profile, etc.
+                Timber.i("logged in user: ${it.username}, ${it.id}")
                 loggedInUser = it
-            }
-        })
-    }
-
-    private fun observeOnGetUserHitsCountLive() {
-        viewModel.userHitsCount.observe(this, Observer {
-            if (it != null) {
-                hitCountTextView?.text = it.toString()
             }
         })
     }
@@ -81,10 +65,6 @@ class TokeLogScreen : Fragment() {
                 adapter.setHits(it)
             }
         })
-    }
-
-    private fun prepareTodaysHitCountView() {
-        hitCountTextView = view?.findViewById(R.id.todays_hit_count)
     }
 
     private fun prepareHitsRecyclerView() {
@@ -107,10 +87,12 @@ class TokeLogScreen : Fragment() {
         hitFormBottomDrawerFragment = HitFormBottomDrawerFragment()
         hitFormBottomDrawerFragment.saveHit.observe(this, androidx.lifecycle.Observer { hit ->
             if (hit != null) {
-                hit.userId = loggedInUser.id
-                viewModel.insertHit(hit)
-                viewModel.refreshHitsList()
-                hitListRecyclerView?.scrollToPosition(0)
+                loggedInUser?.let {
+                    hit.userId = it.id
+                    viewModel.insertHit(hit)
+                    viewModel.refreshHitsList()
+                    hitListRecyclerView?.scrollToPosition(0)
+                }
                 hitFormBottomDrawerFragment.dismiss()
             }
         })
