@@ -15,7 +15,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toke_log_screen_label"
-        tools:listitem="@layout/item_hit" />
+        tools:listitem="@layout/item_toke" />
 
     <!-- Screen Label -->
     <TextView

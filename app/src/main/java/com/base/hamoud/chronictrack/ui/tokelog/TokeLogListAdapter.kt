@@ -17,15 +17,15 @@ class TokeLogListAdapter internal constructor(
     private var hits = mutableListOf<Hit>()// cached copy of hits
 
     inner class HitViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val hitTimeTV: TextView = itemView.findViewById(R.id.hit_time_text_tiew)
-        val hitDateTV: TextView = itemView.findViewById(R.id.hit_date_text_tiew)
-        val chronicTypeTV: TextView = itemView.findViewById(R.id.chronic_type_text_view)
-        val chronicStrainTV: TextView = itemView.findViewById(R.id.chronic_strain_text_view)
-        val toolUsedTV: TextView = itemView.findViewById(R.id.tool_used_text_view)
+        val hitTimeTV: TextView = itemView.findViewById(R.id.item_toke_time_field)
+        val hitDateTV: TextView = itemView.findViewById(R.id.item_toke_date_field)
+        val chronicTypeTV: TextView = itemView.findViewById(R.id.item_toke_type_field)
+        val chronicStrainTV: TextView = itemView.findViewById(R.id.item_toke_strain_field)
+        val toolUsedTV: TextView = itemView.findViewById(R.id.item_toke_tool_field)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HitViewHolder {
-        val itemView = inflater.inflate(R.layout.item_hit, parent, false)
+        val itemView = inflater.inflate(R.layout.item_toke, parent, false)
         return HitViewHolder(itemView)
     }
 
