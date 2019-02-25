@@ -14,12 +14,12 @@ class HitRepo(private val hitDao: HitDao) {
     }
 
     @WorkerThread
-    fun getAllHits(): MutableList<Hit> {
+    suspend fun getAllHits(): MutableList<Hit> {
         return hitDao.getAllHits().asReversed()
     }
 
     @WorkerThread
-    fun getTodaysHits(userId: String): List<Hit> {
+    suspend fun getTodaysHits(userId: String): List<Hit> {
         // FIXME
         val today = Calendar.getInstance().get(Calendar.DATE)
         val thisMonth = Calendar.getInstance().get(Calendar.MONTH)
@@ -29,17 +29,17 @@ class HitRepo(private val hitDao: HitDao) {
     }
 
     @WorkerThread
-    fun getHitsByUserForDate(user_id: String, date: String): List<Hit> {
+    suspend fun getHitsByUserForDate(user_id: String, date: String): List<Hit> {
         return hitDao.getHitByUserIdAndDate(user_id, date)
     }
 
     @WorkerThread
-    fun getAllHitsByUser(userId: String): List<Hit> {
+    suspend fun getAllHitsByUser(userId: String): List<Hit> {
         return hitDao.getHitByUserId(userId)
     }
 
     @WorkerThread
-    fun deleteAllHitsByUser(userId: String) {
+    suspend fun deleteAllHitsByUser(userId: String) {
         hitDao.deleteHitByUserId(userId)
     }
 

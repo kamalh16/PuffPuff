@@ -12,7 +12,7 @@ class UserRepo(private val userDao: UserDao) {
      * @return [User] existing user if exists
      */
     @WorkerThread
-    fun insert(user: User): User? {
+    suspend fun insert(user: User): User? {
         val existingUser = userDao.getUserByUsername(user.username)
         if (existingUser == null) {
             userDao.insert(user)
@@ -21,12 +21,12 @@ class UserRepo(private val userDao: UserDao) {
     }
 
     @WorkerThread
-    fun getUserById(userId: String): User? {
+    suspend fun getUserById(userId: String): User? {
         return userDao.getUserById(userId)
     }
 
     @WorkerThread
-    fun getUserByUsername(username: String): User? {
+    suspend fun getUserByUsername(username: String): User? {
         return userDao.getUserByUsername(username)
     }
 }
