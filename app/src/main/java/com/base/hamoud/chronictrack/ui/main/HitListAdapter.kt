@@ -67,13 +67,13 @@ class HitListAdapter internal constructor(
 
 
     private fun showUndoSnackbar() {
-        val activity = (context as MainActivity)
-        val view = activity.findViewById<CoordinatorLayout>(R.id.snackbar_view)
-
-        Snackbar
-              .make(view, "Item deleted.", Snackbar.LENGTH_SHORT)
-              .setAction("Undo") { undoDeleteItem() }
-              .show()
+//        val activity = (context as MainActivity)
+//        val view = activity.findViewById<CoordinatorLayout>(R.id.snackbar_view)
+//
+//        Snackbar
+//              .make(view, "Item deleted.", Snackbar.LENGTH_SHORT)
+//              .setAction("Undo") { undoDeleteItem() }
+//              .show()
     }
 
     private fun undoDeleteItem() {

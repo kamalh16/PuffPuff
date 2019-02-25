@@ -6,17 +6,19 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.base.hamoud.chronictrack.R
 import com.base.hamoud.chronictrack.data.entity.User
 import com.base.hamoud.chronictrack.ui.drawer.HitFormBottomDrawerFragment
 import com.base.hamoud.chronictrack.ui.drawer.NavDrawerBottomSheetFragment
-import com.google.android.material.bottomappbar.BottomAppBar
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.base.hamoud.chronictrack.ui.home.HomeFragment
+import com.base.hamoud.chronictrack.ui.log.LogFragment
+import com.base.hamoud.chronictrack.ui.settings.SettingsFragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class MainActivity : AppCompatActivity() {
@@ -40,6 +42,7 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
 
         // prepare ui
+        prepareBottomNavigation()
         prepareNavDrawerBottomSheet()
         prepareHitFormBottomSheet()
         prepareTodaysHitCountView()
@@ -62,6 +65,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+    }
+
+    private fun goToScreen(screen: Fragment) {
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.container, screen)
+        transaction.addToBackStack(null)
+        transaction.commit()
     }
 
     private fun observeOnUserLoggedIn() {
@@ -94,10 +104,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun prepareHitBtn() {
-        val hitBtn = findViewById<FloatingActionButton>(R.id.hit_btn)
-        hitBtn.setOnClickListener {
-            hitFormBottomDrawerFragment.show(supportFragmentManager, HitFormBottomDrawerFragment::javaClass.name)
-        }
+//        val hitBtn = findViewById<FloatingActionButton>(R.id.hit_btn)
+//        hitBtn.setOnClickListener {
+//            hitFormBottomDrawerFragment.show(supportFragmentManager, HitFormBottomDrawerFragment::javaClass.name)
+//        }
     }
 
     private fun prepareHitsRecyclerView() {
@@ -114,11 +124,37 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun prepareNavDrawerBottomSheet() {
-        val bottomAppBar = findViewById<BottomAppBar>(R.id.bottom_app_bar)
-        bottomAppBar.setNavigationOnClickListener {
-            navDrawerBottomSheetFragment = NavDrawerBottomSheetFragment()
-            navDrawerBottomSheetFragment.show(supportFragmentManager, NavDrawerBottomSheetFragment::javaClass.name)
+//        val bottomAppBar = findViewById<BottomAppBar>(R.id.bottom_app_bar)
+//        bottomAppBar.setNavigationOnClickListener {
+//            navDrawerBottomSheetFragment = NavDrawerBottomSheetFragment()
+//            navDrawerBottomSheetFragment.show(supportFragmentManager, NavDrawerBottomSheetFragment::javaClass.name)
+//        }
+    }
+
+    private fun prepareBottomNavigation() {
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNavigationView.setOnNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.navigate_home_screen -> {
+                    val songsFragment = HomeFragment.newInstance()
+                    goToScreen(songsFragment)
+                    return@setOnNavigationItemSelectedListener true
+                }
+                R.id.navigate_log_screen -> {
+                    val songsFragment = LogFragment.newInstance()
+                    goToScreen(songsFragment)
+                    return@setOnNavigationItemSelectedListener true
+                }
+                R.id.navigate_settings_screen -> {
+                    val songsFragment = SettingsFragment.newInstance()
+                    goToScreen(songsFragment)
+                    return@setOnNavigationItemSelectedListener true
+                }
+            }
+            false
         }
+        // Set default selection
+        bottomNavigationView.selectedItemId = R.id.navigate_home_screen
     }
 
     private fun prepareHitFormBottomSheet() {
