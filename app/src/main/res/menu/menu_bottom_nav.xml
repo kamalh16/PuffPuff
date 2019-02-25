@@ -5,21 +5,21 @@
     <item
         android:id="@+id/navigate_home_screen"
         android:enabled="true"
-        android:icon="@drawable/nav_home_state_selector"
+        android:icon="@drawable/menu_item_home_state_selector"
         android:title="@string/label_home"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/navigate_log_screen"
         android:enabled="true"
-        android:icon="@drawable/nav_log_state_selector"
+        android:icon="@drawable/menu_item_log_state_selector"
         android:title="@string/label_log"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/navigate_settings_screen"
         android:enabled="true"
-        android:icon="@drawable/nav_settings_state_selector"
+        android:icon="@drawable/menu_item_settings_state_selector"
         android:title="@string/label_settings"
         app:showAsAction="ifRoom" />
 

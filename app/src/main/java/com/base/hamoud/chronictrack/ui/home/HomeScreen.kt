@@ -7,13 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.base.hamoud.chronictrack.R
 
-class HomeFragment : Fragment() {
+class HomeScreen : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
     companion object {
-        fun newInstance(): HomeFragment = HomeFragment()
+        fun newInstance(): HomeScreen = HomeScreen()
     }
 }
