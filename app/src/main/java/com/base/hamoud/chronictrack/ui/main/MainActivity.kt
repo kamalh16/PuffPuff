@@ -38,12 +38,19 @@ class MainActivity : AppCompatActivity() {
         prepareBottomNavigation()
     }
 
+    /**
+     * Replaces the current screen with the passed in [screen]
+     */
     private fun goToScreen(screen: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.container, screen)
         transaction.commit()
     }
 
+    /**
+     * Setup BottomNavigationView's onItemSelectedListener to handle navigating
+     * to different screens using [goToScreen].
+     */
     private fun prepareBottomNavigation() {
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNavigationView.setOnNavigationItemSelectedListener {
