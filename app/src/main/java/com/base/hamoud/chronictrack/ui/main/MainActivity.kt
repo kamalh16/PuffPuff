@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.base.hamoud.chronictrack.R
 import com.base.hamoud.chronictrack.data.entity.User
@@ -12,13 +13,13 @@ import com.base.hamoud.chronictrack.ui.home.HomeScreen
 import com.base.hamoud.chronictrack.ui.log.LogScreen
 import com.base.hamoud.chronictrack.ui.settings.SettingsScreen
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import timber.log.Timber
 
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: MainViewModel
-
     private lateinit var loggedInUser: User
+    private lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,10 +27,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        viewModel.loggedInUserLive.observe(this, Observer {
+            if (it != null) {
+                Timber.i("logged in user: ${it.username}, ${it.id}")
+                loggedInUser = it
+            }
+        })
 
         // prepare ui
         prepareBottomNavigation()
-//        prepareHitFormBottomSheet()
     }
 
     private fun goToScreen(screen: Fragment) {
@@ -60,7 +66,7 @@ class MainActivity : AppCompatActivity() {
             }
             false
         }
-        // Set default selection
+        // set default selection
         bottomNavigationView.selectedItemId = R.id.navigate_home_screen
     }
 
