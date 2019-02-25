@@ -22,7 +22,7 @@ abstract class HitDao : BaseDao<Hit> {
      * @return List of hits in db
      */
     @Query("SELECT * FROM HIT_TABLE")
-    abstract fun getAllHits(): List<Hit>
+    abstract fun getAllHits(): MutableList<Hit>
 
     /**
      * Get all hits by [userId] for specific [date] dd-mm-yyyy

@@ -5,14 +5,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.base.hamoud.chronictrack.R
 import com.base.hamoud.chronictrack.data.entity.Hit
+import com.google.android.material.snackbar.Snackbar
 
-class HitListAdapter internal constructor(var context: Context) : RecyclerView.Adapter<HitListAdapter.HitViewHolder>() {
+
+class HitListAdapter internal constructor(
+      var context: Context) : RecyclerView.Adapter<HitListAdapter.HitViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
-    private var hits = emptyList<Hit>() // cached copy of hits
+    private var hits = mutableListOf<Hit>()// cached copy of hits
+
+    private var tempDeletedItem: Hit? = null
+    private var tempDeletedItemPosition: Int = -1
 
     inner class HitViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val hitTimeTV: TextView = itemView.findViewById(R.id.hit_time_text_tiew)
@@ -40,8 +47,39 @@ class HitListAdapter internal constructor(var context: Context) : RecyclerView.A
         holder.toolUsedTV.text = current.toolUsed
     }
 
-    internal fun setHits(hits: List<Hit>) {
+    internal fun setHits(hits: MutableList<Hit>) {
         this.hits = hits
         notifyDataSetChanged()
+    }
+
+    fun deleteItem(position: Int) {
+        // store item to delete in temp
+        val hit = hits[position]
+        tempDeletedItem = hit
+        tempDeletedItemPosition = position
+
+        // delete item from list
+        hits.removeAt(position)
+        notifyItemRemoved(position)
+
+//        showUndoSnackbar()
+    }
+
+
+    private fun showUndoSnackbar() {
+        val activity = (context as MainActivity)
+        val view = activity.findViewById<CoordinatorLayout>(R.id.snackbar_view)
+
+        Snackbar
+              .make(view, "Item deleted.", Snackbar.LENGTH_SHORT)
+              .setAction("Undo") { undoDeleteItem() }
+              .show()
+    }
+
+    private fun undoDeleteItem() {
+        tempDeletedItem?.let {
+            hits.add(tempDeletedItemPosition, it)
+            notifyItemInserted(tempDeletedItemPosition)
+        }
     }
 }

@@ -14,7 +14,7 @@ class HitRepo(private val hitDao: HitDao) {
     }
 
     @WorkerThread
-    fun getAllHits(): List<Hit> {
+    fun getAllHits(): MutableList<Hit> {
         return hitDao.getAllHits().asReversed()
     }
 
@@ -41,5 +41,10 @@ class HitRepo(private val hitDao: HitDao) {
     @WorkerThread
     fun deleteAllHitsByUser(userId: String) {
         hitDao.deleteHitByUserId(userId)
+    }
+
+    @WorkerThread
+    fun deleteHit(hit: Hit) {
+        hitDao.delete(hit)
     }
 }
