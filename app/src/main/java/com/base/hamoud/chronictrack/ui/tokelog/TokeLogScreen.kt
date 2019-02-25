@@ -39,6 +39,7 @@ class TokeLogScreen : Fragment() {
 
         viewModel = ViewModelProviders.of(this).get(TokeLogViewModel::class.java)
 
+        // prepare ui
         prepareTodaysHitCountView()
         prepareHitsRecyclerView()
         prepareHitBtn()
@@ -89,10 +90,6 @@ class TokeLogScreen : Fragment() {
         // setup RecyclerView
         hitListRecyclerView?.adapter = adapter
         hitListRecyclerView?.layoutManager = LinearLayoutManager(context) as RecyclerView.LayoutManager?
-
-        // add swipe-to-delete support
-//        val itemTouchHelper = ItemTouchHelper(SwipeToDeleteCallback(adapter))
-//        itemTouchHelper.attachToRecyclerView(hitListRecyclerView)
     }
 
     private fun prepareHitBtn() {
