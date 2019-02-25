@@ -10,7 +10,7 @@ import com.base.hamoud.chronictrack.R
 class SettingsScreen : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_settings, container, false)
+        return inflater.inflate(R.layout.screen_settings, container, false)
     }
 
     companion object {
