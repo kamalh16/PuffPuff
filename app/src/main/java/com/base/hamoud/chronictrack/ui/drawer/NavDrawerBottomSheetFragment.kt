@@ -29,12 +29,12 @@ class NavDrawerBottomSheetFragment : BottomSheetDialogFragment() {
                 R.id.dark_theme -> {
                     this.dismiss()
                     Toast.makeText(
-                            activity, "Dark theme menu item clicked!", Toast.LENGTH_SHORT).show()
+                          activity, "Dark theme menu item clicked!", Toast.LENGTH_SHORT).show()
                 }
                 R.id.about -> {
                     this.dismiss()
                     Toast.makeText(
-                            activity, "About menu item clicked!", Toast.LENGTH_SHORT).show()
+                          activity, "About menu item clicked!", Toast.LENGTH_SHORT).show()
                 }
             }
             true

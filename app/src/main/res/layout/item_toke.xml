@@ -1,65 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <!-- Item Toke Tool (pipe, bong, etc.) -->
     <TextView
-        android:id="@+id/tool_used_text_view"
-        style="@style/hit_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="8dp"
-        android:padding="8dp"
-        android:text="@string/zero"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/chronic_type_text_view"
-        style="@style/hit_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="8dp"
-        android:padding="8dp"
-        android:text="@string/zero"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tool_used_text_view" />
-
-    <TextView
-        android:id="@+id/chronic_strain_text_view"
-        style="@style/hit_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:padding="8dp"
-        android:text="@string/zero"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <TextView
-        android:id="@+id/hit_time_text_tiew"
+        android:id="@+id/item_toke_tool_field"
         style="@style/hit_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
         android:padding="8dp"
         android:text="@string/zero"
         android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/tool_used_text_view"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/item_toke_time_field"
+        tools:text="Water Bong" />
 
+    <!-- Item Toke Type (sativa, hybrid, indica) -->
     <TextView
-        android:id="@+id/hit_date_text_tiew"
+        android:id="@+id/item_toke_type_field"
         style="@style/hit_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -69,15 +32,61 @@
         android:padding="8dp"
         android:text="@string/zero"
         android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/chronic_strain_text_view"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/item_toke_strain_field"
+        tools:text="Sativa" />
 
+    <!-- Item Toke Strain (Alien OG, Sweet Lemon Haze, etc) -->
+    <TextView
+        android:id="@+id/item_toke_strain_field"
+        style="@style/hit_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:padding="8dp"
+        android:text="@string/zero"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_toke_date_field"
+        tools:text="Sweet Lemon Haze" />
 
+    <!-- Item Toke Time (hh:mm:ss) -->
+    <TextView
+        android:id="@+id/item_toke_time_field"
+        style="@style/hit_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:padding="8dp"
+        android:text="@string/zero"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="7:42:08 pm" />
+
+    <!-- Item Toke Date (dd/mm/yyy) -->
+    <TextView
+        android:id="@+id/item_toke_date_field"
+        style="@style/hit_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:padding="8dp"
+        android:text="@string/zero"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Thu, Feb 21" />
+
+    <!-- Item Toke Border Bottom -->
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/colorPrimaryDark"
+        android:background="#efefef"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

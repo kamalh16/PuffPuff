@@ -1,25 +1,24 @@
-package com.base.hamoud.chronictrack.ui.main
+package com.base.hamoud.chronictrack.ui.addtoke
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.base.hamoud.chronictrack.BaseAndroidViewModel
+import com.base.hamoud.chronictrack.data.entity.Hit
 import com.base.hamoud.chronictrack.data.entity.User
+import com.base.hamoud.chronictrack.data.repository.HitRepo
 import com.base.hamoud.chronictrack.data.repository.UserRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.*
 
-class MainViewModel(application: Application) : BaseAndroidViewModel(application) {
-
-    // set logged in user
-    private var user: User = User(UUID.randomUUID().toString(), "Chron")
+class AddTokeViewModel(application: Application) : BaseAndroidViewModel(application) {
 
     var userRepo: UserRepo = UserRepo(db.userDao())
+    var hitRepo: HitRepo = HitRepo(db.hitDao())
 
     var loggedInUserLive: MutableLiveData<User> = MutableLiveData()
 
     init {
-        attemptInsertUser(user)
+        getLoggedInUser()
     }
 
     override fun onCleared() {
@@ -27,10 +26,15 @@ class MainViewModel(application: Application) : BaseAndroidViewModel(application
         parentJob.cancel()
     }
 
-    private fun attemptInsertUser(user: User) {
+    fun insertHit(hit: Hit) = ioScope.launch {
+        hit.userId = loggedInUserLive.value?.id!!
+        hitRepo.insert(hit)
+    }
+
+    private fun getLoggedInUser() {
         ioScope.launch(Dispatchers.IO) {
             loggedInUserLive.postValue(
-                  userRepo.insert(user)
+                  userRepo.getUserByUsername("Chron")
             )
         }
     }
