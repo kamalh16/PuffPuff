@@ -1,9 +1,9 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">ChronicTrack</string>
 
     <string name="label_home">Home</string>
-    <string name="label_toke_log">Toke Log</string>
-    <string name="label_add_toke">Add Toke</string>
+    <string name="label_toke_log" tools:ignore="Typos">Toke Log</string>
+    <string name="label_add_toke" tools:ignore="Typos">Add Toke</string>
     <string name="label_settings">Settings</string>
     <string name="label_dark_theme">Dark Theme</string>
     <string name="label_about">About</string>

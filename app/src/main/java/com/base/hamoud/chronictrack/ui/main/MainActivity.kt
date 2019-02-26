@@ -84,6 +84,11 @@ class MainActivity : AppCompatActivity() {
         }
         // set default selection
         bottomNavigationView.selectedItemId = R.id.navigate_home_screen
+
+        // prevents ability to reselect tab
+        bottomNavigationView.setOnNavigationItemReselectedListener {
+            return@setOnNavigationItemReselectedListener
+        }
     }
 
     /**
