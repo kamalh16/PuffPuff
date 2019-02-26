@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- Settings Screen Label -->
     <TextView
         android:id="@+id/settings_screen_label"
         android:layout_width="match_parent"

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <!-- Toke Tool (pipe, bong, etc.) -->
+    <!-- Item Toke Tool (pipe, bong, etc.) -->
     <TextView
         android:id="@+id/item_toke_tool_field"
         style="@style/hit_title"
@@ -20,7 +20,7 @@
         app:layout_constraintTop_toBottomOf="@+id/item_toke_time_field"
         tools:text="Water Bong" />
 
-    <!-- Toke Type (sativa, hybrid, indica) -->
+    <!-- Item Toke Type (sativa, hybrid, indica) -->
     <TextView
         android:id="@+id/item_toke_type_field"
         style="@style/hit_title"
@@ -37,7 +37,7 @@
         app:layout_constraintTop_toBottomOf="@+id/item_toke_strain_field"
         tools:text="Sativa" />
 
-    <!-- Toke Strain (Alien OG, Sweet Lemon Haze, etc) -->
+    <!-- Item Toke Strain (Alien OG, Sweet Lemon Haze, etc) -->
     <TextView
         android:id="@+id/item_toke_strain_field"
         style="@style/hit_title"
@@ -52,7 +52,7 @@
         app:layout_constraintTop_toBottomOf="@+id/item_toke_date_field"
         tools:text="Sweet Lemon Haze" />
 
-    <!-- Toke Time (hh:mm:ss) -->
+    <!-- Item Toke Time (hh:mm:ss) -->
     <TextView
         android:id="@+id/item_toke_time_field"
         style="@style/hit_title"
@@ -67,7 +67,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="7:42:08 pm" />
 
-    <!-- Toke Date (dd/mm/yyy) -->
+    <!-- Item Toke Date (dd/mm/yyy) -->
     <TextView
         android:id="@+id/item_toke_date_field"
         style="@style/hit_title"
@@ -82,7 +82,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Thu, Feb 21" />
 
-    <!-- Border Bottom -->
+    <!-- Item Toke Border Bottom -->
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"

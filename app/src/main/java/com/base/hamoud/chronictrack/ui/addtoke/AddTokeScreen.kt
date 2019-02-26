@@ -33,7 +33,7 @@ class AddTokeScreen : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_hit_form_bottom_sheet, container, false)
+        return inflater.inflate(R.layout.screen_add_toke, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -55,14 +55,14 @@ class AddTokeScreen : Fragment() {
 
     private fun prepareDateField() {
         val now: Calendar = Calendar.getInstance()
-        dateInputTextView = view?.findViewById(R.id.date_textview)
+        dateInputTextView = view?.findViewById(R.id.add_toke_date_field)
         date = "${now.get(Calendar.DATE)} / ${now.get(Calendar.MONTH)} / ${now.get(Calendar.YEAR)}"
         dateInputTextView?.text = date
     }
 
     private fun prepareTimeField() {
         val now: Calendar = Calendar.getInstance()
-        timeInputTextView = view?.findViewById(R.id.time_textview)
+        timeInputTextView = view?.findViewById(R.id.add_toke_time_field)
         val hours: String = now.get(Calendar.HOUR_OF_DAY).toString()
         val minuteCalendar = now.get(Calendar.MINUTE)
         val minutes: String = if (minuteCalendar < 10) {
@@ -81,12 +81,12 @@ class AddTokeScreen : Fragment() {
     }
 
     private fun prepareStrainField() {
-        strainEditText = view?.findViewById(R.id.strain_text)
+        strainEditText = view?.findViewById(R.id.add_toke_strain_name_field)
     }
 
     private fun prepareSaveBtn() {
         // prepare save button
-        saveButton = view?.findViewById(R.id.save_button)
+        saveButton = view?.findViewById(R.id.add_toke_save_button)
         saveButton?.setOnClickListener {
             strainSelection = strainEditText?.text.toString()
             val hit = Hit(
@@ -105,7 +105,7 @@ class AddTokeScreen : Fragment() {
     }
 
     private fun prepareMethodSpinner(view: View) {
-        val methodSpinner: Spinner = view.findViewById(R.id.ingestion_method_spinner)
+        val methodSpinner: Spinner = view.findViewById(R.id.add_toke_tool_used_dropdown)
         ArrayAdapter.createFromResource(
               context!!,
               R.array.ingestion_method,
@@ -126,7 +126,7 @@ class AddTokeScreen : Fragment() {
     }
 
     private fun prepareTypeSpinner(view: View) {
-        val typeSpinner: Spinner = view.findViewById(R.id.type_spinner)
+        val typeSpinner: Spinner = view.findViewById(R.id.add_toke_type_dropdown)
         ArrayAdapter.createFromResource(
               context!!,
               R.array.chronic_type,
