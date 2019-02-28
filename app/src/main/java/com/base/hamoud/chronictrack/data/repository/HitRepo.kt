@@ -3,6 +3,7 @@ package com.base.hamoud.chronictrack.data.repository
 import androidx.annotation.WorkerThread
 import com.base.hamoud.chronictrack.data.dao.HitDao
 import com.base.hamoud.chronictrack.data.entity.Hit
+import java.time.OffsetDateTime
 import java.util.*
 
 class HitRepo(private val hitDao: HitDao) {
@@ -21,15 +22,16 @@ class HitRepo(private val hitDao: HitDao) {
     @WorkerThread
     suspend fun getTodaysHits(userId: String): List<Hit> {
         // FIXME
-        val today = Calendar.getInstance().get(Calendar.DATE)
-        val thisMonth = Calendar.getInstance().get(Calendar.MONTH)
-        val thisYear = Calendar.getInstance().get(Calendar.YEAR)
-        val date = "$today / $thisMonth / $thisYear"
-        return getHitsByUserForDate(userId, date)
+        val today = OffsetDateTime.now()
+
+        val todaysHits: List<Hit> = getAllHits().filter {
+            (it.hitDate.dayOfYear == today.dayOfYear && it.hitDate.year == today.year)
+        }
+        return todaysHits
     }
 
     @WorkerThread
-    suspend fun getHitsByUserForDate(user_id: String, date: String): List<Hit> {
+    suspend fun getHitsByUserForDate(user_id: String, date: OffsetDateTime): List<Hit> {
         return hitDao.getHitByUserIdAndDate(user_id, date)
     }
 

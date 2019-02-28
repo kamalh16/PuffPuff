@@ -11,6 +11,7 @@ import com.base.hamoud.chronictrack.R
 import com.base.hamoud.chronictrack.data.entity.Hit
 import com.base.hamoud.chronictrack.ui.main.MainActivity
 import com.base.hamoud.chronictrack.ui.tokelog.TokeLogScreen
+import java.time.OffsetDateTime
 import java.util.*
 
 class AddTokeScreen : Fragment() {
@@ -91,8 +92,6 @@ class AddTokeScreen : Fragment() {
             strainSelection = strainEditText?.text.toString()
             val hit = Hit(
                   userId = "Chron",
-                  hitTime = time,
-                  hitDate = date,
                   hitType = typeSelection,
                   strain = strainSelection,
                   toolUsed = methodSelection

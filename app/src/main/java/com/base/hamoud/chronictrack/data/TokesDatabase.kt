@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import com.base.hamoud.chronictrack.data.converter.OffsetDateTimeConverter
 import com.base.hamoud.chronictrack.data.dao.HitDao
 import com.base.hamoud.chronictrack.data.dao.UserDao
 import com.base.hamoud.chronictrack.data.entity.Hit
@@ -15,6 +17,7 @@ import com.base.hamoud.chronictrack.data.entity.User
         Hit::class],
     version = 2
 )
+@TypeConverters(OffsetDateTimeConverter::class)
 abstract class TokesDatabase : RoomDatabase() {
 
     abstract fun userDao(): UserDao

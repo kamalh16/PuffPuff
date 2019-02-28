@@ -3,6 +3,7 @@ package com.base.hamoud.chronictrack.data.dao
 import androidx.room.Dao
 import androidx.room.Query
 import com.base.hamoud.chronictrack.data.entity.Hit
+import java.time.OffsetDateTime
 
 @Dao
 abstract class HitDao : BaseDao<Hit> {
@@ -29,8 +30,8 @@ abstract class HitDao : BaseDao<Hit> {
      *
      * @return List of hits by [userId] and [date]
      */
-    @Query("SELECT * FROM HIT_TABLE WHERE user_id = :userId AND hit_date = :date")
-    abstract suspend fun getHitByUserIdAndDate(userId: String, date: String): List<Hit>
+    @Query("SELECT * FROM HIT_TABLE WHERE user_id = :userId AND hit_date = :date ORDER BY datetime(hit_date)")
+    abstract suspend fun getHitByUserIdAndDate(userId: String, date: OffsetDateTime): List<Hit>
 
     /**
      * Delete all hits in the table by the user with the [userId]
