@@ -24,9 +24,7 @@ data class Hit(
     @PrimaryKey @ColumnInfo(name = "id") val id: String = UUID.randomUUID().toString(),
     @ColumnInfo(name = "user_id") var userId: String,
     @TypeConverters(OffsetDateTimeConverter::class)
-    @ColumnInfo(name = "hit_time") val hitTime: OffsetDateTime = OffsetDateTime.now(),
-    @TypeConverters(OffsetDateTimeConverter::class)
-    @ColumnInfo(name = "hit_date") val hitDate: OffsetDateTime = OffsetDateTime.now(),
+    @ColumnInfo(name = "hit_date_time") val hitDate: OffsetDateTime = OffsetDateTime.now(),
     @ColumnInfo(name = "weed_type") val hitType: String = arrayOf(
                 "Sativa",
                 "Indica",
