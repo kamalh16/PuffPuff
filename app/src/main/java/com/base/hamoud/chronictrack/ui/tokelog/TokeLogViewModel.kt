@@ -29,7 +29,7 @@ class TokeLogViewModel(application: Application) : BaseAndroidViewModel(applicat
 
     fun refreshHitsList() {
         ioScope.launch {
-            val hits = hitRepo.getAllHits()
+            val hits = hitRepo.getAllTokes()
             userHitsListLive.postValue(hits)
         }
     }

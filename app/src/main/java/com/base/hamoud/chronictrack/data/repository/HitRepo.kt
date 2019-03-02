@@ -14,33 +14,33 @@ class HitRepo(private val hitDao: HitDao) {
     }
 
     @WorkerThread
-    suspend fun getAllHits(): MutableList<Hit> {
-        return hitDao.getAllHits().asReversed()
+    suspend fun getAllTokes(): MutableList<Hit> {
+        return hitDao.getAllTokes().asReversed()
     }
 
     @WorkerThread
-    suspend fun getTodaysHits(userId: String): List<Hit> {
+    suspend fun getTodaysTokes(userId: String): List<Hit> {
         // FIXME
         val today = Calendar.getInstance().get(Calendar.DATE)
         val thisMonth = Calendar.getInstance().get(Calendar.MONTH)
         val thisYear = Calendar.getInstance().get(Calendar.YEAR)
         val date = "$today / $thisMonth / $thisYear"
-        return getHitsByUserForDate(userId, date)
+        return getTokesByUserForDate(userId, date)
     }
 
     @WorkerThread
-    suspend fun getHitsByUserForDate(user_id: String, date: String): List<Hit> {
-        return hitDao.getHitByUserIdAndDate(user_id, date)
+    suspend fun getTokesByUserForDate(user_id: String, date: String): List<Hit> {
+        return hitDao.getTokeByUserIdAndDate(user_id, date)
     }
 
     @WorkerThread
-    suspend fun getAllHitsByUser(userId: String): List<Hit> {
-        return hitDao.getHitByUserId(userId)
+    suspend fun getAllTokesByUser(userId: String): List<Hit> {
+        return hitDao.getTokeByUserId(userId)
     }
 
     @WorkerThread
-    suspend fun deleteAllHitsByUser(userId: String) {
-        hitDao.deleteHitByUserId(userId)
+    suspend fun deleteAllTokesByUser(userId: String) {
+        hitDao.deleteTokeByUserId(userId)
     }
 
     @WorkerThread
@@ -49,7 +49,7 @@ class HitRepo(private val hitDao: HitDao) {
     }
 
     @WorkerThread
-    fun deleteHit(hit: Hit) {
+    fun deleteToke(hit: Hit) {
         hitDao.delete(hit)
     }
 }

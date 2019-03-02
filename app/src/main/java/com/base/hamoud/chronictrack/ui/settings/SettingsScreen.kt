@@ -19,7 +19,7 @@ class SettingsScreen : Fragment() {
     private var settingsRvList: RecyclerView? = null
     private lateinit var settingsListAdapter: SettingsListAdapter
 
-    private val settingsOptionsList =
+    private val settingsItemList =
           arrayListOf(
                 SettingsItem.DARK_MODE,
                 SettingsItem.CLEAR_DATA,
@@ -41,10 +41,16 @@ class SettingsScreen : Fragment() {
         // prepare ui
         prepareSettingsRvList()
 
-        // trigger
-
     }
 
+    /**
+     * Initialize and prepare [settingsRvList] and then
+     * initialize and attach [settingsListAdapter] to it. Finally pass in
+     * the constructed [settingsItemList] to the adapter to set the list items.
+     *
+     * The [viewModel] is passed into [settingsListAdapter] in order to persist
+     * changes to the user's settings and affect background changes.
+     */
     private fun prepareSettingsRvList() {
         settingsRvList = view?.findViewById(R.id.settings_screen_options_recyclerview)
         settingsRvList?.let {
@@ -54,7 +60,7 @@ class SettingsScreen : Fragment() {
             // attach adapter
             settingsListAdapter = SettingsListAdapter(viewModel)
             it.adapter = settingsListAdapter
-            settingsListAdapter.setData(settingsOptionsList)
+            settingsListAdapter.setData(settingsItemList)
         }
 
     }

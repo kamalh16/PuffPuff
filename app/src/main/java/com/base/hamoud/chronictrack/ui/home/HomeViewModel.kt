@@ -28,7 +28,7 @@ class HomeViewModel(application: Application) : BaseAndroidViewModel(application
 
     fun refreshHitsTotalCount() {
         ioScope.launch {
-            val hitCount = hitRepo.getAllHits().count()
+            val hitCount = hitRepo.getAllTokes().count()
             userHitsCount.postValue(hitCount)
         }
     }
