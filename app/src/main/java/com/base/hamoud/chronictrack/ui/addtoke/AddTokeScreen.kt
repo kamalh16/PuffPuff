@@ -91,9 +91,9 @@ class AddTokeScreen : Fragment() {
             strainSelection = strainEditText?.text.toString()
             val hit = Hit(
                   userId = "Chron",
-                  hitTime = time,
-                  hitDate = date,
-                  hitType = typeSelection,
+                  tokeTime = time,
+                  tokeDate = date,
+                  tokeType = typeSelection,
                   strain = strainSelection,
                   toolUsed = methodSelection
             )
