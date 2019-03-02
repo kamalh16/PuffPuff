@@ -6,22 +6,22 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.base.hamoud.chronictrack.data.converter.OffsetDateTimeConverter
-import com.base.hamoud.chronictrack.data.dao.HitDao
+import com.base.hamoud.chronictrack.data.dao.TokeDao
 import com.base.hamoud.chronictrack.data.dao.UserDao
-import com.base.hamoud.chronictrack.data.entity.Hit
 import com.base.hamoud.chronictrack.data.entity.User
+import com.base.hamoud.chronictrack.data.entity.Toke
 
 @Database(
-    entities = [
-        User::class,
-        Hit::class],
-    version = 2
+      entities = [
+          User::class,
+          Toke::class],
+      version = 3
 )
 @TypeConverters(OffsetDateTimeConverter::class)
 abstract class TokesDatabase : RoomDatabase() {
 
     abstract fun userDao(): UserDao
-    abstract fun hitDao(): HitDao
+    abstract fun tokeDao(): TokeDao
 
     companion object {
 
@@ -32,12 +32,13 @@ abstract class TokesDatabase : RoomDatabase() {
             if (INSTANCE == null) {
                 synchronized(TokesDatabase::class.java) {
                     if (INSTANCE == null) {
-                        INSTANCE = Room.databaseBuilder(
-                            context.applicationContext,
-                            TokesDatabase::class.java, "Tokes_database"
-                        )
-                            .fallbackToDestructiveMigration()
-                            .build()
+                        INSTANCE =
+                              Room.databaseBuilder(
+                                    context.applicationContext,
+                                    TokesDatabase::class.java,
+                                    "Tokes_database")
+                                    .fallbackToDestructiveMigration()
+                                    .build()
                     }
                 }
             }

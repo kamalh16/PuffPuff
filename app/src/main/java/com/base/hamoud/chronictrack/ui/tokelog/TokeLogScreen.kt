@@ -38,15 +38,15 @@ class TokeLogScreen : Fragment() {
         viewModel = ViewModelProviders.of(this).get(TokeLogViewModel::class.java)
 
         // prepare ui
-        prepareHitsRecyclerView()
-        prepareHitBtn()
+        prepareTokeRvList()
+        prepareAddTokeBtn()
 
         // observe
         observeOnUserLoggedInLive()
-        observeOnGetUserHitsListLive()
+        observeOnGetUserTokeListLive()
 
         // trigger
-        viewModel.refreshHitsList()
+        viewModel.refreshTokeList()
     }
 
     private fun observeOnUserLoggedInLive() {
@@ -58,15 +58,15 @@ class TokeLogScreen : Fragment() {
         })
     }
 
-    private fun observeOnGetUserHitsListLive() {
-        viewModel.userHitsListLive.observe(this, Observer {
+    private fun observeOnGetUserTokeListLive() {
+        viewModel.userTokeListLive.observe(this, Observer {
             if (it != null) {
-                adapter.setHits(it)
+                adapter.setTokeList(it)
             }
         })
     }
 
-    private fun prepareHitsRecyclerView() {
+    private fun prepareTokeRvList() {
         hitListRecyclerView = view?.findViewById(R.id.toke_log_recycler_view)
         adapter = TokeLogListAdapter(context!!)
 
@@ -75,9 +75,9 @@ class TokeLogScreen : Fragment() {
         hitListRecyclerView?.layoutManager = LinearLayoutManager(context) as RecyclerView.LayoutManager?
     }
 
-    private fun prepareHitBtn() {
-        val hitBtn = view?.findViewById<FloatingActionButton>(R.id.toke_log_add_hit_btn)
-        hitBtn?.setOnClickListener {
+    private fun prepareAddTokeBtn() {
+        val addTokeBtn = view?.findViewById<FloatingActionButton>(R.id.toke_log_add_toke_btn)
+        addTokeBtn?.setOnClickListener {
             val addTokeScreen = AddTokeScreen.newInstance()
             (activity as MainActivity).goToScreen(
                   screen = addTokeScreen,

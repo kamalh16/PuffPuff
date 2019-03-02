@@ -8,10 +8,9 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.base.hamoud.chronictrack.R
-import com.base.hamoud.chronictrack.data.entity.Hit
+import com.base.hamoud.chronictrack.data.entity.Toke
 import com.base.hamoud.chronictrack.ui.main.MainActivity
 import com.base.hamoud.chronictrack.ui.tokelog.TokeLogScreen
-import java.time.OffsetDateTime
 import java.util.*
 
 class AddTokeScreen : Fragment() {
@@ -90,13 +89,13 @@ class AddTokeScreen : Fragment() {
         saveButton = view?.findViewById(R.id.add_toke_save_button)
         saveButton?.setOnClickListener {
             strainSelection = strainEditText?.text.toString()
-            val hit = Hit(
+            val hit = Toke(
                   userId = "Chron",
-                  hitType = typeSelection,
+                  tokeType = typeSelection,
                   strain = strainSelection,
                   toolUsed = methodSelection
             )
-            viewModel.insertHit(hit)
+            viewModel.insertToke(hit)
             (activity as MainActivity).goToScreen(
                   screen = TokeLogScreen.newInstance(),
                   shouldAddToBackStack = false)

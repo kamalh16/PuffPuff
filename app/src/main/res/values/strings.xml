@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">ChronicTrack</string>
+    <string name="app_name">ChronTrack</string>
 
     <string name="label_home">Home</string>
     <string name="label_toke_log" tools:ignore="Typos">Toke Log</string>
