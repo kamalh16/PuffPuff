@@ -41,4 +41,10 @@ abstract class HitDao : BaseDao<Hit> {
     abstract suspend fun deleteHitByUserId(userId: String)
 
 
+    /**
+     * Delete all hits in the table
+     */
+    @Query("DELETE FROM HIT_TABLE")
+    abstract suspend fun deleteAll()
+
 }

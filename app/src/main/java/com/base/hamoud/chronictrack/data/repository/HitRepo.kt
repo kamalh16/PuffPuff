@@ -44,6 +44,11 @@ class HitRepo(private val hitDao: HitDao) {
     }
 
     @WorkerThread
+    suspend fun deleteAllTokes() {
+        hitDao.deleteAll()
+    }
+
+    @WorkerThread
     fun deleteHit(hit: Hit) {
         hitDao.delete(hit)
     }
