@@ -13,10 +13,10 @@ import kotlinx.coroutines.launch
 class TokeLogViewModel(application: Application) : BaseAndroidViewModel(application) {
 
     var userRepo: UserRepo = UserRepo(db.userDao())
-    var tokeRepo: TokeRepo = TokeRepo(db.hitDao())
+    var tokeRepo: TokeRepo = TokeRepo(db.tokeDao())
 
     var loggedInUserLive: MutableLiveData<User> = MutableLiveData()
-    var userHitsListLive: MutableLiveData<MutableList<Toke>> = MutableLiveData()
+    var userTokeListLive: MutableLiveData<MutableList<Toke>> = MutableLiveData()
 
     init {
         getLoggedInUser()
@@ -27,10 +27,10 @@ class TokeLogViewModel(application: Application) : BaseAndroidViewModel(applicat
         parentJob.cancel()
     }
 
-    fun refreshHitsList() {
+    fun refreshTokeList() {
         ioScope.launch {
-            val hits = tokeRepo.getAllTokes()
-            userHitsListLive.postValue(hits)
+            val tokes = tokeRepo.getAllTokes()
+            userTokeListLive.postValue(tokes)
         }
     }
 

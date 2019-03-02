@@ -12,10 +12,10 @@ import kotlinx.coroutines.launch
 class HomeViewModel(application: Application) : BaseAndroidViewModel(application) {
 
     var userRepo: UserRepo = UserRepo(db.userDao())
-    var tokeRepo: TokeRepo = TokeRepo(db.hitDao())
+    var tokeRepo: TokeRepo = TokeRepo(db.tokeDao())
 
     var loggedInUserLive: MutableLiveData<User> = MutableLiveData()
-    var userHitsCount: MutableLiveData<Int> = MutableLiveData()
+    var userTokesCountLive: MutableLiveData<Int> = MutableLiveData()
 
     init {
         getLoggedInUser()
@@ -26,10 +26,10 @@ class HomeViewModel(application: Application) : BaseAndroidViewModel(application
         parentJob.cancel()
     }
 
-    fun refreshHitsTotalCount() {
+    fun refreshTokesTotalCount() {
         ioScope.launch {
             val hitCount = tokeRepo.getAllTokes().count()
-            userHitsCount.postValue(hitCount)
+            userTokesCountLive.postValue(hitCount)
         }
     }
 

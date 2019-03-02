@@ -7,7 +7,7 @@ import kotlinx.coroutines.launch
 
 class SettingsViewModel(application: Application) : BaseAndroidViewModel(application) {
 
-    var tokeRepo: TokeRepo = TokeRepo(db.hitDao())
+    var tokeRepo: TokeRepo = TokeRepo(db.tokeDao())
 
     override fun onCleared() {
         super.onCleared()

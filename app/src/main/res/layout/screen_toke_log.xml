@@ -36,7 +36,7 @@
 
     <!-- Add Toke Floating Action Bottom -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/toke_log_add_hit_btn"
+        android:id="@+id/toke_log_add_toke_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"

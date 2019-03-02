@@ -18,7 +18,7 @@ import com.base.hamoud.chronictrack.data.entity.User
 abstract class TokesDatabase : RoomDatabase() {
 
     abstract fun userDao(): UserDao
-    abstract fun hitDao(): TokeDao
+    abstract fun tokeDao(): TokeDao
 
     companion object {
 

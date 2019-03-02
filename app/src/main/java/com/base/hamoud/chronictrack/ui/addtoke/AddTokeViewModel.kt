@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 class AddTokeViewModel(application: Application) : BaseAndroidViewModel(application) {
 
     var userRepo: UserRepo = UserRepo(db.userDao())
-    var tokeRepo: TokeRepo = TokeRepo(db.hitDao())
+    var tokeRepo: TokeRepo = TokeRepo(db.tokeDao())
 
     var loggedInUserLive: MutableLiveData<User> = MutableLiveData()
 

@@ -17,7 +17,7 @@ class HomeScreen : Fragment() {
     private var loggedInUser: User? = null
     private lateinit var viewModel: HomeViewModel
 
-    private var hitCountTextView: TextView? = null
+    private var tokeCountView: TextView? = null
 
     companion object {
         fun newInstance(): HomeScreen = HomeScreen()
@@ -32,14 +32,14 @@ class HomeScreen : Fragment() {
         viewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
 
         // prepare ui
-        prepareTodaysHitCountView()
+        prepareTodaysTokeCountView()
 
         // observe
         observeOnUserLoggedInLive()
-        observeOnGetUserHitsCountLive()
+        observeOnGetUserTokesCountLive()
 
         // trigger
-        viewModel.refreshHitsTotalCount()
+        viewModel.refreshTokesTotalCount()
     }
 
     private fun observeOnUserLoggedInLive() {
@@ -51,16 +51,16 @@ class HomeScreen : Fragment() {
         })
     }
 
-    private fun observeOnGetUserHitsCountLive() {
-        viewModel.userHitsCount.observe(this, Observer {
+    private fun observeOnGetUserTokesCountLive() {
+        viewModel.userTokesCountLive.observe(this, Observer {
             if (it != null) {
-                hitCountTextView?.text = it.toString()
+                tokeCountView?.text = it.toString()
             }
         })
     }
 
-    private fun prepareTodaysHitCountView() {
-        hitCountTextView = view?.findViewById(R.id.home_screen_toke_count_label)
+    private fun prepareTodaysTokeCountView() {
+        tokeCountView = view?.findViewById(R.id.home_screen_toke_count_label)
     }
 
 }
