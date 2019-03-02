@@ -10,10 +10,10 @@ import com.base.hamoud.chronictrack.data.entity.Toke
 import com.base.hamoud.chronictrack.data.entity.User
 
 @Database(
-    entities = [
-        User::class,
-        Toke::class],
-    version = 2
+      entities = [
+          User::class,
+          Toke::class],
+      version = 3
 )
 abstract class TokesDatabase : RoomDatabase() {
 
@@ -29,12 +29,13 @@ abstract class TokesDatabase : RoomDatabase() {
             if (INSTANCE == null) {
                 synchronized(TokesDatabase::class.java) {
                     if (INSTANCE == null) {
-                        INSTANCE = Room.databaseBuilder(
-                            context.applicationContext,
-                            TokesDatabase::class.java, "Tokes_database"
-                        )
-                            .fallbackToDestructiveMigration()
-                            .build()
+                        INSTANCE =
+                              Room.databaseBuilder(
+                                    context.applicationContext,
+                                    TokesDatabase::class.java,
+                                    "Tokes_database")
+                                    .fallbackToDestructiveMigration()
+                                    .build()
                     }
                 }
             }
