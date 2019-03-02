@@ -7,14 +7,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.base.hamoud.chronictrack.R
-import com.base.hamoud.chronictrack.data.entity.Hit
+import com.base.hamoud.chronictrack.data.entity.Toke
 
 
 class TokeLogListAdapter internal constructor(
       var context: Context) : RecyclerView.Adapter<TokeLogListAdapter.HitViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
-    private var hits = mutableListOf<Hit>()// cached copy of hits
+    private var hits = mutableListOf<Toke>()// cached copy of hits
 
     inner class HitViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val hitTimeTV: TextView = itemView.findViewById(R.id.item_toke_time_field)
@@ -42,8 +42,8 @@ class TokeLogListAdapter internal constructor(
         holder.toolUsedTV.text = current.toolUsed
     }
 
-    internal fun setHits(hits: MutableList<Hit>) {
-        this.hits = hits
+    internal fun setHits(tokes: MutableList<Toke>) {
+        this.hits = tokes
         notifyDataSetChanged()
     }
 

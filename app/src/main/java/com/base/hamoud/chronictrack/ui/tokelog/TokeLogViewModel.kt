@@ -3,7 +3,7 @@ package com.base.hamoud.chronictrack.ui.tokelog
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.base.hamoud.chronictrack.BaseAndroidViewModel
-import com.base.hamoud.chronictrack.data.entity.Hit
+import com.base.hamoud.chronictrack.data.entity.Toke
 import com.base.hamoud.chronictrack.data.entity.User
 import com.base.hamoud.chronictrack.data.repository.HitRepo
 import com.base.hamoud.chronictrack.data.repository.UserRepo
@@ -16,7 +16,7 @@ class TokeLogViewModel(application: Application) : BaseAndroidViewModel(applicat
     var hitRepo: HitRepo = HitRepo(db.hitDao())
 
     var loggedInUserLive: MutableLiveData<User> = MutableLiveData()
-    var userHitsListLive: MutableLiveData<MutableList<Hit>> = MutableLiveData()
+    var userHitsListLive: MutableLiveData<MutableList<Toke>> = MutableLiveData()
 
     init {
         getLoggedInUser()

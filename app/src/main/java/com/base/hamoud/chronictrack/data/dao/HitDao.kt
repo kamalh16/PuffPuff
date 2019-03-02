@@ -2,19 +2,19 @@ package com.base.hamoud.chronictrack.data.dao
 
 import androidx.room.Dao
 import androidx.room.Query
-import com.base.hamoud.chronictrack.data.entity.Hit
+import com.base.hamoud.chronictrack.data.entity.Toke
 
 @Dao
-abstract class HitDao : BaseDao<Hit> {
+abstract class HitDao : BaseDao<Toke> {
 
     /**
-     * Get Hit by [userId]
+     * Get Toke by [userId]
      *
      * @param userId to look for
      * @return list of hits in the table by that user
      */
     @Query("SELECT * FROM HIT_TABLE WHERE user_id = :userId")
-    abstract suspend fun getTokeByUserId(userId: String): List<Hit>
+    abstract suspend fun getTokeByUserId(userId: String): List<Toke>
 
     /**
      * Get all Hits in table db
@@ -22,7 +22,7 @@ abstract class HitDao : BaseDao<Hit> {
      * @return List of hits in db
      */
     @Query("SELECT * FROM HIT_TABLE")
-    abstract suspend fun getAllTokes(): MutableList<Hit>
+    abstract suspend fun getAllTokes(): MutableList<Toke>
 
     /**
      * Get all hits by [userId] for specific [date] dd-mm-yyyy
@@ -30,7 +30,7 @@ abstract class HitDao : BaseDao<Hit> {
      * @return List of hits by [userId] and [date]
      */
     @Query("SELECT * FROM HIT_TABLE WHERE user_id = :userId AND hit_date = :date")
-    abstract suspend fun getTokeByUserIdAndDate(userId: String, date: String): List<Hit>
+    abstract suspend fun getTokeByUserIdAndDate(userId: String, date: String): List<Toke>
 
     /**
      * Delete all hits in the table by the user with the [userId]

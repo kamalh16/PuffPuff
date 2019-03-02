@@ -6,13 +6,13 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.base.hamoud.chronictrack.data.dao.HitDao
 import com.base.hamoud.chronictrack.data.dao.UserDao
-import com.base.hamoud.chronictrack.data.entity.Hit
+import com.base.hamoud.chronictrack.data.entity.Toke
 import com.base.hamoud.chronictrack.data.entity.User
 
 @Database(
     entities = [
         User::class,
-        Hit::class],
+        Toke::class],
     version = 2
 )
 abstract class TokesDatabase : RoomDatabase() {

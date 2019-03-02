@@ -3,7 +3,7 @@ package com.base.hamoud.chronictrack.ui.addtoke
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.base.hamoud.chronictrack.BaseAndroidViewModel
-import com.base.hamoud.chronictrack.data.entity.Hit
+import com.base.hamoud.chronictrack.data.entity.Toke
 import com.base.hamoud.chronictrack.data.entity.User
 import com.base.hamoud.chronictrack.data.repository.HitRepo
 import com.base.hamoud.chronictrack.data.repository.UserRepo
@@ -26,9 +26,9 @@ class AddTokeViewModel(application: Application) : BaseAndroidViewModel(applicat
         parentJob.cancel()
     }
 
-    fun insertHit(hit: Hit) = ioScope.launch {
-        hit.userId = loggedInUserLive.value?.id!!
-        hitRepo.insert(hit)
+    fun insertHit(toke: Toke) = ioScope.launch {
+        toke.userId = loggedInUserLive.value?.id!!
+        hitRepo.insert(toke)
     }
 
     private fun getLoggedInUser() {

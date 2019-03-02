@@ -18,7 +18,7 @@ import java.util.*
           Index(value = ["toke_date"])
       ]
 )
-data class Hit(
+data class Toke(
       @PrimaryKey @ColumnInfo(name = "id") val id: String = UUID.randomUUID().toString(),
       @ColumnInfo(name = "user_id") var userId: String,
       @ColumnInfo(name = "toke_time") val tokeTime: String = Date().time.toString(),
