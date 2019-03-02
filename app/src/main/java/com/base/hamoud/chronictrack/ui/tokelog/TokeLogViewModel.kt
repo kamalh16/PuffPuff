@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.base.hamoud.chronictrack.BaseAndroidViewModel
 import com.base.hamoud.chronictrack.data.entity.Toke
 import com.base.hamoud.chronictrack.data.entity.User
-import com.base.hamoud.chronictrack.data.repository.HitRepo
+import com.base.hamoud.chronictrack.data.repository.TokeRepo
 import com.base.hamoud.chronictrack.data.repository.UserRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 class TokeLogViewModel(application: Application) : BaseAndroidViewModel(application) {
 
     var userRepo: UserRepo = UserRepo(db.userDao())
-    var hitRepo: HitRepo = HitRepo(db.hitDao())
+    var tokeRepo: TokeRepo = TokeRepo(db.hitDao())
 
     var loggedInUserLive: MutableLiveData<User> = MutableLiveData()
     var userHitsListLive: MutableLiveData<MutableList<Toke>> = MutableLiveData()
@@ -29,7 +29,7 @@ class TokeLogViewModel(application: Application) : BaseAndroidViewModel(applicat
 
     fun refreshHitsList() {
         ioScope.launch {
-            val hits = hitRepo.getAllTokes()
+            val hits = tokeRepo.getAllTokes()
             userHitsListLive.postValue(hits)
         }
     }

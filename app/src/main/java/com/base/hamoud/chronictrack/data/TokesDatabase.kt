@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.base.hamoud.chronictrack.data.dao.HitDao
+import com.base.hamoud.chronictrack.data.dao.TokeDao
 import com.base.hamoud.chronictrack.data.dao.UserDao
 import com.base.hamoud.chronictrack.data.entity.Toke
 import com.base.hamoud.chronictrack.data.entity.User
@@ -18,7 +18,7 @@ import com.base.hamoud.chronictrack.data.entity.User
 abstract class TokesDatabase : RoomDatabase() {
 
     abstract fun userDao(): UserDao
-    abstract fun hitDao(): HitDao
+    abstract fun hitDao(): TokeDao
 
     companion object {
 

@@ -1,21 +1,21 @@
 package com.base.hamoud.chronictrack.data.repository
 
 import androidx.annotation.WorkerThread
-import com.base.hamoud.chronictrack.data.dao.HitDao
+import com.base.hamoud.chronictrack.data.dao.TokeDao
 import com.base.hamoud.chronictrack.data.entity.Toke
 import java.util.*
 
-class HitRepo(private val hitDao: HitDao) {
+class TokeRepo(private val tokeDao: TokeDao) {
 
 
     @WorkerThread
     fun insert(toke: Toke): Long {
-        return hitDao.insert(toke)
+        return tokeDao.insert(toke)
     }
 
     @WorkerThread
     suspend fun getAllTokes(): MutableList<Toke> {
-        return hitDao.getAllTokes().asReversed()
+        return tokeDao.getAllTokes().asReversed()
     }
 
     @WorkerThread
@@ -30,26 +30,26 @@ class HitRepo(private val hitDao: HitDao) {
 
     @WorkerThread
     suspend fun getTokesByUserForDate(user_id: String, date: String): List<Toke> {
-        return hitDao.getTokeByUserIdAndDate(user_id, date)
+        return tokeDao.getTokeByUserIdAndDate(user_id, date)
     }
 
     @WorkerThread
     suspend fun getAllTokesByUser(userId: String): List<Toke> {
-        return hitDao.getTokeByUserId(userId)
+        return tokeDao.getTokeByUserId(userId)
     }
 
     @WorkerThread
     suspend fun deleteAllTokesByUser(userId: String) {
-        hitDao.deleteTokeByUserId(userId)
+        tokeDao.deleteTokeByUserId(userId)
     }
 
     @WorkerThread
     suspend fun deleteAllTokes() {
-        hitDao.deleteAll()
+        tokeDao.deleteAll()
     }
 
     @WorkerThread
     fun deleteToke(toke: Toke) {
-        hitDao.delete(toke)
+        tokeDao.delete(toke)
     }
 }
