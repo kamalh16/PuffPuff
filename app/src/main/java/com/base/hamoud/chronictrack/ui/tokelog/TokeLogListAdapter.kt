@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.base.hamoud.chronictrack.R
 import com.base.hamoud.chronictrack.data.entity.Toke
+import java.time.format.DateTimeFormatter
 
 
 class TokeLogListAdapter internal constructor(context: Context) :
@@ -31,8 +32,8 @@ class TokeLogListAdapter internal constructor(context: Context) :
 
     override fun onBindViewHolder(holder: HitViewHolder, position: Int) {
         val current = tokeList[position]
-        holder.tokeTimeView.text = current.tokeTime
-        holder.tokeDateView.text = current.tokeDate
+        holder.tokeTimeView.text = current.tokeDate.format(DateTimeFormatter.ISO_LOCAL_TIME)
+        holder.tokeDateView.text = current.tokeDate.format(DateTimeFormatter.ISO_DATE)
         holder.chronicTypeView.text = current.tokeType
         holder.chronicStrainView.text = current.strain
         holder.toolUsedView.text = current.toolUsed

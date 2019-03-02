@@ -26,7 +26,7 @@ class AddTokeViewModel(application: Application) : BaseAndroidViewModel(applicat
         parentJob.cancel()
     }
 
-    fun insertHit(toke: Toke) = ioScope.launch {
+    fun insertToke(toke: Toke) = ioScope.launch {
         toke.userId = loggedInUserLive.value?.id!!
         tokeRepo.insert(toke)
     }

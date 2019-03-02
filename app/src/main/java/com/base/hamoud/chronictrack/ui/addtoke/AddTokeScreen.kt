@@ -91,13 +91,11 @@ class AddTokeScreen : Fragment() {
             strainSelection = strainEditText?.text.toString()
             val hit = Toke(
                   userId = "Chron",
-                  tokeTime = time,
-                  tokeDate = date,
                   tokeType = typeSelection,
                   strain = strainSelection,
                   toolUsed = methodSelection
             )
-            viewModel.insertHit(hit)
+            viewModel.insertToke(hit)
             (activity as MainActivity).goToScreen(
                   screen = TokeLogScreen.newInstance(),
                   shouldAddToBackStack = false)

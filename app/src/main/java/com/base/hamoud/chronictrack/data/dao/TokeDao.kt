@@ -3,6 +3,7 @@ package com.base.hamoud.chronictrack.data.dao
 import androidx.room.Dao
 import androidx.room.Query
 import com.base.hamoud.chronictrack.data.entity.Toke
+import java.time.OffsetDateTime
 
 @Dao
 abstract class TokeDao : BaseDao<Toke> {
@@ -25,12 +26,12 @@ abstract class TokeDao : BaseDao<Toke> {
     abstract suspend fun getAllTokes(): MutableList<Toke>
 
     /**
-     * Get all [Toke]s by [userId] for specific [date] dd-mm-yyyy
+     * Get all hits by [userId] for specific [date] dd-mm-yyyy
      *
      * @return List of hits by [userId] and [date]
      */
-    @Query("SELECT * FROM TOKE_TABLE WHERE user_id = :userId AND toke_date = :date")
-    abstract suspend fun getTokeByUserIdAndDate(userId: String, date: String): List<Toke>
+    @Query("SELECT * FROM TOKE_TABLE WHERE user_id = :userId AND toke_date_time = :date ORDER BY datetime(toke_date_time)")
+    abstract suspend fun getTokeByUserIdAndDate(userId: String, date: OffsetDateTime): List<Toke>
 
     /**
      * Delete all [Toke]s in the table by the user with the [userId]
