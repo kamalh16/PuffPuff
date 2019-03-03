@@ -16,7 +16,7 @@ class TokeLogViewModel(application: Application) : BaseAndroidViewModel(applicat
     var tokeRepo: TokeRepo = TokeRepo(db.tokeDao())
 
     var loggedInUserLive: MutableLiveData<User> = MutableLiveData()
-    var userTokeListLive: MutableLiveData<MutableList<Toke>> = MutableLiveData()
+    var userTokeListLive: MutableLiveData<List<Toke>> = MutableLiveData()
 
     init {
         getLoggedInUser()
@@ -29,7 +29,7 @@ class TokeLogViewModel(application: Application) : BaseAndroidViewModel(applicat
 
     fun refreshTokeList() {
         ioScope.launch {
-            val tokes = tokeRepo.getAllTokes()
+            val tokes = tokeRepo.getTodaysTokes()
             userTokeListLive.postValue(tokes)
         }
     }
