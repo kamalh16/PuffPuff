@@ -1,6 +1,6 @@
-package com.base.hamoud.chronictrack
+package com.base.hamoud.chronictrack.ui.main
 
-object BottomNavScreen {
+object MainNavScreen {
 
     const val HOME_SCREEN = "HomeScreen"
     const val TOKE_LOG_SCREEN = "TokeLogScreen"

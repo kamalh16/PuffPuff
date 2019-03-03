@@ -9,8 +9,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
-import com.base.hamoud.chronictrack.BottomNavScreen
-import com.base.hamoud.chronictrack.BottomNavScreen.rootScreenList
+import com.base.hamoud.chronictrack.ui.main.MainNavScreen.rootScreenList
 import com.base.hamoud.chronictrack.R
 import com.base.hamoud.chronictrack.data.entity.User
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -84,21 +83,21 @@ class MainActivity : AppCompatActivity() {
                 setOnNavigationItemSelectedListener {
                     when (it.itemId) {
                         R.id.home_screen -> {
-                            navController.currentDestination?.label = BottomNavScreen.HOME_SCREEN
+                            navController.currentDestination?.label = MainNavScreen.HOME_SCREEN
                             navController.navigate(
                                   R.id.home_screen, null, rootScreenNavOptions
                             )
                             return@setOnNavigationItemSelectedListener true
                         }
                         R.id.toke_log_screen -> {
-                            navController.currentDestination?.label = BottomNavScreen.TOKE_LOG_SCREEN
+                            navController.currentDestination?.label = MainNavScreen.TOKE_LOG_SCREEN
                             navController.navigate(
                                   R.id.toke_log_screen, null, rootScreenNavOptions
                             )
                             return@setOnNavigationItemSelectedListener true
                         }
                         R.id.settings_screen -> {
-                            navController.currentDestination?.label = BottomNavScreen.SETTINGS_SCREEN
+                            navController.currentDestination?.label = MainNavScreen.SETTINGS_SCREEN
                             navController.navigate(
                                   R.id.settings_screen, null, rootScreenNavOptions
                             )
