@@ -1,26 +1,23 @@
 package com.base.hamoud.chronictrack.ui.addtoke
 
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.base.hamoud.chronictrack.R
 import com.base.hamoud.chronictrack.data.entity.Toke
-import java.util.*
+import java.time.OffsetDateTime
 
 class AddTokeScreen : Fragment() {
 
     private lateinit var viewModel: AddTokeViewModel
-
-    lateinit var date: String
-    lateinit var time: String
-    lateinit var typeSelection: String
-    lateinit var methodSelection: String
-    lateinit var strainSelection: String
 
     private var saveButton: Button? = null
     private var strainEditText: EditText? = null
@@ -33,10 +30,23 @@ class AddTokeScreen : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         viewModel = ViewModelProviders.of(this).get(AddTokeViewModel::class.java)
 
         // prepare ui
         prepareFormView(view)
+        
+        // observe
+        observeDateTimeLiveData(view)
+    }
+
+    private fun observeDateTimeLiveData(view: View) {
+        viewModel.dateTimeLiveData.observe(this, Observer<OffsetDateTime> {
+            dateInputTextView = view.findViewById(R.id.add_toke_date_field)
+            dateInputTextView?.text = viewModel.dateCreator()
+            timeInputTextView = view.findViewById(R.id.add_toke_time_field)
+            timeInputTextView?.text = viewModel.timeCreator()
+        })
     }
 
     private fun prepareFormView(view: View) {
@@ -49,30 +59,32 @@ class AddTokeScreen : Fragment() {
     }
 
     private fun prepareDateField() {
-        val now: Calendar = Calendar.getInstance()
         dateInputTextView = view?.findViewById(R.id.add_toke_date_field)
-        date = "${now.get(Calendar.DATE)} / ${now.get(Calendar.MONTH)} / ${now.get(Calendar.YEAR)}"
-        dateInputTextView?.text = date
+        dateInputTextView?.text = viewModel.dateCreator()
+
+        dateInputTextView?.setOnClickListener {
+            val datePickerDialog = DatePickerDialog(
+                  activity!!.themedContext)
+            datePickerDialog.setOnDateSetListener { view, year, month, dayOfMonth ->
+                viewModel.updateDate(year = year, month = month, dayOfMonth = dayOfMonth)
+            }
+            datePickerDialog.updateDate(viewModel.now.year, viewModel.now.monthValue, viewModel.now.dayOfMonth)
+            datePickerDialog.show()
+        }
     }
 
     private fun prepareTimeField() {
-        val now: Calendar = Calendar.getInstance()
         timeInputTextView = view?.findViewById(R.id.add_toke_time_field)
-        val hours: String = now.get(Calendar.HOUR_OF_DAY).toString()
-        val minuteCalendar = now.get(Calendar.MINUTE)
-        val minutes: String = if (minuteCalendar < 10) {
-            "0$minuteCalendar"
-        } else {
-            minuteCalendar.toString()
+        timeInputTextView?.text = viewModel.timeCreator()
+
+        timeInputTextView?.setOnClickListener {
+            val timePickerDialog = TimePickerDialog(activity!!.themedContext,
+                  TimePickerDialog.OnTimeSetListener(function = { view, hourOfDay, minute ->
+                      viewModel.updateTime(hour = hourOfDay, minute = minute)
+                  }), viewModel.now.hour, viewModel.now.minute, true)
+
+            timePickerDialog.show()
         }
-        val secondsCalendar = now.get(Calendar.SECOND)
-        val seconds: String = if (secondsCalendar < 10) {
-            "0$secondsCalendar"
-        } else {
-            secondsCalendar.toString()
-        }
-        time = "$hours:$minutes:$seconds"
-        timeInputTextView?.text = time
     }
 
     private fun prepareStrainField() {
@@ -83,11 +95,12 @@ class AddTokeScreen : Fragment() {
         // prepare save button
         saveButton = view?.findViewById(R.id.add_toke_save_button)
         saveButton?.setOnClickListener {
-            strainSelection = strainEditText?.text.toString()
+            viewModel.strainSelection = strainEditText?.text.toString()
             val hit = Toke(
-                  tokeType = typeSelection,
-                  strain = strainSelection,
-                  toolUsed = methodSelection
+                  tokeType = viewModel.typeSelection,
+                  strain = viewModel.strainSelection,
+                  tokeDate = viewModel.now,
+                  toolUsed = viewModel.methodSelection
             )
             viewModel.insertToke(hit)
             findNavController().navigate(R.id.toke_log_screen)
@@ -106,11 +119,11 @@ class AddTokeScreen : Fragment() {
         }
         methodSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                methodSelection = parent?.getItemAtPosition(0).toString()
+                viewModel.methodSelection = parent?.getItemAtPosition(0).toString()
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
-                methodSelection = parent?.getItemAtPosition(pos).toString()
+                viewModel.methodSelection = parent?.getItemAtPosition(pos).toString()
             }
         }
     }
@@ -127,11 +140,11 @@ class AddTokeScreen : Fragment() {
         }
         typeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                typeSelection = parent?.getItemAtPosition(0).toString()
+                viewModel.typeSelection = parent?.getItemAtPosition(0).toString()
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
-                typeSelection = parent?.getItemAtPosition(pos).toString()
+                viewModel.typeSelection = parent?.getItemAtPosition(pos).toString()
             }
         }
     }

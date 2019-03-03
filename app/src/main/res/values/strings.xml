@@ -9,10 +9,10 @@
     <string name="label_about">About</string>
 
     <string name="zero">0</string>
-    <string name="today">Today</string>
     <string name="indica">Indica</string>
     <string name="strain_name">Strain Name</string>
     <string name="save">Save</string>
+    <string name="today">Today</string>
 
     <string-array name="chronic_type">
         <item>Indica</item>
