@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
         val prefs = getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE)
         if (prefs.getBoolean(Constants.PREF_IS_DARK_THEME, false)) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            setDarkThemeStatusBarcolor()
+            setDarkThemeStatusBarColor()
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             setLightThemeStatusBarColor()
@@ -143,7 +143,7 @@ class MainActivity : AppCompatActivity() {
      * @see <a href="https://stackoverflow.com/a/45196710/2340813">StackOverFlow source</a>
      */
     @SuppressLint("ResourceType")
-    private fun setDarkThemeStatusBarcolor() {
+    private fun setDarkThemeStatusBarColor() {
         // dark
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
               View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
