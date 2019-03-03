@@ -35,7 +35,7 @@ class AddTokeScreen : Fragment() {
 
         // prepare ui
         prepareFormView(view)
-        
+
         // observe
         observeDateTimeLiveData(view)
     }
