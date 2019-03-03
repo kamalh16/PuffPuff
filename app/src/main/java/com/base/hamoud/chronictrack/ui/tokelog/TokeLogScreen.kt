@@ -7,12 +7,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.base.hamoud.chronictrack.R
 import com.base.hamoud.chronictrack.data.entity.User
-import com.base.hamoud.chronictrack.ui.addtoke.AddTokeScreen
-import com.base.hamoud.chronictrack.ui.main.MainActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import timber.log.Timber
 
@@ -22,12 +21,7 @@ class TokeLogScreen : Fragment() {
     private lateinit var viewModel: TokeLogViewModel
 
     private var hitListRecyclerView: RecyclerView? = null
-
     private lateinit var adapter: TokeLogListAdapter
-
-    companion object {
-        fun newInstance(): TokeLogScreen = TokeLogScreen()
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.screen_toke_log, container, false)
@@ -78,10 +72,7 @@ class TokeLogScreen : Fragment() {
     private fun prepareAddTokeBtn() {
         val addTokeBtn = view?.findViewById<FloatingActionButton>(R.id.toke_log_add_toke_btn)
         addTokeBtn?.setOnClickListener {
-            val addTokeScreen = AddTokeScreen.newInstance()
-            (activity as MainActivity).goToScreen(
-                  screen = addTokeScreen,
-                  shouldAddToBackStack = true)
+            findNavController().navigate(R.id.add_toke_screen)
         }
     }
 

@@ -19,10 +19,6 @@ class HomeScreen : Fragment() {
 
     private var tokeCountView: TextView? = null
 
-    companion object {
-        fun newInstance(): HomeScreen = HomeScreen()
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.screen_home, container, false)
     }

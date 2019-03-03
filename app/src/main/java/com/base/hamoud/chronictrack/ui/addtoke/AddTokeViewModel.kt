@@ -42,7 +42,7 @@ class AddTokeViewModel(application: Application) : BaseAndroidViewModel(applicat
     }
 
     private fun getLoggedInUser() {
-        ioScope.launch(Dispatchers.IO) {
+        ioScope.launch {
             loggedInUserLive.postValue(
                   userRepo.getUserByUsername("Chron")
             )

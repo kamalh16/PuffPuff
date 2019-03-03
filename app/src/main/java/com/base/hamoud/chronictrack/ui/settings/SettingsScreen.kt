@@ -26,10 +26,6 @@ class SettingsScreen : Fragment() {
                 SettingsItem.ABOUT
           )
 
-    companion object {
-        fun newInstance(): SettingsScreen = SettingsScreen()
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.screen_settings, container, false)
     }

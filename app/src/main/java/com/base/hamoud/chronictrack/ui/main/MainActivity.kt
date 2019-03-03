@@ -4,14 +4,14 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavOptions
+import androidx.navigation.findNavController
+import androidx.navigation.ui.NavigationUI
 import com.base.hamoud.chronictrack.R
 import com.base.hamoud.chronictrack.data.entity.User
-import com.base.hamoud.chronictrack.ui.home.HomeScreen
-import com.base.hamoud.chronictrack.ui.settings.SettingsScreen
-import com.base.hamoud.chronictrack.ui.tokelog.TokeLogScreen
+import com.base.hamoud.chronictrack.ui.main.MainNavScreen.rootScreenList
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import timber.log.Timber
 
@@ -21,6 +21,8 @@ class MainActivity : AppCompatActivity() {
     private var loggedInUser: User? = null
     private lateinit var viewModel: MainViewModel
 
+    private var bottomNavigationView: BottomNavigationView? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStatusBarColorToInvertedIcons()
@@ -29,10 +31,26 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
 
         // prepare ui
-        prepareBottomNavigation()
+        prepareBottomNavigationView()
 
         // observe
         observeOnUserLoggedInLive()
+    }
+
+    override fun onSupportNavigateUp() =
+          findNavController(R.id.main_nav_host_fragment).navigateUp()
+
+    override fun onBackPressed() {
+        val navController = findNavController(R.id.main_nav_host_fragment)
+        // handle onBackPressed while on root screens:
+        // - if we're on a root screen finish() (close) the activity
+        // - if we're not on a root screen, pop the back stack
+        val currentDestinationLabel = navController.currentDestination?.label
+        if (currentDestinationLabel in rootScreenList) {
+            finish()
+        } else {
+            navController.popBackStack()
+        }
     }
 
     private fun observeOnUserLoggedInLive() {
@@ -45,49 +63,61 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Replaces the current screen with the passed in [screen]
+     * Setup BottomNavigationView's with [NavigationUI.setupWithNavController]
+     * to handle navigating to different screens.
      */
-    public fun goToScreen(screen: Fragment, shouldAddToBackStack: Boolean) {
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.container, screen)
-        if (shouldAddToBackStack) {
-            transaction.addToBackStack(null)
-        }
-        transaction.commit()
-    }
+    private fun prepareBottomNavigationView() {
+        bottomNavigationView = findViewById(R.id.bottom_navigation_view)
+        bottomNavigationView?.let { bottomNav ->
+            bottomNav.apply {
+                // setup with nav controller
+                val navController = findNavController(R.id.main_nav_host_fragment)
+                NavigationUI.setupWithNavController(this, navController)
+                // NOTE ---
+                // You need to have the same id as your fragment in your R.menu.menu_bottom_nav
+                // and in your R.navigation.nav_graph for Navigation-UI to work properly with
+                // selecting the right bottomNavigationView tab to highlight. ~ Moe
 
-    /**
-     * Setup BottomNavigationView's onItemSelectedListener to handle navigating
-     * to different screens using [goToScreen].
-     */
-    private fun prepareBottomNavigation() {
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-        bottomNavigationView.setOnNavigationItemSelectedListener {
-            when (it.itemId) {
-                R.id.navigate_home_screen -> {
-                    val homeScreen = HomeScreen.newInstance()
-                    goToScreen(homeScreen, false)
-                    return@setOnNavigationItemSelectedListener true
+                // handle onClick
+                setOnNavigationItemSelectedListener {
+
+                    val rootScreenNavOptions = NavOptions
+                          .Builder()
+                          .setPopUpTo(it.itemId, true)
+                          .setLaunchSingleTop(true)
+                          .build()
+
+                    when (it.itemId) {
+                        R.id.home_screen -> {
+                            navController.currentDestination?.label = MainNavScreen.HOME_SCREEN
+                            navController.navigate(
+                                  R.id.home_screen, null, rootScreenNavOptions
+                            )
+                            return@setOnNavigationItemSelectedListener true
+                        }
+                        R.id.toke_log_screen -> {
+                            navController.currentDestination?.label = MainNavScreen.TOKE_LOG_SCREEN
+                            navController.navigate(
+                                  R.id.toke_log_screen, null, rootScreenNavOptions
+                            )
+                            return@setOnNavigationItemSelectedListener true
+                        }
+                        R.id.settings_screen -> {
+                            navController.currentDestination?.label = MainNavScreen.SETTINGS_SCREEN
+                            navController.navigate(
+                                  R.id.settings_screen, null, rootScreenNavOptions
+                            )
+                            return@setOnNavigationItemSelectedListener true
+                        }
+                    }
+                    false
                 }
-                R.id.navigate_log_screen -> {
-                    val logScreen = TokeLogScreen.newInstance()
-                    goToScreen(logScreen, false)
-                    return@setOnNavigationItemSelectedListener true
-                }
-                R.id.navigate_settings_screen -> {
-                    val settingsScreen = SettingsScreen.newInstance()
-                    goToScreen(settingsScreen, false)
-                    return@setOnNavigationItemSelectedListener true
+
+                // prevents ability to reselect tab
+                setOnNavigationItemReselectedListener {
+                    return@setOnNavigationItemReselectedListener
                 }
             }
-            false
-        }
-        // set default selection
-        bottomNavigationView.selectedItemId = R.id.navigate_home_screen
-
-        // prevents ability to reselect tab
-        bottomNavigationView.setOnNavigationItemReselectedListener {
-            return@setOnNavigationItemReselectedListener
         }
     }
 

@@ -10,10 +10,9 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.base.hamoud.chronictrack.R
 import com.base.hamoud.chronictrack.data.entity.Toke
-import com.base.hamoud.chronictrack.ui.main.MainActivity
-import com.base.hamoud.chronictrack.ui.tokelog.TokeLogScreen
 import java.time.OffsetDateTime
 
 class AddTokeScreen : Fragment() {
@@ -25,20 +24,20 @@ class AddTokeScreen : Fragment() {
     private var timeInputTextView: TextView? = null
     private var dateInputTextView: TextView? = null
 
-    companion object {
-        fun newInstance(): AddTokeScreen = AddTokeScreen()
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.screen_add_toke, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         viewModel = ViewModelProviders.of(this).get(AddTokeViewModel::class.java)
-        observeDateTimeLiveData(view)
+
         // prepare ui
         prepareFormView(view)
+        
+        // observe
+        observeDateTimeLiveData(view)
     }
 
     private fun observeDateTimeLiveData(view: View) {
@@ -65,7 +64,7 @@ class AddTokeScreen : Fragment() {
 
         dateInputTextView?.setOnClickListener {
             val datePickerDialog = DatePickerDialog(
-                activity!!.themedContext)
+                  activity!!.themedContext)
             datePickerDialog.setOnDateSetListener { view, year, month, dayOfMonth ->
                 viewModel.updateDate(year = year, month = month, dayOfMonth = dayOfMonth)
             }
@@ -80,9 +79,9 @@ class AddTokeScreen : Fragment() {
 
         timeInputTextView?.setOnClickListener {
             val timePickerDialog = TimePickerDialog(activity!!.themedContext,
-                TimePickerDialog.OnTimeSetListener(function = {view, hourOfDay, minute ->
-                    viewModel.updateTime(hour = hourOfDay, minute = minute)
-            }), viewModel.now.hour, viewModel.now.minute, true)
+                  TimePickerDialog.OnTimeSetListener(function = { view, hourOfDay, minute ->
+                      viewModel.updateTime(hour = hourOfDay, minute = minute)
+                  }), viewModel.now.hour, viewModel.now.minute, true)
 
             timePickerDialog.show()
         }
@@ -98,15 +97,13 @@ class AddTokeScreen : Fragment() {
         saveButton?.setOnClickListener {
             viewModel.strainSelection = strainEditText?.text.toString()
             val hit = Toke(
-                tokeType = viewModel.typeSelection,
-                strain = viewModel.strainSelection,
-                tokeDate = viewModel.now,
-                toolUsed = viewModel.methodSelection
+                  tokeType = viewModel.typeSelection,
+                  strain = viewModel.strainSelection,
+                  tokeDate = viewModel.now,
+                  toolUsed = viewModel.methodSelection
             )
             viewModel.insertToke(hit)
-            (activity as MainActivity).goToScreen(
-                  screen = TokeLogScreen.newInstance(),
-                  shouldAddToBackStack = false)
+            findNavController().navigate(R.id.toke_log_screen)
         }
     }
 
