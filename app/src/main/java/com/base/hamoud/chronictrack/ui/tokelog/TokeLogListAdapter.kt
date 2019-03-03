@@ -11,7 +11,7 @@ import com.base.hamoud.chronictrack.data.entity.Toke
 import java.time.OffsetDateTime
 
 
-class TokeLogListAdapter internal constructor(context: Context) :
+class TokeLogListAdapter internal constructor(val context: Context) :
       RecyclerView.Adapter<TokeLogListAdapter.HitViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
@@ -33,7 +33,7 @@ class TokeLogListAdapter internal constructor(context: Context) :
     override fun onBindViewHolder(holder: HitViewHolder, position: Int) {
         val current = tokeList[position]
         holder.tokeTimeView.text = timeCreator(current.tokeDate)
-        holder.tokeDateView.text = dateCreator(current.tokeDate)
+        holder.tokeDateView.text = context.getString(R.string.today)
         holder.chronicTypeView.text = current.tokeType
         holder.chronicStrainView.text = current.strain
         holder.toolUsedView.text = current.toolUsed
