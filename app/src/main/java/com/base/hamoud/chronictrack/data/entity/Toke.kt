@@ -7,24 +7,13 @@ import java.util.*
 
 @Entity(
     tableName = "toke_table",
-    foreignKeys = [
-        ForeignKey(
-            entity = User::class,
-            parentColumns = ["id"],
-            childColumns = ["user_id"],
-            onDelete = ForeignKey.CASCADE,
-            onUpdate = ForeignKey.CASCADE
-        )
-    ],
     indices = [
         Index(value = ["id"]),
-        Index(value = ["user_id"]),
         Index(value = ["toke_date_time"])
     ]
 )
 data class Toke(
     @PrimaryKey @ColumnInfo(name = "id") val id: String = UUID.randomUUID().toString(),
-    @ColumnInfo(name = "user_id") var userId: String,
     @TypeConverters(OffsetDateTimeConverter::class)
     @ColumnInfo(name = "toke_date_time") val tokeDate: OffsetDateTime = OffsetDateTime.now(),
     @ColumnInfo(name = "weed_type") val tokeType: String = arrayOf(

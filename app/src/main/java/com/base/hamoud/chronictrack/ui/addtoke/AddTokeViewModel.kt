@@ -27,7 +27,6 @@ class AddTokeViewModel(application: Application) : BaseAndroidViewModel(applicat
     }
 
     fun insertToke(toke: Toke) = ioScope.launch {
-        toke.userId = loggedInUserLive.value?.id!!
         tokeRepo.insert(toke)
     }
 

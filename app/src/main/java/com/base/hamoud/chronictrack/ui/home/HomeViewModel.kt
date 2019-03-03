@@ -3,11 +3,14 @@ package com.base.hamoud.chronictrack.ui.home
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.base.hamoud.chronictrack.BaseAndroidViewModel
+import com.base.hamoud.chronictrack.data.entity.Toke
 import com.base.hamoud.chronictrack.data.entity.User
 import com.base.hamoud.chronictrack.data.repository.TokeRepo
 import com.base.hamoud.chronictrack.data.repository.UserRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.time.OffsetDateTime
+import kotlin.random.Random
 
 class HomeViewModel(application: Application) : BaseAndroidViewModel(application) {
 
@@ -18,6 +21,15 @@ class HomeViewModel(application: Application) : BaseAndroidViewModel(application
     var userTokesCountLive: MutableLiveData<Int> = MutableLiveData()
 
     init {
+        ioScope.launch {
+            for ( i in 1..10) {
+                val toke = Toke(
+                    tokeDate = OffsetDateTime.now().minusDays((1L..3L).shuffled().first())
+                )
+
+                tokeRepo.insert(toke)
+            }
+        }
         getLoggedInUser()
     }
 
@@ -28,7 +40,7 @@ class HomeViewModel(application: Application) : BaseAndroidViewModel(application
 
     fun refreshTokesTotalCount() {
         ioScope.launch {
-            val hitCount = tokeRepo.getAllTokes().count()
+            val hitCount = tokeRepo.getTodaysTokes().count()
             userTokesCountLive.postValue(hitCount)
         }
     }
