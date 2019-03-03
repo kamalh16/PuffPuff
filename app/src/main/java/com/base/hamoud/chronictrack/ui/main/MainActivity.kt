@@ -9,9 +9,9 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
-import com.base.hamoud.chronictrack.ui.main.MainNavScreen.rootScreenList
 import com.base.hamoud.chronictrack.R
 import com.base.hamoud.chronictrack.data.entity.User
+import com.base.hamoud.chronictrack.ui.main.MainNavScreen.rootScreenList
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import timber.log.Timber
 
@@ -79,8 +79,14 @@ class MainActivity : AppCompatActivity() {
                 // selecting the right bottomNavigationView tab to highlight. ~ Moe
 
                 // handle onClick
-                val rootScreenNavOptions = NavOptions.Builder().setLaunchSingleTop(true).build()
                 setOnNavigationItemSelectedListener {
+
+                    val rootScreenNavOptions = NavOptions
+                          .Builder()
+                          .setPopUpTo(it.itemId, true)
+                          .setLaunchSingleTop(true)
+                          .build()
+
                     when (it.itemId) {
                         R.id.home_screen -> {
                             navController.currentDestination?.label = MainNavScreen.HOME_SCREEN
