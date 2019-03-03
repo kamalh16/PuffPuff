@@ -99,7 +99,7 @@ class AddTokeScreen : Fragment() {
             val hit = Toke(
                   tokeType = viewModel.typeSelection,
                   strain = viewModel.strainSelection,
-                  tokeDate = viewModel.now,
+                  tokeDateTime = viewModel.now,
                   toolUsed = viewModel.methodSelection
             )
             viewModel.insertToke(hit)

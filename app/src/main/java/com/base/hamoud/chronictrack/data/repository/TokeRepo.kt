@@ -24,9 +24,9 @@ class TokeRepo(private val tokeDao: TokeDao) {
         val today = OffsetDateTime.now()
 
         return getAllTokes().filter {
-            (it.tokeDate.dayOfYear == today.dayOfYear && it.tokeDate.year == today.year)
+            (it.tokeDateTime.dayOfYear == today.dayOfYear && it.tokeDateTime.year == today.year)
         }.sortedByDescending {
-            it.tokeDate
+            it.tokeDateTime
         }
     }
 
