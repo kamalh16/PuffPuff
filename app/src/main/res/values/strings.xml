@@ -13,6 +13,7 @@
     <string name="strain_name">Strain Name</string>
     <string name="save">Save</string>
     <string name="today">Today</string>
+    <string name="last_hit">Last Hit</string>
 
     <string-array name="chronic_type">
         <item>Indica</item>

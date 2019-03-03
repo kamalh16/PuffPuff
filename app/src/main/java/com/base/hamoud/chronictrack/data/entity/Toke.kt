@@ -15,7 +15,7 @@ import java.util.*
 data class Toke(
     @PrimaryKey @ColumnInfo(name = "id") val id: String = UUID.randomUUID().toString(),
     @TypeConverters(OffsetDateTimeConverter::class)
-    @ColumnInfo(name = "toke_date_time") val tokeDate: OffsetDateTime,
+    @ColumnInfo(name = "toke_date_time") val tokeDateTime: OffsetDateTime,
     @ColumnInfo(name = "weed_type") val tokeType: String = arrayOf(
         "Sativa",
         "Indica",

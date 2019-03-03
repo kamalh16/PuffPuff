@@ -32,7 +32,7 @@ class TokeLogListAdapter internal constructor(val context: Context) :
 
     override fun onBindViewHolder(holder: HitViewHolder, position: Int) {
         val current = tokeList[position]
-        holder.tokeTimeView.text = timeCreator(current.tokeDate)
+        holder.tokeTimeView.text = timeCreator(current.tokeDateTime)
         holder.tokeDateView.text = context.getString(R.string.today)
         holder.chronicTypeView.text = current.tokeType
         holder.chronicStrainView.text = current.strain
