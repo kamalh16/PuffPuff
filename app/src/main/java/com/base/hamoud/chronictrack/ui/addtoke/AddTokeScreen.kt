@@ -7,10 +7,9 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.base.hamoud.chronictrack.R
 import com.base.hamoud.chronictrack.data.entity.Toke
-import com.base.hamoud.chronictrack.ui.main.MainActivity
-import com.base.hamoud.chronictrack.ui.tokelog.TokeLogScreen
 import java.util.*
 
 class AddTokeScreen : Fragment() {
@@ -27,10 +26,6 @@ class AddTokeScreen : Fragment() {
     private var strainEditText: EditText? = null
     private var timeInputTextView: TextView? = null
     private var dateInputTextView: TextView? = null
-
-    companion object {
-        fun newInstance(): AddTokeScreen = AddTokeScreen()
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.screen_add_toke, container, false)
@@ -95,9 +90,7 @@ class AddTokeScreen : Fragment() {
                   toolUsed = methodSelection
             )
             viewModel.insertToke(hit)
-            (activity as MainActivity).goToScreen(
-                  screen = TokeLogScreen.newInstance(),
-                  shouldAddToBackStack = false)
+            findNavController().navigate(R.id.toke_log_screen)
         }
     }
 

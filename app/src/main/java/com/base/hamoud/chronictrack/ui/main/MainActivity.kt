@@ -7,11 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.findNavController
+import androidx.navigation.ui.setupWithNavController
 import com.base.hamoud.chronictrack.R
 import com.base.hamoud.chronictrack.data.entity.User
-import com.base.hamoud.chronictrack.ui.home.HomeScreen
-import com.base.hamoud.chronictrack.ui.settings.SettingsScreen
-import com.base.hamoud.chronictrack.ui.tokelog.TokeLogScreen
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import timber.log.Timber
 
@@ -21,6 +20,8 @@ class MainActivity : AppCompatActivity() {
     private var loggedInUser: User? = null
     private lateinit var viewModel: MainViewModel
 
+    private var bottomNavigationView: BottomNavigationView? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStatusBarColorToInvertedIcons()
@@ -29,20 +30,14 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
 
         // prepare ui
-        prepareBottomNavigation()
+        prepareBottomNavigationView()
 
         // observe
         observeOnUserLoggedInLive()
     }
 
-    private fun observeOnUserLoggedInLive() {
-        viewModel.loggedInUserLive.observe(this, Observer {
-            if (it != null) {
-                Timber.i("logged in user: ${it.username}, ${it.id}")
-                loggedInUser = it
-            }
-        })
-    }
+    override fun onSupportNavigateUp() =
+          findNavController(R.id.main_nav_host_fragment).navigateUp()
 
     /**
      * Replaces the current screen with the passed in [screen]
@@ -56,38 +51,54 @@ class MainActivity : AppCompatActivity() {
         transaction.commit()
     }
 
+    private fun observeOnUserLoggedInLive() {
+        viewModel.loggedInUserLive.observe(this, Observer {
+            if (it != null) {
+                Timber.i("logged in user: ${it.username}, ${it.id}")
+                loggedInUser = it
+            }
+        })
+    }
+
     /**
      * Setup BottomNavigationView's onItemSelectedListener to handle navigating
      * to different screens using [goToScreen].
      */
-    private fun prepareBottomNavigation() {
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-        bottomNavigationView.setOnNavigationItemSelectedListener {
-            when (it.itemId) {
-                R.id.navigate_home_screen -> {
-                    val homeScreen = HomeScreen.newInstance()
-                    goToScreen(homeScreen, false)
-                    return@setOnNavigationItemSelectedListener true
+    private fun prepareBottomNavigationView() {
+        bottomNavigationView = findViewById(R.id.bottom_navigation_view)
+        bottomNavigationView?.let { bottomNav ->
+            bottomNav.apply {
+                // setup with nav controller
+                val navController = findNavController(R.id.main_nav_host_fragment)
+                setupWithNavController(navController)
+
+                // handle onClick
+                setOnNavigationItemSelectedListener {
+                    when (it.itemId) {
+                        R.id.item_home_screen -> {
+                            navController.navigate(R.id.home_screen)
+                            return@setOnNavigationItemSelectedListener true
+                        }
+                        R.id.item_toke_log_screen -> {
+                            navController.navigate(R.id.toke_log_screen)
+                            return@setOnNavigationItemSelectedListener true
+                        }
+                        R.id.item_settings_screen -> {
+                            navController.navigate(R.id.settings_screen)
+                            return@setOnNavigationItemSelectedListener true
+                        }
+                    }
+                    false
                 }
-                R.id.navigate_log_screen -> {
-                    val logScreen = TokeLogScreen.newInstance()
-                    goToScreen(logScreen, false)
-                    return@setOnNavigationItemSelectedListener true
-                }
-                R.id.navigate_settings_screen -> {
-                    val settingsScreen = SettingsScreen.newInstance()
-                    goToScreen(settingsScreen, false)
-                    return@setOnNavigationItemSelectedListener true
+
+                // set default selection
+                selectedItemId = R.id.item_home_screen
+
+                // prevents ability to reselect tab
+                setOnNavigationItemReselectedListener {
+                    return@setOnNavigationItemReselectedListener
                 }
             }
-            false
-        }
-        // set default selection
-        bottomNavigationView.selectedItemId = R.id.navigate_home_screen
-
-        // prevents ability to reselect tab
-        bottomNavigationView.setOnNavigationItemReselectedListener {
-            return@setOnNavigationItemReselectedListener
         }
     }
 
