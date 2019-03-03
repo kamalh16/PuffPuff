@@ -90,7 +90,6 @@ class AddTokeScreen : Fragment() {
         saveButton?.setOnClickListener {
             strainSelection = strainEditText?.text.toString()
             val hit = Toke(
-                  userId = "Chron",
                   tokeType = typeSelection,
                   strain = strainSelection,
                   toolUsed = methodSelection

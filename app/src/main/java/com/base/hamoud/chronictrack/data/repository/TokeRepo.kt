@@ -19,8 +19,7 @@ class TokeRepo(private val tokeDao: TokeDao) {
     }
 
     @WorkerThread
-    suspend fun getTodaysTokes(userId: String): List<Toke> {
-        // FIXME
+    suspend fun getTodaysTokes(): List<Toke> {
         val today = OffsetDateTime.now()
 
         val todaysHits: List<Toke> = getAllTokes().filter {
@@ -30,18 +29,20 @@ class TokeRepo(private val tokeDao: TokeDao) {
     }
 
     @WorkerThread
-    suspend fun getTokesByUserForDate(user_id: String, date: OffsetDateTime): List<Toke> {
-        return tokeDao.getTokeByUserIdAndDate(user_id, date)
+    suspend fun getTokesByUserForDate(date: OffsetDateTime): List<Toke> {
+        return tokeDao.getTokeByUserIdAndDate(date)
     }
 
     @WorkerThread
-    suspend fun getAllTokesByUser(userId: String): List<Toke> {
-        return tokeDao.getTokeByUserId(userId)
+    suspend fun getAllTokesByUser(): List<Toke> {
+        return tokeDao.getAllTokes()
     }
 
     @WorkerThread
-    suspend fun deleteAllTokesByUser(userId: String) {
-        tokeDao.deleteTokeByUserId(userId)
+    suspend fun deleteAllTokesByUser(
+
+    ) {
+        tokeDao.deleteAll()
     }
 
     @WorkerThread
