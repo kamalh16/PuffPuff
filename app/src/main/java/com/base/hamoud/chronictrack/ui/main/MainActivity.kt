@@ -4,11 +4,10 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
-import androidx.navigation.ui.setupWithNavController
+import androidx.navigation.ui.NavigationUI
 import com.base.hamoud.chronictrack.R
 import com.base.hamoud.chronictrack.data.entity.User
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -39,18 +38,6 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp() =
           findNavController(R.id.main_nav_host_fragment).navigateUp()
 
-    /**
-     * Replaces the current screen with the passed in [screen]
-     */
-    public fun goToScreen(screen: Fragment, shouldAddToBackStack: Boolean) {
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.container, screen)
-        if (shouldAddToBackStack) {
-            transaction.addToBackStack(null)
-        }
-        transaction.commit()
-    }
-
     private fun observeOnUserLoggedInLive() {
         viewModel.loggedInUserLive.observe(this, Observer {
             if (it != null) {
@@ -61,8 +48,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Setup BottomNavigationView's onItemSelectedListener to handle navigating
-     * to different screens using [goToScreen].
+     * Setup BottomNavigationView's with [NavigationUI.setupWithNavController]
+     * to handle navigating to different screens.
      */
     private fun prepareBottomNavigationView() {
         bottomNavigationView = findViewById(R.id.bottom_navigation_view)
@@ -70,20 +57,24 @@ class MainActivity : AppCompatActivity() {
             bottomNav.apply {
                 // setup with nav controller
                 val navController = findNavController(R.id.main_nav_host_fragment)
-                setupWithNavController(navController)
+                NavigationUI.setupWithNavController(this, navController)
+                // NOTE ---
+                // You need to have the same id as your fragment in your R.menu.menu_bottom_nav
+                // and in your R.navigation.nav_graph for Navigation-UI to work properly with
+                // selecting the right bottomNavigationView tab to highlight. ~ Moe
 
                 // handle onClick
                 setOnNavigationItemSelectedListener {
                     when (it.itemId) {
-                        R.id.item_home_screen -> {
+                        R.id.home_screen -> {
                             navController.navigate(R.id.home_screen)
                             return@setOnNavigationItemSelectedListener true
                         }
-                        R.id.item_toke_log_screen -> {
+                        R.id.toke_log_screen -> {
                             navController.navigate(R.id.toke_log_screen)
                             return@setOnNavigationItemSelectedListener true
                         }
-                        R.id.item_settings_screen -> {
+                        R.id.settings_screen -> {
                             navController.navigate(R.id.settings_screen)
                             return@setOnNavigationItemSelectedListener true
                         }
@@ -91,8 +82,8 @@ class MainActivity : AppCompatActivity() {
                     false
                 }
 
-                // set default selection
-                selectedItemId = R.id.item_home_screen
+                // set default screen
+                selectedItemId = R.id.home_screen
 
                 // prevents ability to reselect tab
                 setOnNavigationItemReselectedListener {

@@ -3,21 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/item_home_screen"
+        android:id="@+id/home_screen"
         android:enabled="true"
         android:icon="@drawable/menu_item_home_state_selector"
         android:title="@string/label_home"
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/item_toke_log_screen"
+        android:id="@+id/toke_log_screen"
         android:enabled="true"
         android:icon="@drawable/menu_item_toke_log_state_selector"
         android:title="@string/label_toke_log"
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/item_settings_screen"
+        android:id="@+id/settings_screen"
         android:enabled="true"
         android:icon="@drawable/menu_item_settings_state_selector"
         android:title="@string/label_settings"
