@@ -8,14 +8,14 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.base.hamoud.chronictrack.R
 import com.base.hamoud.chronictrack.data.entity.Toke
-import java.time.format.DateTimeFormatter
+import java.time.OffsetDateTime
 
 
 class TokeLogListAdapter internal constructor(context: Context) :
       RecyclerView.Adapter<TokeLogListAdapter.HitViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
-    private var tokeList = mutableListOf<Toke>()// cached copy of tokeList
+    private var tokeList = listOf<Toke>()// cached copy of tokeList
 
     inner class HitViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tokeTimeView: TextView = itemView.findViewById(R.id.item_toke_time_field)
@@ -32,8 +32,8 @@ class TokeLogListAdapter internal constructor(context: Context) :
 
     override fun onBindViewHolder(holder: HitViewHolder, position: Int) {
         val current = tokeList[position]
-        holder.tokeTimeView.text = current.tokeDate.format(DateTimeFormatter.ISO_LOCAL_TIME)
-        holder.tokeDateView.text = current.tokeDate.format(DateTimeFormatter.ISO_DATE)
+        holder.tokeTimeView.text = timeCreator(current.tokeDate)
+        holder.tokeDateView.text = dateCreator(current.tokeDate)
         holder.chronicTypeView.text = current.tokeType
         holder.chronicStrainView.text = current.strain
         holder.toolUsedView.text = current.toolUsed
@@ -43,9 +43,21 @@ class TokeLogListAdapter internal constructor(context: Context) :
         return tokeList.size
     }
 
-    internal fun setTokeList(tokes: MutableList<Toke>) {
+    internal fun setTokeList(tokes: List<Toke>) {
         this.tokeList = tokes
         notifyDataSetChanged()
     }
 
+    private fun dateCreator(date: OffsetDateTime) = "${date.dayOfMonth} / ${date.monthValue} / ${date.year}"
+
+    private fun timeCreator(date: OffsetDateTime): String {
+        val hour: String = date.hour.toString()
+        val minuteCalendar = date.minute
+        val minutes: String = if (minuteCalendar < 10) {
+            "0$minuteCalendar"
+        } else {
+            minuteCalendar.toString()
+        }
+        return "$hour:$minutes"
+    }
 }
