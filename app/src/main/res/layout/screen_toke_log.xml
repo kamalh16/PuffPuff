@@ -12,6 +12,7 @@
         android:id="@+id/toke_log_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,19 +22,32 @@
     <!-- Toke Log Screen Label -->
     <TextView
         android:id="@+id/toke_log_screen_label"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
+        android:layout_marginTop="56dp"
         android:gravity="start"
         android:paddingStart="16dp"
-        android:paddingTop="56dp"
+        android:paddingTop="16dp"
         android:paddingEnd="16dp"
-        android:paddingBottom="48dp"
+        android:paddingBottom="8dp"
         android:text="@string/label_toke_log"
         android:textColor="@color/textColorPrimary"
         android:textSize="38sp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Screen Label Border Bottom -->
+    <View
+        android:id="@+id/toke_log_screen_label_border_bottom"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/colorAccent"
+        app:layout_constraintEnd_toEndOf="@+id/toke_log_screen_label"
+        app:layout_constraintStart_toStartOf="@+id/toke_log_screen_label"
+        app:layout_constraintTop_toBottomOf="@id/toke_log_screen_label"
+        app:layout_constraintWidth_percent="1" />
 
     <!-- Add Toke Floating Action Bottom -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton

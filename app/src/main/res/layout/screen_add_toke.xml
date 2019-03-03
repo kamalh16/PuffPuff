@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary">
@@ -8,98 +9,110 @@
     <!-- Add Toke Screen Label -->
     <TextView
         android:id="@+id/add_toke_screen_label"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginTop="56dp"
         android:gravity="start"
         android:paddingStart="16dp"
+        android:paddingTop="16dp"
         android:paddingEnd="16dp"
-        android:paddingBottom="48dp"
+        android:paddingBottom="8dp"
         android:text="@string/label_add_toke"
         android:textColor="@color/textColorPrimary"
         android:textSize="38sp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Screen Label Border Bottom -->
+    <View
+        android:id="@+id/add_toke_screen_label_border_bottom"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/colorAccent"
+        app:layout_constraintEnd_toEndOf="@+id/add_toke_screen_label"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/add_toke_screen_label"
+        app:layout_constraintWidth_percent="1" />
 
     <!-- Add Toke Date Field -->
     <TextView
         android:id="@+id/add_toke_date_field"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="168dp"
-        android:ems="10"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="48dp"
         android:gravity="start"
         android:padding="8dp"
         android:textColor="@color/textColorPrimary"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/add_toke_screen_label_border_bottom"
+        tools:text="3 / 3 / 2019" />
 
     <!-- Add Toke Time Field -->
     <TextView
         android:id="@+id/add_toke_time_field"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="168dp"
-        android:layout_marginEnd="24dp"
-        android:ems="10"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="32dp"
         android:gravity="end"
         android:padding="8dp"
         android:textColor="@color/textColorPrimary"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/add_toke_screen_label_border_bottom"
+        tools:text="6:05" />
 
     <!-- Add Toke Type Dropdown -->
     <Spinner
         android:id="@+id/add_toke_type_dropdown"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
         android:text="@string/indica"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_toke_time_field" />
+        app:layout_constraintTop_toBottomOf="@+id/add_toke_time_field"
+        app:layout_constraintWidth_percent="0.4" />
 
     <!-- Add Toke Tool Dropdown -->
     <Spinner
         android:id="@+id/add_toke_tool_used_dropdown"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_toke_date_field" />
+        app:layout_constraintTop_toBottomOf="@+id/add_toke_date_field"
+        app:layout_constraintWidth_percent="0.4" />
 
     <!-- Add Toke Strain Name -->
     <AutoCompleteTextView
         android:id="@+id/add_toke_strain_name_field"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
         android:hint="@string/strain_name"
         android:inputType="textCapWords"
-        android:minWidth="100dp"
         android:textColor="@color/textColorPrimary"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/add_toke_tool_used_dropdown"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_toke_tool_used_dropdown"
-        app:layout_constraintVertical_bias="0.15" />
+        app:layout_constraintTop_toBottomOf="@+id/add_toke_tool_used_dropdown" />
 
     <!-- Add Toke Save Button -->
     <Button
         android:id="@+id/add_toke_save_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
+        android:layout_margin="16dp"
         android:background="@color/colorAccent"
         android:text="@string/save"
         android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/add_toke_strain_name_field"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
 
