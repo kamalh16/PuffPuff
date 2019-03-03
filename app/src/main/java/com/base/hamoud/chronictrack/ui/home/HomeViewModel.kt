@@ -21,15 +21,16 @@ class HomeViewModel(application: Application) : BaseAndroidViewModel(application
     var userTokesCountLive: MutableLiveData<Int> = MutableLiveData()
 
     init {
-        ioScope.launch {
-            for ( i in 1..10) {
-                val toke = Toke(
-                    tokeDate = OffsetDateTime.now().minusDays((1L..3L).shuffled().first())
-                )
-
-                tokeRepo.insert(toke)
-            }
-        }
+        // todo remove when done testing dates
+//        ioScope.launch {
+//            for ( i in 1..10) {
+//                val toke = Toke(
+//                    tokeDate = OffsetDateTime.now().minusDays((1L..3L).shuffled().first())
+//                )
+//
+//                tokeRepo.insert(toke)
+//            }
+//        }
         getLoggedInUser()
     }
 
