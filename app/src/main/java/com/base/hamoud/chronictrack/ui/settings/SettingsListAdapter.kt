@@ -8,8 +8,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.edit
 import androidx.recyclerview.widget.RecyclerView
+import com.base.hamoud.chronictrack.Constants
 import com.base.hamoud.chronictrack.R
+import com.base.hamoud.chronictrack.ui.main.MainActivity
 import com.base.hamoud.chronictrack.ui.settings.model.SettingsItem
 
 
@@ -22,12 +26,12 @@ class SettingsListAdapter(private val viewModel: SettingsViewModel) :
 
         var itemLabel: TextView = itemView.findViewById(R.id.item_settings_option_label)
         private val itemDeleteIcon: ImageView = itemView.findViewById(R.id.item_settings_delete_all_icon)
-        private val itemDarkThemeIcon: ImageView = itemView.findViewById(R.id.item_settings_dark_theme_icon)
+        private val itemThemeIcon: ImageView = itemView.findViewById(R.id.item_settings_theme_icon)
         private val itemAboutIcon: ImageView = itemView.findViewById(R.id.item_settings_about_icon)
 
         fun showDeleteIcon() {
             itemDeleteIcon.visibility = View.VISIBLE
-            hideDarkThemeIcon()
+            showThemeIcon()
             hideAboutIcon()
         }
 
@@ -35,20 +39,20 @@ class SettingsListAdapter(private val viewModel: SettingsViewModel) :
             itemDeleteIcon.visibility = View.INVISIBLE
         }
 
-        fun showDarkThemeIcon() {
-            itemDarkThemeIcon.visibility = View.VISIBLE
+        fun showThemeSwitch() {
+            itemThemeIcon.visibility = View.VISIBLE
             hideDeleteIcon()
             hideAboutIcon()
         }
 
-        private fun hideDarkThemeIcon() {
-            itemDarkThemeIcon.visibility = View.INVISIBLE
+        private fun showThemeIcon() {
+            itemThemeIcon.visibility = View.INVISIBLE
         }
 
         fun showAboutIcon() {
             itemAboutIcon.visibility = View.VISIBLE
             hideDeleteIcon()
-            hideDarkThemeIcon()
+            showThemeIcon()
         }
 
         private fun hideAboutIcon() {
@@ -72,8 +76,8 @@ class SettingsListAdapter(private val viewModel: SettingsViewModel) :
 
         // set row icon
         when (item) {
-            SettingsItem.DARK_MODE -> {
-                holder.showDarkThemeIcon()
+            SettingsItem.SWITCH_THEME -> {
+                holder.showThemeSwitch()
             }
             SettingsItem.CLEAR_DATA -> {
                 holder.showDeleteIcon()
@@ -86,8 +90,8 @@ class SettingsListAdapter(private val viewModel: SettingsViewModel) :
         // handle row onclick
         holder.itemView.setOnClickListener {
             when (item) {
-                SettingsItem.DARK_MODE -> {
-                    Toast.makeText(holder.itemView.context, "Switched to Dark Mode", Toast.LENGTH_SHORT).show()
+                SettingsItem.SWITCH_THEME -> {
+                    onClickSwitchThemeRow(holder.itemView.context)
                 }
                 SettingsItem.CLEAR_DATA -> {
                     showClearDataConfirmationDialog(holder.itemView.context)
@@ -137,6 +141,25 @@ class SettingsListAdapter(private val viewModel: SettingsViewModel) :
                   dialogBox.dismiss()
               }
               .show()
+    }
+
+    private fun onClickSwitchThemeRow(ctx: Context) {
+        val preferences = ctx.getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE)
+        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
+            // change to LIGHT THEME
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            // update shared prefs
+            preferences.edit { putBoolean(Constants.PREF_IS_DARK_THEME, false) }
+            // recreate activity for changes to take effect
+            (ctx as MainActivity).recreate()
+        } else {
+            // change to DARK THEME
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            // update shared prefs
+            preferences.edit { putBoolean(Constants.PREF_IS_DARK_THEME, true) }
+            // recreate activity for changes to take effect
+            (ctx as MainActivity).recreate()
+        }
     }
 
 }

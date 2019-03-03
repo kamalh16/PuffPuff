@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary">
 
     <!-- Home Screen Label -->
     <TextView
@@ -13,9 +14,9 @@
         android:gravity="start"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:paddingBottom="16dp"
+        android:paddingBottom="48dp"
         android:text="@string/label_home"
-        android:textColor="@android:color/black"
+        android:textColor="@color/textColorPrimary"
         android:textSize="38sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,6 +32,7 @@
         android:layout_marginEnd="8dp"
         android:gravity="center"
         android:text="@string/today"
+        android:textColor="@color/textColorPrimary"
         android:textSize="28sp"
         app:layout_constraintBottom_toTopOf="@id/home_screen_toke_count_label"
         app:layout_constraintEnd_toEndOf="parent"
@@ -45,6 +47,7 @@
         android:gravity="center"
         android:padding="8dp"
         android:text="@string/zero"
+        android:textColor="@color/textColorPrimary"
         android:textSize="38sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
