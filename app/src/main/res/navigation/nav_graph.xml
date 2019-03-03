@@ -18,6 +18,8 @@
         android:name="com.base.hamoud.chronictrack.ui.tokelog.TokeLogScreen"
         android:label="TokeLogScreen"
         tools:layout="@layout/screen_toke_log">
+
+        <!-- ACTION: Toke Log Screen to Add Toke Screen -->
         <action
             android:id="@+id/action_toke_log_screen_to_add_toke_screen"
             app:destination="@id/add_toke_screen" />
