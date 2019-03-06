@@ -38,6 +38,10 @@ class AddTokeScreen : Fragment() {
 
         // observe
         observeDateTimeLiveData(view)
+        observeOnLastAddedTokeLive()
+
+        // trigger
+        viewModel.getLastAddedToke()
     }
 
     private fun observeDateTimeLiveData(view: View) {
@@ -46,6 +50,14 @@ class AddTokeScreen : Fragment() {
             dateInputTextView?.text = viewModel.dateCreator()
             timeInputTextView = view.findViewById(R.id.add_toke_time_field)
             timeInputTextView?.text = viewModel.timeCreator()
+        })
+    }
+
+    private fun observeOnLastAddedTokeLive() {
+        viewModel.lastAddedTokeLive.observe(this, Observer { toke ->
+            toke?.let {
+                strainEditText?.setText(it.strain)
+            }
         })
     }
 

@@ -23,7 +23,7 @@ class AddTokeViewModel(application: Application) : BaseAndroidViewModel(applicat
 
     var loggedInUserLive: MutableLiveData<User> = MutableLiveData()
     var dateTimeLiveData: MutableLiveData<OffsetDateTime> = MutableLiveData()
-
+    var lastAddedTokeLive: MutableLiveData<Toke> = MutableLiveData()
 
     init {
         getLoggedInUser()
@@ -44,6 +44,14 @@ class AddTokeViewModel(application: Application) : BaseAndroidViewModel(applicat
         ioScope.launch {
             loggedInUserLive.postValue(
                   userRepo.getUserByUsername("Chron")
+            )
+        }
+    }
+
+    fun getLastAddedToke() {
+        ioScope.launch {
+            lastAddedTokeLive.postValue(
+                  tokeRepo.getTodaysTokes().last()
             )
         }
     }
