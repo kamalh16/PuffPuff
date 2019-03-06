@@ -19,6 +19,8 @@
         <item>Indica</item>
         <item>Hybrid</item>
         <item>Sativa</item>
+        <item>Concentrate</item>
+        <item>CBD</item>
     </string-array>
 
     <string-array name="ingestion_method">

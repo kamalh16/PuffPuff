@@ -23,6 +23,8 @@ class AddTokeScreen : Fragment() {
     private var strainEditText: EditText? = null
     private var timeInputTextView: TextView? = null
     private var dateInputTextView: TextView? = null
+    private var typeSpinner: Spinner? = null
+    private var methodSpinner: Spinner? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.screen_add_toke, container, false)
@@ -57,7 +59,12 @@ class AddTokeScreen : Fragment() {
         viewModel.lastAddedTokeLive.observe(this, Observer { toke ->
             toke?.let {
                 strainEditText?.setText(it.strain)
-
+                when(it.tokeType) {
+                    getString(R.string.indica) -> {
+                    // todo auto fill spinner and remove drop down
+//                        methodSpinner?. = 1
+                    }
+                }
             }
         })
     }
@@ -122,16 +129,16 @@ class AddTokeScreen : Fragment() {
     }
 
     private fun prepareMethodSpinner(view: View) {
-        val methodSpinner: Spinner = view.findViewById(R.id.add_toke_tool_used_dropdown)
+        methodSpinner= view.findViewById(R.id.add_toke_tool_used_dropdown)
         ArrayAdapter.createFromResource(
               context!!,
               R.array.ingestion_method,
               android.R.layout.simple_spinner_item
         ).also {
             it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            methodSpinner.adapter = it
+            methodSpinner?.adapter = it
         }
-        methodSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        methodSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 viewModel.methodSelection = parent?.getItemAtPosition(0).toString()
             }
@@ -143,16 +150,16 @@ class AddTokeScreen : Fragment() {
     }
 
     private fun prepareTypeSpinner(view: View) {
-        val typeSpinner: Spinner = view.findViewById(R.id.add_toke_type_dropdown)
+        typeSpinner = view.findViewById(R.id.add_toke_type_dropdown)
         ArrayAdapter.createFromResource(
               context!!,
               R.array.chronic_type,
               android.R.layout.simple_spinner_item
         ).also {
             it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            typeSpinner.adapter = it
+            typeSpinner?.adapter = it
         }
-        typeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        typeSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 viewModel.typeSelection = parent?.getItemAtPosition(0).toString()
             }
