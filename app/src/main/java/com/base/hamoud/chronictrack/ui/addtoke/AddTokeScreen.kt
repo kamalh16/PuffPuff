@@ -57,6 +57,7 @@ class AddTokeScreen : Fragment() {
         viewModel.lastAddedTokeLive.observe(this, Observer { toke ->
             toke?.let {
                 strainEditText?.setText(it.strain)
+
             }
         })
     }

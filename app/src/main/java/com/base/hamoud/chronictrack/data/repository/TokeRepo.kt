@@ -31,6 +31,15 @@ class TokeRepo(private val tokeDao: TokeDao) {
     }
 
     @WorkerThread
+    suspend fun getLastTokeTaken(): Toke? {
+        val todaysTokes = getTodaysTokes()
+        if (todaysTokes.isNotEmpty()) {
+            return todaysTokes.first()
+        }
+        return null
+    }
+
+    @WorkerThread
     suspend fun getTokesByUserForDate(date: OffsetDateTime): List<Toke> {
         return tokeDao.getTokeByUserIdAndDate(date)
     }
