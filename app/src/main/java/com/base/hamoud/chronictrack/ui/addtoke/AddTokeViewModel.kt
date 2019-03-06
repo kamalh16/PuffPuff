@@ -51,7 +51,7 @@ class AddTokeViewModel(application: Application) : BaseAndroidViewModel(applicat
     fun getLastAddedToke() {
         ioScope.launch {
             lastAddedTokeLive.postValue(
-                  tokeRepo.getTodaysTokes().last()
+                  tokeRepo.getTodaysTokes().first()
             )
         }
     }
