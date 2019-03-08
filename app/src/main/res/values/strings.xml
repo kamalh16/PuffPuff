@@ -19,14 +19,13 @@
         <item>Indica</item>
         <item>Hybrid</item>
         <item>Sativa</item>
-        <item>Concentrate</item>
         <item>CBD</item>
     </string-array>
 
-    <string-array name="ingestion_method">
+    <string-array name="tool_used">
         <item>Joint</item>
         <item>Vape</item>
-        <item>Water Bong</item>
+        <item>WaterBong</item>
         <item>Pipe</item>
         <item>Edible</item>
         <item>Dab</item>

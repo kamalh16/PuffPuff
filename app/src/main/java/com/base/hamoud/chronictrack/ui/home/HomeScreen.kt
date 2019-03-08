@@ -33,7 +33,6 @@ class HomeScreen : Fragment() {
         // prepare ui
         prepareTodaysTokeCountView()
 
-
         // observe
         observeOnUserLoggedInLive()
         observeOnGetUserTokesCountLive()

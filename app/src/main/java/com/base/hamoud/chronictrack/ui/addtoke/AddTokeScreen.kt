@@ -23,8 +23,8 @@ class AddTokeScreen : Fragment() {
     private var strainEditText: EditText? = null
     private var timeInputTextView: TextView? = null
     private var dateInputTextView: TextView? = null
-    private var typeSpinner: Spinner? = null
-    private var methodSpinner: Spinner? = null
+    private var chronicTypeSpinner: Spinner? = null
+    private var toolUsedSpinner: Spinner? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.screen_add_toke, container, false)
@@ -59,15 +59,60 @@ class AddTokeScreen : Fragment() {
         viewModel.lastAddedTokeLive.observe(this, Observer { toke ->
             toke?.let {
                 strainEditText?.setText(it.strain)
-                when(it.tokeType) {
-                    getString(R.string.indica) -> {
-                    // todo auto fill spinner and remove drop down
-//                        methodSpinner?. = 1
-                    }
-                }
+                setToolUsedSpinnerSelection(it.toolUsed)
+                setChronicTypeSpinnerSelection(it.tokeType)
             }
         })
     }
+
+    private fun setChronicTypeSpinnerSelection(tokeType: String): Unit? {
+        return when (tokeType) {
+            ChronicTypes.Indica.name ->
+                chronicTypeSpinner?.setSelection(ChronicTypes.Indica.ordinal, true)
+            ChronicTypes.Hybrid.name ->
+                chronicTypeSpinner?.setSelection(ChronicTypes.Hybrid.ordinal, true)
+            ChronicTypes.Sativa.name ->
+                chronicTypeSpinner?.setSelection(ChronicTypes.Sativa.ordinal, true)
+            ChronicTypes.CBD.name ->
+                chronicTypeSpinner?.setSelection(ChronicTypes.CBD.ordinal, true)
+            else ->
+                chronicTypeSpinner?.setSelection(1, true)
+        }
+    }
+    enum class ChronicTypes {
+        Indica,
+        Hybrid,
+        Sativa,
+        CBD
+    }
+    enum class Tools {
+        Joint,
+        Vape,
+        WaterBong,
+        Pipe,
+        Edible,
+        Dab
+    }
+    private fun setToolUsedSpinnerSelection(toolUsed: String): Unit? {
+        return when (toolUsed) {
+            Tools.Joint.name ->
+                toolUsedSpinner?.setSelection(Tools.Joint.ordinal, true)
+            Tools.Vape.name ->
+                toolUsedSpinner?.setSelection(Tools.Vape.ordinal, true)
+            Tools.WaterBong.name ->
+                toolUsedSpinner?.setSelection(Tools.WaterBong.ordinal, true)
+            Tools.Pipe.name  ->
+                toolUsedSpinner?.setSelection(Tools.Pipe.ordinal, true)
+            Tools.Edible.name  ->
+                toolUsedSpinner?.setSelection(Tools.Edible.ordinal, true)
+            Tools.Dab.name  ->
+                toolUsedSpinner?.setSelection(Tools.Dab.ordinal, true)
+            else ->
+                toolUsedSpinner?.setSelection(1, true)
+        }
+    }
+
+
 
     private fun prepareFormView(view: View) {
         prepareDateField()
@@ -129,16 +174,16 @@ class AddTokeScreen : Fragment() {
     }
 
     private fun prepareMethodSpinner(view: View) {
-        methodSpinner= view.findViewById(R.id.add_toke_tool_used_dropdown)
+        toolUsedSpinner= view.findViewById(R.id.add_toke_tool_used_dropdown)
         ArrayAdapter.createFromResource(
               context!!,
-              R.array.ingestion_method,
+              R.array.tool_used,
               android.R.layout.simple_spinner_item
         ).also {
             it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            methodSpinner?.adapter = it
+            toolUsedSpinner?.adapter = it
         }
-        methodSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        toolUsedSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 viewModel.methodSelection = parent?.getItemAtPosition(0).toString()
             }
@@ -150,16 +195,16 @@ class AddTokeScreen : Fragment() {
     }
 
     private fun prepareTypeSpinner(view: View) {
-        typeSpinner = view.findViewById(R.id.add_toke_type_dropdown)
+        chronicTypeSpinner = view.findViewById(R.id.add_toke_type_dropdown)
         ArrayAdapter.createFromResource(
               context!!,
               R.array.chronic_type,
               android.R.layout.simple_spinner_item
         ).also {
             it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            typeSpinner?.adapter = it
+            chronicTypeSpinner?.adapter = it
         }
-        typeSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        chronicTypeSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 viewModel.typeSelection = parent?.getItemAtPosition(0).toString()
             }
