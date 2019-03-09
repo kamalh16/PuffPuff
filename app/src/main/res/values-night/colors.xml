@@ -3,8 +3,9 @@
     <color name="colorPrimary">#DD000000</color>
     <color name="colorPrimaryDark">#DD000000</color>
     <color name="colorAccent">#008577</color>
-    <color name="statusBarColor">#CC000000</color>
-    <color name="textColorPrimary">#D5FFFFFF</color>
-    <color name="labelTextColorPrimary">#747373</color>
+    <color name="colorStatusBar">#CC000000</color>
+    <color name="colorPrimaryText">#D5FFFFFF</color>
+    <color name="colorPrimaryTextLabelColor">#747373</color>
     <color name="colorSwipeToDeleteBg">#F44336</color>
+    <color name="colorItemTokeBorderBottom">#80747373</color>
 </resources>

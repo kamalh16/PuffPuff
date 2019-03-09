@@ -31,7 +31,7 @@
         android:paddingEnd="16dp"
         android:paddingBottom="8dp"
         android:text="@string/label_toke_log"
-        android:textColor="@color/textColorPrimary"
+        android:textColor="@color/colorPrimaryText"
         android:textSize="38sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
