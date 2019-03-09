@@ -13,13 +13,16 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.base.hamoud.chronictrack.R
 import com.base.hamoud.chronictrack.data.entity.Toke
+import com.base.hamoud.chronictrack.ui.addtoke.model.ChronicTypes
+import com.base.hamoud.chronictrack.ui.addtoke.model.Tools
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.time.OffsetDateTime
 
 class AddTokeScreen : Fragment() {
 
     private lateinit var viewModel: AddTokeViewModel
 
-    private var saveButton: Button? = null
+    private var saveButton: FloatingActionButton? = null
     private var strainEditText: EditText? = null
     private var timeInputTextView: TextView? = null
     private var dateInputTextView: TextView? = null
@@ -79,20 +82,7 @@ class AddTokeScreen : Fragment() {
                 chronicTypeSpinner?.setSelection(1, true)
         }
     }
-    enum class ChronicTypes {
-        Indica,
-        Hybrid,
-        Sativa,
-        CBD
-    }
-    enum class Tools {
-        Joint,
-        Vape,
-        WaterBong,
-        Pipe,
-        Edible,
-        Dab
-    }
+
     private fun setToolUsedSpinnerSelection(toolUsed: String): Unit? {
         return when (toolUsed) {
             Tools.Joint.name ->
@@ -101,18 +91,16 @@ class AddTokeScreen : Fragment() {
                 toolUsedSpinner?.setSelection(Tools.Vape.ordinal, true)
             Tools.WaterBong.name ->
                 toolUsedSpinner?.setSelection(Tools.WaterBong.ordinal, true)
-            Tools.Pipe.name  ->
+            Tools.Pipe.name ->
                 toolUsedSpinner?.setSelection(Tools.Pipe.ordinal, true)
-            Tools.Edible.name  ->
+            Tools.Edible.name ->
                 toolUsedSpinner?.setSelection(Tools.Edible.ordinal, true)
-            Tools.Dab.name  ->
+            Tools.Dab.name ->
                 toolUsedSpinner?.setSelection(Tools.Dab.ordinal, true)
             else ->
                 toolUsedSpinner?.setSelection(1, true)
         }
     }
-
-
 
     private fun prepareFormView(view: View) {
         prepareDateField()
@@ -174,7 +162,7 @@ class AddTokeScreen : Fragment() {
     }
 
     private fun prepareMethodSpinner(view: View) {
-        toolUsedSpinner= view.findViewById(R.id.add_toke_tool_used_dropdown)
+        toolUsedSpinner = view.findViewById(R.id.add_toke_tool_used_dropdown)
         ArrayAdapter.createFromResource(
               context!!,
               R.array.tool_used,
