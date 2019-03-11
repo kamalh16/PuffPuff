@@ -7,10 +7,19 @@ import java.time.OffsetDateTime
 
 class TokeRepo(private val tokeDao: TokeDao) {
 
-
     @WorkerThread
     fun insert(toke: Toke): Long {
         return tokeDao.insert(toke)
+    }
+
+    @WorkerThread
+    fun update(toke: Toke) {
+        return tokeDao.update(toke)
+    }
+
+    @WorkerThread
+    suspend fun getTokeById(tokeId: String): Toke? {
+        return tokeDao.getTokeById(tokeId)
     }
 
     @WorkerThread
@@ -20,7 +29,7 @@ class TokeRepo(private val tokeDao: TokeDao) {
 
     @WorkerThread
     suspend fun getTodaysTokes():
-            List<Toke> {
+          List<Toke> {
         val today = OffsetDateTime.now()
 
         return getAllTokes().filter {
