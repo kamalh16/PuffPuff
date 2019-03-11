@@ -23,6 +23,10 @@
         <action
             android:id="@+id/action_toke_log_screen_to_add_toke_screen"
             app:destination="@id/add_toke_screen" />
+        <!-- ACTION: Toke Log Screen to Edit Toke Screen -->
+        <action
+            android:id="@+id/action_toke_log_screen_to_edit_toke_screen"
+            app:destination="@id/edit_toke_screen" />
     </fragment>
 
     <!-- Add Toke Screen -->
@@ -30,6 +34,13 @@
         android:id="@+id/add_toke_screen"
         android:name="com.base.hamoud.chronictrack.ui.addtoke.AddTokeScreen"
         android:label="AddTokeScreen"
+        tools:layout="@layout/screen_add_toke" />
+
+    <!-- Edit Toke Screen -->
+    <fragment
+        android:id="@+id/edit_toke_screen"
+        android:name="com.base.hamoud.chronictrack.ui.edittoke.EditTokeScreen"
+        android:label="EditTokeScreen"
         tools:layout="@layout/screen_add_toke" />
 
     <!-- Settings Screen -->

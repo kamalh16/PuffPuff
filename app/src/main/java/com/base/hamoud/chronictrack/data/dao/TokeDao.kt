@@ -9,6 +9,14 @@ import java.time.OffsetDateTime
 abstract class TokeDao : BaseDao<Toke> {
 
     /**
+     * Get a [Toke] by it's [tokeId]
+     *
+     * @return a [Toke] if found else [null]
+     */
+    @Query("SELECT * FROM TOKE_TABLE WHERE id = :tokeId")
+    abstract suspend fun getTokeById(tokeId: String): Toke?
+
+    /**
      * Get all [Toke]s in table db
      *
      * @return List of hits in db

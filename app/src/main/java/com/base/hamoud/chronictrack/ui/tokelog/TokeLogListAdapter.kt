@@ -5,9 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.navigation.Navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.base.hamoud.chronictrack.R
 import com.base.hamoud.chronictrack.data.entity.Toke
+import com.base.hamoud.chronictrack.ui.edittoke.EditTokeScreen
 import java.time.OffsetDateTime
 
 
@@ -37,6 +39,13 @@ class TokeLogListAdapter internal constructor(val context: Context) :
         holder.chronicTypeView.text = current.tokeType
         holder.chronicStrainView.text = current.strain
         holder.toolUsedView.text = current.toolUsed
+
+        // handle onClick
+        holder.itemView.setOnClickListener {
+            val args = EditTokeScreen.bundleArgs(tokeId = current.id)
+            findNavController(holder.itemView)
+                  .navigate(R.id.action_toke_log_screen_to_edit_toke_screen, args)
+        }
     }
 
     override fun getItemCount(): Int {
