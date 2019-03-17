@@ -44,7 +44,7 @@
         android:layout_marginTop="48dp"
         android:layout_marginEnd="8dp"
         android:gravity="center"
-        android:text="@string/today"
+        android:text="@string/today_at"
         android:textColor="@color/colorPrimaryText"
         android:textSize="28sp"
         app:layout_constraintBottom_toTopOf="@id/home_screen_toke_count_label"

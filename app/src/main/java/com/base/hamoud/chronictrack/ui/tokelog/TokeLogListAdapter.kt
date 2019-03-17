@@ -22,8 +22,7 @@ class TokeLogListAdapter internal constructor(val context: Context) :
 
     inner class HitViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val itemContainer: ConstraintLayout = itemView.findViewById(R.id.item_toke_container)
-        val tokeTimeView: TextView = itemView.findViewById(R.id.item_toke_time_field)
-        val tokeDateView: TextView = itemView.findViewById(R.id.item_toke_date_field)
+        val tokeTimeView: TextView = itemView.findViewById(R.id.item_toke_date_time_field)
         val chronicTypeView: TextView = itemView.findViewById(R.id.item_toke_type_field)
         val chronicStrainView: TextView = itemView.findViewById(R.id.item_toke_strain_field)
         val toolUsedView: TextView = itemView.findViewById(R.id.item_toke_tool_field)
@@ -36,8 +35,8 @@ class TokeLogListAdapter internal constructor(val context: Context) :
 
     override fun onBindViewHolder(holder: HitViewHolder, position: Int) {
         val current = tokeList[position]
-        holder.tokeTimeView.text = timeCreator(current.tokeDateTime)
-        holder.tokeDateView.text = context.getString(R.string.today)
+        holder.tokeTimeView.text = String.format(
+              "%s %s", context.getString(R.string.today_at), timeCreator(current.tokeDateTime))
         holder.chronicTypeView.text = current.tokeType
         holder.chronicStrainView.text = current.strain
         holder.toolUsedView.text = current.toolUsed
