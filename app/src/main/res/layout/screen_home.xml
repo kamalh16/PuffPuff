@@ -22,7 +22,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Screen Label Border Bottom -->
+    <!-- Home Screen Label Border Bottom -->
     <View
         android:id="@+id/home_screen_label_border_bottom"
         android:layout_width="0dp"
@@ -35,66 +35,62 @@
         app:layout_constraintTop_toBottomOf="@id/home_screen_label"
         app:layout_constraintWidth_percent="1" />
 
-    <!-- Home Screen Date Label -->
+    <!-- Tokes Today Label -->
     <TextView
-        android:id="@+id/home_screen_date_label"
+        android:id="@+id/home_screen_tokes_today_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="76dp"
+        android:fontFamily="@font/coda"
         android:gravity="center"
-        android:text="@string/today_at"
-        android:textColor="@color/colorPrimaryText"
+        android:padding="4dp"
+        android:text="@string/tokes_today"
+        android:textColor="@color/colorPrimaryTextLabelColor"
         android:textSize="28sp"
-        app:layout_constraintBottom_toTopOf="@id/home_screen_toke_count_label"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/home_screen_label_border_bottom" />
 
-    <!-- Home Screen Toke Count -->
+    <!-- Tokes Today Total Count -->
     <TextView
-        android:id="@+id/home_screen_toke_count_label"
+        android:id="@+id/home_screen_todays_toke_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:fontFamily="@font/coda"
+        android:text="@string/zero"
+        android:textColor="@color/colorPrimaryText"
+        android:textSize="38sp"
+        app:layout_constraintBottom_toBottomOf="@+id/home_screen_tokes_today_label"
+        app:layout_constraintStart_toEndOf="@+id/home_screen_tokes_today_label" />
+
+    <!-- Last Toke Time Label -->
+    <TextView
+        android:id="@+id/home_screen_last_hit_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="48dp"
+        android:fontFamily="@font/coda"
+        android:gravity="center"
+        android:padding="4dp"
+        android:text="@string/last_toke"
+        android:textColor="@color/colorPrimaryTextLabelColor"
+        android:textSize="28sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/home_screen_tokes_today_label" />
+
+    <!-- Last Toke Chronometer Timer -->
+    <Chronometer
+        android:id="@+id/home_screen_last_hit_chronometer"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:gravity="center"
-        android:padding="8dp"
+        android:layout_marginStart="48dp"
+        android:fontFamily="@font/coda"
         android:text="@string/zero"
         android:textColor="@color/colorPrimaryText"
         android:textSize="38sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/home_screen_date_label" />
-
-    <TextView
-        android:id="@+id/home_timer_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:gravity="center"
-        android:text="@string/last_hit"
-        android:textColor="@color/colorPrimaryText"
-        android:textSize="28sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/home_screen_toke_count_label" />
-
-    <Chronometer
-        android:id="@+id/home_timer_chrono"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:gravity="center"
-        android:padding="8dp"
-        android:text="@string/zero"
-        android:textColor="@color/colorPrimaryText"
-        android:textSize="38sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/home_timer_title" />
+        app:layout_constraintBottom_toBottomOf="@+id/home_screen_last_hit_label"
+        app:layout_constraintStart_toEndOf="@+id/home_screen_last_hit_label" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

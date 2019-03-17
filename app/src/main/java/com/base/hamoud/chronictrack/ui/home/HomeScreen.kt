@@ -12,7 +12,6 @@ import androidx.lifecycle.ViewModelProviders
 import com.base.hamoud.chronictrack.R
 import com.base.hamoud.chronictrack.data.entity.User
 import timber.log.Timber
-import java.util.concurrent.TimeUnit
 
 class HomeScreen : Fragment() {
 
@@ -48,7 +47,7 @@ class HomeScreen : Fragment() {
             tokeTimerChronometer?.start()
         })
     }
-    
+
     private fun observeOnUserLoggedInLive() {
         viewModel.loggedInUserLive.observe(this, Observer {
             if (it != null) {
@@ -67,8 +66,8 @@ class HomeScreen : Fragment() {
     }
 
     private fun prepareTodaysTokeCountView() {
-        tokeCountView = view?.findViewById(R.id.home_screen_toke_count_label)
-        tokeTimerChronometer = view?.findViewById(R.id.home_timer_chrono)
+        tokeCountView = view?.findViewById(R.id.home_screen_todays_toke_count)
+        tokeTimerChronometer = view?.findViewById(R.id.home_screen_last_hit_chronometer)
     }
 
 }

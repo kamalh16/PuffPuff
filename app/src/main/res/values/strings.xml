@@ -17,7 +17,8 @@
     <string name="strain_name">Strain Name</string>
     <string name="save">Save</string>
     <string name="today_at">Today at</string>
-    <string name="last_hit">Last Hit</string>
+    <string name="last_toke">Last Toke</string>
+    <string name="tokes_today">Tokes Today</string>
 
     <string-array name="chronic_type">
         <item>Indica</item>

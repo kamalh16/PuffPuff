@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_toke_container"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingTop="8dp">
 
     <ImageView
         android:id="@+id/item_toke_icon"
@@ -21,13 +22,12 @@
     <!-- Item Toke Tool Label -->
     <TextView
         android:id="@+id/item_toke_tool_label"
-        style="@style/hit_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:fontFamily="sans-serif-condensed-light"
+        android:fontFamily="@font/coda"
         android:padding="4dp"
         android:text="@string/label_toke_tool"
         android:textColor="@color/colorPrimaryTextLabelColor"
@@ -40,13 +40,13 @@
     <!-- Item Toke Tool (pipe, bong, etc.) -->
     <TextView
         android:id="@+id/item_toke_tool_field"
-        style="@style/hit_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:fontFamily="sans-serif-light"
+        android:fontFamily="@font/coda"
         android:padding="4dp"
         android:text="@string/zero"
+        android:textColor="@color/colorPrimaryText"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/item_toke_type_field"
@@ -55,12 +55,11 @@
     <!-- Item Toke Type Label (sativa, hybrid, indica) -->
     <TextView
         android:id="@+id/item_toke_type_label"
-        style="@style/hit_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:fontFamily="sans-serif-condensed-light"
+        android:fontFamily="@font/coda"
         android:padding="4dp"
         android:text="@string/label_toke_type"
         android:textColor="@color/colorPrimaryTextLabelColor"
@@ -72,13 +71,13 @@
     <!-- Item Toke Type (sativa, hybrid, indica) -->
     <TextView
         android:id="@+id/item_toke_type_field"
-        style="@style/hit_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:fontFamily="sans-serif-light"
+        android:fontFamily="@font/coda"
         android:padding="4dp"
         android:text="@string/zero"
+        android:textColor="@color/colorPrimaryText"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/item_toke_tool_field"
         app:layout_constraintStart_toStartOf="@+id/item_toke_strain_field"
@@ -87,12 +86,11 @@
     <!-- Item Toke Strain Label -->
     <TextView
         android:id="@+id/item_toke_strain_label"
-        style="@style/hit_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:fontFamily="sans-serif-condensed-light"
+        android:fontFamily="@font/coda"
         android:padding="4dp"
         android:text="@string/label_toke_strain"
         android:textColor="@color/colorPrimaryTextLabelColor"
@@ -104,15 +102,15 @@
     <!-- Item Toke Strain (Alien OG, Sweet Lemon Haze, etc) -->
     <TextView
         android:id="@+id/item_toke_strain_field"
-        style="@style/hit_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:fontFamily="sans-serif-light"
+        android:fontFamily="@font/coda"
         android:padding="4dp"
         android:text="@string/zero"
+        android:textColor="@color/colorPrimaryText"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/item_toke_type_field"
         app:layout_constraintStart_toEndOf="@+id/item_toke_strain_label"
@@ -122,13 +120,13 @@
     <!-- Item Toke Date & Time ("today at hh:mm:ss") -->
     <TextView
         android:id="@+id/item_toke_date_time_field"
-        style="@style/hit_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:fontFamily="sans-serif-light"
+        android:fontFamily="@font/coda"
         android:text="@string/zero"
+        android:textColor="@color/colorPrimaryText"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
