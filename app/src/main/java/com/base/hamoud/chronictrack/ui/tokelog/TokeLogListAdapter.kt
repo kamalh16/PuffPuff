@@ -1,6 +1,7 @@
 package com.base.hamoud.chronictrack.ui.tokelog
 
 import android.content.Context
+import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -66,14 +67,21 @@ class TokeLogListAdapter internal constructor(val context: Context) :
     private fun dateCreator(date: OffsetDateTime) = "${date.dayOfMonth} / ${date.monthValue} / ${date.year}"
 
     /**
-     * Format [date] to a readable time format.
+     * Format [date] to a readable time format based on the
+     * device's format (whether 24-hour format is set in the device's system settings).
      *
      * @param date [OffsetDateTime] to format
      *
      * @return formatted [OffsetDateTime] as [String]
      */
     private fun formatTime(date: OffsetDateTime): String {
-        val dateFormatter = DateTimeFormatter.ofPattern("hh:mm a")
-        return dateFormatter.format(date)
+        val isDevice24HourClock = DateFormat.is24HourFormat(context.applicationContext)
+        val pattern = if (isDevice24HourClock) {
+            "H:mm a"
+        } else {
+            "h:mm a"
+        }
+        // apply pattern and return
+        return DateTimeFormatter.ofPattern(pattern).format(date)
     }
 }
