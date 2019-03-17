@@ -12,6 +12,7 @@ import com.base.hamoud.chronictrack.R
 import com.base.hamoud.chronictrack.data.entity.Toke
 import com.base.hamoud.chronictrack.ui.edittoke.EditTokeScreen
 import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
 
 
 class TokeLogListAdapter internal constructor(val context: Context) :
@@ -36,7 +37,7 @@ class TokeLogListAdapter internal constructor(val context: Context) :
     override fun onBindViewHolder(holder: HitViewHolder, position: Int) {
         val current = tokeList[position]
         holder.tokeTimeView.text = String.format(
-              "%s %s", context.getString(R.string.today_at), timeCreator(current.tokeDateTime))
+              "%s %s", context.getString(R.string.today_at), formatTime(current.tokeDateTime))
         holder.chronicTypeView.text = current.tokeType
         holder.chronicStrainView.text = current.strain
         holder.toolUsedView.text = current.toolUsed
@@ -52,6 +53,11 @@ class TokeLogListAdapter internal constructor(val context: Context) :
         return tokeList.size
     }
 
+    /**
+     * Set new tokes and calls [notifyDataSetChanged] to refresh the [TokeLogListAdapter]
+     *
+     * @param tokes [List] of [Toke]s
+     */
     internal fun setTokeList(tokes: List<Toke>) {
         this.tokeList = tokes
         notifyDataSetChanged()
@@ -59,14 +65,15 @@ class TokeLogListAdapter internal constructor(val context: Context) :
 
     private fun dateCreator(date: OffsetDateTime) = "${date.dayOfMonth} / ${date.monthValue} / ${date.year}"
 
-    private fun timeCreator(date: OffsetDateTime): String {
-        val hour: String = date.hour.toString()
-        val minuteCalendar = date.minute
-        val minutes: String = if (minuteCalendar < 10) {
-            "0$minuteCalendar"
-        } else {
-            minuteCalendar.toString()
-        }
-        return "$hour:$minutes"
+    /**
+     * Format [date] to a readable time format.
+     *
+     * @param date [OffsetDateTime] to format
+     *
+     * @return formatted [OffsetDateTime] as [String]
+     */
+    private fun formatTime(date: OffsetDateTime): String {
+        val dateFormatter = DateTimeFormatter.ofPattern("hh:mm a")
+        return dateFormatter.format(date)
     }
 }
