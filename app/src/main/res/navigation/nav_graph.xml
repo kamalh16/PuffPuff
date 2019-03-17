@@ -10,8 +10,7 @@
         android:id="@+id/home_screen"
         android:name="com.base.hamoud.chronictrack.ui.home.HomeScreen"
         android:label="HomeScreen"
-        tools:layout="@layout/screen_home" >
-    </fragment>
+        tools:layout="@layout/screen_home" />
 
     <!-- Toke Log Screen -->
     <fragment
@@ -57,7 +56,7 @@
         android:id="@+id/settings_screen"
         android:name="com.base.hamoud.chronictrack.ui.settings.SettingsScreen"
         android:label="SettingsScreen"
-        tools:layout="@layout/screen_settings" >
+        tools:layout="@layout/screen_settings">
 
     </fragment>
 </navigation>

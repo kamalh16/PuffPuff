@@ -101,7 +101,6 @@ class MainActivity : AppCompatActivity() {
                           .setEnterAnim(R.anim.fade_in)
                           .setExitAnim(R.anim.fade_out)
                           .setPopUpTo(it.itemId, true)
-                          .setLaunchSingleTop(true)
                           .build()
 
                     when (it.itemId) {
@@ -128,11 +127,6 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                     false
-                }
-
-                // prevents ability to reselect tab
-                setOnNavigationItemReselectedListener {
-                    return@setOnNavigationItemReselectedListener
                 }
             }
         }

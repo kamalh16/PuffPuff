@@ -7,7 +7,6 @@ import com.base.hamoud.chronictrack.data.entity.Toke
 import com.base.hamoud.chronictrack.data.entity.User
 import com.base.hamoud.chronictrack.data.repository.TokeRepo
 import com.base.hamoud.chronictrack.data.repository.UserRepo
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class TokeLogViewModel(application: Application) : BaseAndroidViewModel(application) {
@@ -35,9 +34,9 @@ class TokeLogViewModel(application: Application) : BaseAndroidViewModel(applicat
     }
 
     private fun getLoggedInUser() {
-        ioScope.launch(Dispatchers.IO) {
+        ioScope.launch {
             loggedInUserLive.postValue(
-                userRepo.getUserByUsername("Chron")
+                  userRepo.getUserByUsername("Chron")
             )
         }
     }
