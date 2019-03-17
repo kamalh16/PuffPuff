@@ -13,8 +13,8 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.base.hamoud.chronictrack.R
 import com.base.hamoud.chronictrack.data.entity.Toke
-import com.base.hamoud.chronictrack.ui.addtoke.model.ChronicTypes
-import com.base.hamoud.chronictrack.ui.addtoke.model.Tools
+import com.base.hamoud.chronictrack.data.model.ChronicTypes
+import com.base.hamoud.chronictrack.data.model.Tools
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.time.OffsetDateTime
 

@@ -1,4 +1,4 @@
-package com.base.hamoud.chronictrack.ui.addtoke.model
+package com.base.hamoud.chronictrack.data.model
 
 enum class Tools {
     Joint,
