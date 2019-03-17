@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary">
@@ -11,6 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginTop="56dp"
+        android:fontFamily="@font/roboto_condensed_bold"
         android:gravity="start"
         android:paddingStart="16dp"
         android:paddingTop="16dp"
@@ -42,12 +44,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="76dp"
-        android:fontFamily="@font/coda"
+        android:fontFamily="@font/roboto"
         android:gravity="center"
         android:padding="4dp"
         android:text="@string/tokes_today"
         android:textColor="@color/colorPrimaryTextLabelColor"
-        android:textSize="28sp"
+        android:textSize="26sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/home_screen_label_border_bottom" />
 
@@ -57,7 +59,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
-        android:fontFamily="@font/coda"
+        android:fontFamily="@font/roboto"
         android:text="@string/zero"
         android:textColor="@color/colorPrimaryText"
         android:textSize="38sp"
@@ -71,12 +73,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="48dp"
-        android:fontFamily="@font/coda"
+        android:fontFamily="@font/roboto"
         android:gravity="center"
         android:padding="4dp"
         android:text="@string/last_toke"
         android:textColor="@color/colorPrimaryTextLabelColor"
-        android:textSize="28sp"
+        android:textSize="26sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/home_screen_tokes_today_label" />
 
@@ -85,12 +87,11 @@
         android:id="@+id/home_screen_last_hit_chronometer"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginStart="48dp"
-        android:fontFamily="@font/coda"
+        android:fontFamily="@font/roboto"
         android:text="@string/zero"
         android:textColor="@color/colorPrimaryText"
         android:textSize="38sp"
         app:layout_constraintBottom_toBottomOf="@+id/home_screen_last_hit_label"
-        app:layout_constraintStart_toEndOf="@+id/home_screen_last_hit_label" />
+        app:layout_constraintStart_toStartOf="@+id/home_screen_todays_toke_count" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
