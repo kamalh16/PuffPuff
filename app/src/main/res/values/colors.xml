@@ -5,7 +5,7 @@
     <color name="colorAccent">#008577</color>
     <color name="colorStatusBar">#1A000000</color>
     <color name="colorPrimaryText">#D5000000</color>
-    <color name="colorPrimaryTextLabelColor">#BDBABA</color>
+    <color name="colorPrimaryTextLabelColor">#AFADAD</color>
     <color name="colorSwipeToDeleteBg">#F44336</color>
     <color name="colorItemTokeBorderBottom">#efefef</color>
 </resources>
