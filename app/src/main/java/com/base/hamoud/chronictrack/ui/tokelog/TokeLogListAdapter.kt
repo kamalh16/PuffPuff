@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.Navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.base.hamoud.chronictrack.R
@@ -20,6 +21,7 @@ class TokeLogListAdapter internal constructor(val context: Context) :
     private var tokeList = listOf<Toke>()// cached copy of tokeList
 
     inner class HitViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val itemContainer: ConstraintLayout = itemView.findViewById(R.id.item_toke_container)
         val tokeTimeView: TextView = itemView.findViewById(R.id.item_toke_time_field)
         val tokeDateView: TextView = itemView.findViewById(R.id.item_toke_date_field)
         val chronicTypeView: TextView = itemView.findViewById(R.id.item_toke_type_field)
@@ -41,10 +43,9 @@ class TokeLogListAdapter internal constructor(val context: Context) :
         holder.toolUsedView.text = current.toolUsed
 
         // handle onClick
-        holder.itemView.setOnClickListener {
+        holder.itemContainer.setOnClickListener {
             val args = EditTokeScreen.bundleArgs(tokeId = current.id)
-            findNavController(holder.itemView)
-                  .navigate(R.id.action_toke_log_screen_to_edit_toke_screen, args)
+            findNavController(it).navigate(R.id.action_toke_log_screen_to_edit_toke_screen, args)
         }
     }
 
