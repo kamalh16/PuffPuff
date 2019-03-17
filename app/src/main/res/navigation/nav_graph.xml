@@ -10,7 +10,8 @@
         android:id="@+id/home_screen"
         android:name="com.base.hamoud.chronictrack.ui.home.HomeScreen"
         android:label="HomeScreen"
-        tools:layout="@layout/screen_home" />
+        tools:layout="@layout/screen_home" >
+    </fragment>
 
     <!-- Toke Log Screen -->
     <fragment
@@ -22,11 +23,19 @@
         <!-- ACTION: Toke Log Screen to Add Toke Screen -->
         <action
             android:id="@+id/action_toke_log_screen_to_add_toke_screen"
-            app:destination="@id/add_toke_screen" />
+            app:destination="@id/add_toke_screen"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
         <!-- ACTION: Toke Log Screen to Edit Toke Screen -->
         <action
             android:id="@+id/action_toke_log_screen_to_edit_toke_screen"
-            app:destination="@id/edit_toke_screen" />
+            app:destination="@id/edit_toke_screen"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
     </fragment>
 
     <!-- Add Toke Screen -->
@@ -48,5 +57,7 @@
         android:id="@+id/settings_screen"
         android:name="com.base.hamoud.chronictrack.ui.settings.SettingsScreen"
         android:label="SettingsScreen"
-        tools:layout="@layout/screen_settings" />
+        tools:layout="@layout/screen_settings" >
+
+    </fragment>
 </navigation>

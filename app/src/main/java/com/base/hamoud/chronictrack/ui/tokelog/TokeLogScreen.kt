@@ -66,13 +66,13 @@ class TokeLogScreen : Fragment() {
 
         // setup RecyclerView
         hitListRecyclerView?.adapter = adapter
-        hitListRecyclerView?.layoutManager = LinearLayoutManager(context) as RecyclerView.LayoutManager?
+        hitListRecyclerView?.layoutManager = LinearLayoutManager(context)
     }
 
     private fun prepareAddTokeBtn() {
         val addTokeBtn = view?.findViewById<FloatingActionButton>(R.id.toke_log_add_toke_btn)
         addTokeBtn?.setOnClickListener {
-            findNavController().navigate(R.id.add_toke_screen)
+            findNavController().navigate(R.id.action_toke_log_screen_to_add_toke_screen)
         }
     }
 

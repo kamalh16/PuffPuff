@@ -98,6 +98,8 @@ class MainActivity : AppCompatActivity() {
 
                     val rootScreenNavOptions = NavOptions
                           .Builder()
+                          .setEnterAnim(R.anim.fade_in)
+                          .setExitAnim(R.anim.fade_out)
                           .setPopUpTo(it.itemId, true)
                           .setLaunchSingleTop(true)
                           .build()
