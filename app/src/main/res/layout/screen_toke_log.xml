@@ -50,6 +50,23 @@
         app:layout_constraintTop_toBottomOf="@id/toke_log_screen_label"
         app:layout_constraintWidth_percent="1" />
 
+    <!-- Screen Empty List Msg -->
+    <TextView
+        android:id="@+id/toke_log_screen_empty_list_msg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="@font/roboto_condensed_bold"
+        android:gravity="center"
+        android:text="@string/toke_log_screen_empty_list_desc"
+        android:textColor="@color/colorPrimaryTextLabelColor"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/toke_log_recycler_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <!-- Add Toke Floating Action Bottom -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/toke_log_add_toke_btn"

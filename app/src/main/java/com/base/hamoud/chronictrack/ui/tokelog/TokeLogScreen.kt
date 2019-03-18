@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -20,6 +21,7 @@ class TokeLogScreen : Fragment() {
     private var loggedInUser: User? = null
     private lateinit var viewModel: TokeLogViewModel
 
+    private var tokeEmptyListMsgView: TextView? = null
     private var hitListRecyclerView: RecyclerView? = null
     private lateinit var adapter: TokeLogListAdapter
 
@@ -33,6 +35,7 @@ class TokeLogScreen : Fragment() {
 
         // prepare ui
         prepareTokeRvList()
+        prepareTokeEmptyListMsgView()
         prepareAddTokeBtn()
 
         // observe
@@ -55,6 +58,9 @@ class TokeLogScreen : Fragment() {
     private fun observeOnGetUserTokeListLive() {
         viewModel.userTokeListLive.observe(this, Observer {
             if (it != null) {
+                if (it.isEmpty()) {
+                    showTokeEmptyListMsgView()
+                }
                 adapter.setTokeList(it)
             }
         })
@@ -67,6 +73,19 @@ class TokeLogScreen : Fragment() {
         // setup RecyclerView
         hitListRecyclerView?.adapter = adapter
         hitListRecyclerView?.layoutManager = LinearLayoutManager(context)
+    }
+
+    private fun prepareTokeEmptyListMsgView() {
+        tokeEmptyListMsgView = view?.findViewById(R.id.toke_log_screen_empty_list_msg)
+        hideTokeEmptyListMsgView()
+    }
+
+    private fun showTokeEmptyListMsgView() {
+        tokeEmptyListMsgView?.visibility = View.VISIBLE
+    }
+
+    private fun hideTokeEmptyListMsgView() {
+        tokeEmptyListMsgView?.visibility = View.INVISIBLE
     }
 
     private fun prepareAddTokeBtn() {

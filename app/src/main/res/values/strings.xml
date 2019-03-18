@@ -19,6 +19,7 @@
     <string name="today_at">Today at</string>
     <string name="last_toke">Last Toke</string>
     <string name="tokes_today">Tokes Today</string>
+    <string name="toke_log_screen_empty_list_desc">No Tokes today, not yet at least...</string>
 
     <string-array name="chronic_type">
         <item>Indica</item>
