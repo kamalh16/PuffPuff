@@ -73,6 +73,8 @@ class TokeLogScreen : Fragment() {
         // setup RecyclerView
         hitListRecyclerView?.adapter = adapter
         hitListRecyclerView?.layoutManager = LinearLayoutManager(context)
+        hitListRecyclerView?.setHasFixedSize(true)
+        hitListRecyclerView?.setItemViewCacheSize(10)
     }
 
     private fun prepareTokeEmptyListMsgView() {
