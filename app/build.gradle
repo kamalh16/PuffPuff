@@ -72,6 +72,9 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
     kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
 
+    // TimeAgo (https://github.com/marlonlom/timeago)
+    implementation 'com.github.marlonlom:timeago:4.0.1'
+
     // region Test helpers
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.2-alpha01'

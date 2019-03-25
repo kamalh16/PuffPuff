@@ -130,7 +130,7 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="7:42:08 pm" />
+        tools:text="Today at 7:42:08 pm | 5 mins ago" />
 
     <!-- Item Toke Border Bottom -->
     <View
