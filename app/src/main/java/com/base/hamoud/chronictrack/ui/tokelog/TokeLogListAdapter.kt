@@ -42,7 +42,7 @@ class TokeLogListAdapter internal constructor(val context: Context) :
         val tokeTimeAgo = getTimeAgo(tokeItem.tokeDateTime.toInstant().toEpochMilli())
 
         holder.tokeTimeView.text = String.format(
-            "%s %s | %s", context.getString(R.string.today_at), tokeTime, tokeTimeAgo
+            "%s %s ❘ %s", context.getString(R.string.today_at), tokeTime, tokeTimeAgo
         )
         holder.chronicTypeView.text = tokeItem.tokeType
         holder.chronicStrainView.text = tokeItem.strain
