@@ -69,13 +69,12 @@ class TokeLogScreen : Fragment() {
     private fun prepareTokeRvList() {
         hitListRecyclerView = view?.findViewById(R.id.toke_log_recycler_view)
         adapter = TokeLogListAdapter(context!!)
-        adapter.setHasStableIds(true)
 
         // setup RecyclerView
         hitListRecyclerView?.adapter = adapter
         hitListRecyclerView?.layoutManager = LinearLayoutManager(context)
         hitListRecyclerView?.setHasFixedSize(true)
-        hitListRecyclerView?.setItemViewCacheSize(20)
+        hitListRecyclerView?.setItemViewCacheSize(10)
     }
 
     private fun prepareTokeEmptyListMsgView() {
