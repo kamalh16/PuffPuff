@@ -1,18 +1,17 @@
 package com.base.hamoud.chronictrack.ui.addtoke
 
 import android.app.Application
+import android.text.format.DateFormat
 import androidx.lifecycle.MutableLiveData
 import com.base.hamoud.chronictrack.BaseAndroidViewModel
 import com.base.hamoud.chronictrack.data.entity.Toke
-import com.base.hamoud.chronictrack.data.entity.User
 import com.base.hamoud.chronictrack.data.repository.TokeRepo
-import com.base.hamoud.chronictrack.data.repository.UserRepo
 import kotlinx.coroutines.launch
 import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
 
-class AddTokeViewModel(application: Application) : BaseAndroidViewModel(application) {
+class AddTokeViewModel(private var app: Application) : BaseAndroidViewModel(app) {
 
-    var userRepo: UserRepo = UserRepo(db.userDao())
     var tokeRepo: TokeRepo = TokeRepo(db.tokeDao())
 
     lateinit var typeSelection: String
@@ -21,14 +20,11 @@ class AddTokeViewModel(application: Application) : BaseAndroidViewModel(applicat
 
     var now: OffsetDateTime
 
-    var loggedInUserLive: MutableLiveData<User> = MutableLiveData()
     var dateTimeLiveData: MutableLiveData<OffsetDateTime> = MutableLiveData()
     var lastAddedTokeLive: MutableLiveData<Toke> = MutableLiveData()
 
     init {
-        getLoggedInUser()
         now = OffsetDateTime.now()
-        postTime()
     }
 
     override fun onCleared() {
@@ -40,14 +36,6 @@ class AddTokeViewModel(application: Application) : BaseAndroidViewModel(applicat
         tokeRepo.insert(toke)
     }
 
-    private fun getLoggedInUser() {
-        ioScope.launch {
-            loggedInUserLive.postValue(
-                  userRepo.getUserByUsername("Chron")
-            )
-        }
-    }
-
     fun getLastAddedToke() {
         ioScope.launch {
             tokeRepo.getLastTokeTaken().let {
@@ -56,30 +44,41 @@ class AddTokeViewModel(application: Application) : BaseAndroidViewModel(applicat
         }
     }
 
-    private fun postTime() {
-        dateTimeLiveData.postValue(now)
-    }
-
     fun updateDate(year: Int, month: Int, dayOfMonth: Int) {
         now = now.withYear(year).withMonth(month).withDayOfMonth(dayOfMonth)
-        postTime()
+        dateTimeLiveData.postValue(now)
     }
 
     fun updateTime(hour: Int, minute: Int) {
         now = now.withHour(hour).withMinute(minute)
-        postTime()
+        dateTimeLiveData.postValue(now)
+
     }
 
-    fun dateCreator() = "${now.dayOfMonth} / ${now.monthValue} / ${now.year}"
+    /**
+     * @return [String] formatted date
+     */
+    fun getFormattedDate() = "${now.dayOfMonth} / ${now.monthValue} / ${now.year}"
 
-    fun timeCreator(): String {
-        val hour: String = now.hour.toString()
-        val minuteCalendar = now.minute
-        val minutes: String = if (minuteCalendar < 10) {
-            "0$minuteCalendar"
+    /**
+     * Format [now] to a readable time format based on the
+     * device's format (whether 24-hour format is set in the device's system settings).
+     *
+     * @return formatted [OffsetDateTime] as [String]
+     */
+    fun getFormattedTokeTime(): String {
+        val isDevice24HourClock = DateFormat.is24HourFormat(app.applicationContext)
+        val pattern = if (isDevice24HourClock) {
+            "H:mm a"
         } else {
-            minuteCalendar.toString()
+            "h:mm a"
         }
-        return "$hour:$minutes"
+        // apply pattern and return
+        return DateTimeFormatter
+              .ofPattern(pattern)
+              .format(now)
+              .replace("AM", "am")
+              .replace("PM", "pm")
     }
+
 }
