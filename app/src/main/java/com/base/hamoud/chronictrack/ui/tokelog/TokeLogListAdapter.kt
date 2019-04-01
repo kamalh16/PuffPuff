@@ -18,7 +18,7 @@ import java.time.format.DateTimeFormatter
 
 
 class TokeLogListAdapter internal constructor(val context: Context) :
-    RecyclerView.Adapter<TokeLogListAdapter.HitViewHolder>() {
+      RecyclerView.Adapter<TokeLogListAdapter.HitViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var tokeList = listOf<Toke>()// cached copy of tokeList
@@ -42,7 +42,7 @@ class TokeLogListAdapter internal constructor(val context: Context) :
         val tokeTimeAgo = getTimeAgo(tokeItem.tokeDateTime.toInstant().toEpochMilli())
 
         holder.tokeTimeView.text = String.format(
-            "%s %s ❘ %s", context.getString(R.string.today_at), tokeTime, tokeTimeAgo
+              "%s ❘ %s %s", tokeTimeAgo, context.getString(R.string.today_at), tokeTime
         )
         holder.chronicTypeView.text = tokeItem.tokeType
         holder.chronicStrainView.text = tokeItem.strain
@@ -88,10 +88,10 @@ class TokeLogListAdapter internal constructor(val context: Context) :
         }
         // apply pattern and return
         return DateTimeFormatter
-            .ofPattern(pattern)
-            .format(date)
-            .replace("AM", "am")
-            .replace("PM", "pm")
+              .ofPattern(pattern)
+              .format(date)
+              .replace("AM", "am")
+              .replace("PM", "pm")
     }
 
     /**
@@ -103,7 +103,7 @@ class TokeLogListAdapter internal constructor(val context: Context) :
      */
     private fun getTimeAgo(timeInMillis: Long): String {
         return TimeAgo.using(timeInMillis)
-            .replace("minutes", "mins")
-            .replace("hours", "hrs")
+              .replace("minutes", "mins")
+              .replace("hours", "hrs")
     }
 }
