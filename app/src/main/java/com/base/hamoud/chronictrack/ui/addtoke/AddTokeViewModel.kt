@@ -52,13 +52,12 @@ class AddTokeViewModel(private var app: Application) : BaseAndroidViewModel(app)
     fun updateTime(hour: Int, minute: Int) {
         now = now.withHour(hour).withMinute(minute)
         dateTimeLiveData.postValue(now)
-
     }
 
     /**
      * @return [String] formatted date
      */
-    fun getFormattedDate() = "${now.dayOfMonth} / ${now.monthValue} / ${now.year}"
+    fun getFormattedTokeDate() = "${now.dayOfMonth} / ${now.monthValue} / ${now.year}"
 
     /**
      * Format [now] to a readable time format based on the

@@ -46,6 +46,7 @@ class EditTokeScreen : Fragment() {
           inflater: LayoutInflater,
           container: ViewGroup?,
           savedInstanceState: Bundle?): View? {
+        
         // retrieve tokeId from bundle args
         tokeId = arguments?.getString(ARG_TOKE_ID)
 
@@ -58,7 +59,7 @@ class EditTokeScreen : Fragment() {
         viewModel = ViewModelProviders.of(this).get(EditTokeViewModel::class.java)
 
         // prepare ui
-        prepareView(view)
+        prepareView()
 
         // observe
         observeDateTimeLiveData(view)
@@ -70,12 +71,15 @@ class EditTokeScreen : Fragment() {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        cleanupReferences()
+    }
+
     private fun observeDateTimeLiveData(view: View) {
         viewModel.dateTimeLiveData.observe(this, Observer<OffsetDateTime> {
-            dateInputTextView = view.findViewById(R.id.add_toke_date_field)
-            dateInputTextView?.text = viewModel.dateCreator()
-            timeInputTextView = view.findViewById(R.id.add_toke_time_field)
-            timeInputTextView?.text = viewModel.timeCreator()
+            dateInputTextView?.text = viewModel.getFormattedTokeDate()
+            timeInputTextView?.text = viewModel.getFormattedTokeTime()
         })
     }
 
@@ -87,6 +91,124 @@ class EditTokeScreen : Fragment() {
                 setChronicTypeSpinnerSelection(it.tokeType)
             }
         })
+    }
+
+    private fun prepareView() {
+        prepareScreenTitleLabel()
+        prepareDateField()
+        prepareTimeField()
+        prepareTypeSpinner()
+        prepareMethodSpinner()
+        prepareStrainField()
+        prepareSaveBtn()
+    }
+
+    private fun cleanupReferences() {
+        screenTitleLabel = null
+        saveButton = null
+        strainEditText = null
+        timeInputTextView = null
+        dateInputTextView = null
+        chronicTypeSpinner = null
+        toolUsedSpinner = null
+    }
+
+    private fun prepareScreenTitleLabel() {
+        screenTitleLabel = view?.findViewById(R.id.add_toke_screen_label)
+        screenTitleLabel?.setText(R.string.label_edit_toke)
+    }
+
+    private fun prepareDateField() {
+        dateInputTextView = view?.findViewById(R.id.add_toke_date_field)
+        dateInputTextView?.text = viewModel.getFormattedTokeDate()
+
+        dateInputTextView?.setOnClickListener {
+            val datePickerDialog = DatePickerDialog(
+                  activity!!.themedContext)
+            datePickerDialog.setOnDateSetListener { view, year, month, dayOfMonth ->
+                viewModel.updateDate(year = year, month = month, dayOfMonth = dayOfMonth)
+            }
+            datePickerDialog.updateDate(viewModel.now.year, viewModel.now.monthValue, viewModel.now.dayOfMonth)
+            datePickerDialog.show()
+        }
+    }
+
+    private fun prepareTimeField() {
+        timeInputTextView = view?.findViewById(R.id.add_toke_time_field)
+        timeInputTextView?.text = viewModel.getFormattedTokeTime()
+
+        timeInputTextView?.setOnClickListener {
+            val timePickerDialog = TimePickerDialog(activity!!.themedContext,
+                  TimePickerDialog.OnTimeSetListener(function = { view, hourOfDay, minute ->
+                      viewModel.updateTime(hour = hourOfDay, minute = minute)
+                  }), viewModel.now.hour, viewModel.now.minute,
+                  android.text.format.DateFormat.is24HourFormat(activity))
+
+            timePickerDialog.show()
+        }
+    }
+
+    private fun prepareStrainField() {
+        strainEditText = view?.findViewById(R.id.add_toke_strain_name_field)
+    }
+
+    private fun prepareSaveBtn() {
+        // prepare save button
+        saveButton = view?.findViewById(R.id.add_toke_save_button)
+        saveButton?.setOnClickListener {
+            viewModel.strainSelection = strainEditText?.text.toString()
+            val toke = Toke(
+                  id = tokeId!!,
+                  tokeType = viewModel.typeSelection,
+                  strain = viewModel.strainSelection,
+                  tokeDateTime = viewModel.now,
+                  toolUsed = viewModel.methodSelection
+            )
+            viewModel.updateToke(toke)
+            findNavController().navigate(R.id.toke_log_screen)
+        }
+    }
+
+    private fun prepareMethodSpinner() {
+        toolUsedSpinner = view?.findViewById(R.id.add_toke_tool_used_dropdown)
+        ArrayAdapter.createFromResource(
+              context!!,
+              R.array.tool_used,
+              android.R.layout.simple_spinner_item
+        ).also {
+            it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            toolUsedSpinner?.adapter = it
+        }
+        toolUsedSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                viewModel.methodSelection = parent?.getItemAtPosition(0).toString()
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
+                viewModel.methodSelection = parent?.getItemAtPosition(pos).toString()
+            }
+        }
+    }
+
+    private fun prepareTypeSpinner() {
+        chronicTypeSpinner = view?.findViewById(R.id.add_toke_type_dropdown)
+        ArrayAdapter.createFromResource(
+              context!!,
+              R.array.chronic_type,
+              android.R.layout.simple_spinner_item
+        ).also {
+            it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            chronicTypeSpinner?.adapter = it
+        }
+        chronicTypeSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                viewModel.typeSelection = parent?.getItemAtPosition(0).toString()
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
+                viewModel.typeSelection = parent?.getItemAtPosition(pos).toString()
+            }
+        }
     }
 
     private fun setChronicTypeSpinnerSelection(tokeType: String): Unit? {
@@ -123,111 +245,4 @@ class EditTokeScreen : Fragment() {
         }
     }
 
-    private fun prepareView(view: View) {
-        prepareScreenTitleLabel()
-        prepareDateField()
-        prepareTimeField()
-        prepareTypeSpinner(view)
-        prepareMethodSpinner(view)
-        prepareStrainField()
-        prepareSaveBtn()
-    }
-
-    private fun prepareScreenTitleLabel() {
-        screenTitleLabel = view?.findViewById(R.id.add_toke_screen_label)
-        screenTitleLabel?.setText(R.string.label_edit_toke)
-    }
-
-    private fun prepareDateField() {
-        // disable editing of date in Edit mode?
-        dateInputTextView = view?.findViewById(R.id.add_toke_date_field)
-        dateInputTextView?.text = viewModel.dateCreator()
-        dateInputTextView?.setOnClickListener {
-            val datePickerDialog = DatePickerDialog(
-                  activity!!.themedContext)
-            datePickerDialog.setOnDateSetListener { view, year, month, dayOfMonth ->
-                viewModel.updateDate(year = year, month = month, dayOfMonth = dayOfMonth)
-            }
-            datePickerDialog.updateDate(viewModel.now.year, viewModel.now.monthValue, viewModel.now.dayOfMonth)
-            datePickerDialog.show()
-        }
-    }
-
-    private fun prepareTimeField() {
-        timeInputTextView = view?.findViewById(R.id.add_toke_time_field)
-        timeInputTextView?.text = viewModel.timeCreator()
-
-        timeInputTextView?.setOnClickListener {
-            val timePickerDialog = TimePickerDialog(activity!!.themedContext,
-                  TimePickerDialog.OnTimeSetListener(function = { view, hourOfDay, minute ->
-                      viewModel.updateTime(hour = hourOfDay, minute = minute)
-                  }), viewModel.now.hour, viewModel.now.minute,
-                  android.text.format.DateFormat.is24HourFormat(activity))
-
-            timePickerDialog.show()
-        }
-    }
-
-    private fun prepareStrainField() {
-        strainEditText = view?.findViewById(R.id.add_toke_strain_name_field)
-    }
-
-    private fun prepareSaveBtn() {
-        // prepare save button
-        saveButton = view?.findViewById(R.id.add_toke_save_button)
-        saveButton?.setOnClickListener {
-            viewModel.strainSelection = strainEditText?.text.toString()
-            val toke = Toke(
-                  id = tokeId!!,
-                  tokeType = viewModel.typeSelection,
-                  strain = viewModel.strainSelection,
-                  tokeDateTime = viewModel.now,
-                  toolUsed = viewModel.methodSelection
-            )
-            viewModel.updateToke(toke)
-            findNavController().navigate(R.id.toke_log_screen)
-        }
-    }
-
-    private fun prepareMethodSpinner(view: View) {
-        toolUsedSpinner = view.findViewById(R.id.add_toke_tool_used_dropdown)
-        ArrayAdapter.createFromResource(
-              context!!,
-              R.array.tool_used,
-              android.R.layout.simple_spinner_item
-        ).also {
-            it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            toolUsedSpinner?.adapter = it
-        }
-        toolUsedSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                viewModel.methodSelection = parent?.getItemAtPosition(0).toString()
-            }
-
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
-                viewModel.methodSelection = parent?.getItemAtPosition(pos).toString()
-            }
-        }
-    }
-
-    private fun prepareTypeSpinner(view: View) {
-        chronicTypeSpinner = view.findViewById(R.id.add_toke_type_dropdown)
-        ArrayAdapter.createFromResource(
-              context!!,
-              R.array.chronic_type,
-              android.R.layout.simple_spinner_item
-        ).also {
-            it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            chronicTypeSpinner?.adapter = it
-        }
-        chronicTypeSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                viewModel.typeSelection = parent?.getItemAtPosition(0).toString()
-            }
-
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
-                viewModel.typeSelection = parent?.getItemAtPosition(pos).toString()
-            }
-        }
-    }
 }

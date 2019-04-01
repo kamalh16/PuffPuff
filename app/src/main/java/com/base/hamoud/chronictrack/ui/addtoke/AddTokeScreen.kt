@@ -56,7 +56,7 @@ class AddTokeScreen : Fragment() {
 
     private fun observeDateTimeLiveData() {
         viewModel.dateTimeLiveData.observe(this, Observer<OffsetDateTime> {
-            dateInputTextView?.text = viewModel.getFormattedDate()
+            dateInputTextView?.text = viewModel.getFormattedTokeDate()
             timeInputTextView?.text = viewModel.getFormattedTokeTime()
         })
     }
@@ -91,7 +91,7 @@ class AddTokeScreen : Fragment() {
 
     private fun prepareDateField() {
         dateInputTextView = view?.findViewById(R.id.add_toke_date_field)
-        dateInputTextView?.text = viewModel.getFormattedDate()
+        dateInputTextView?.text = viewModel.getFormattedTokeDate()
 
         dateInputTextView?.setOnClickListener {
             val datePickerDialog = DatePickerDialog(
