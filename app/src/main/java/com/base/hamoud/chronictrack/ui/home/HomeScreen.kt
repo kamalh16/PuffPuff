@@ -51,7 +51,7 @@ class HomeScreen : Fragment() {
     private fun observeOnUserLoggedInLive() {
         viewModel.loggedInUserLive.observe(this, Observer {
             if (it != null) {
-                Timber.i("logged in user: ${it.username}, ${it.id}")
+//                Timber.i("logged in user: ${it.username}, ${it.id}")
                 loggedInUser = it
             }
         })

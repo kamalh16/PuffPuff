@@ -2,7 +2,11 @@ package com.base.hamoud.chronictrack.ui.main
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
+import android.content.pm.ShortcutInfo
+import android.content.pm.ShortcutManager
 import android.graphics.Color
+import android.graphics.drawable.Icon
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +22,7 @@ import com.base.hamoud.chronictrack.data.entity.User
 import com.base.hamoud.chronictrack.ui.main.MainNavScreen.rootScreenList
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import timber.log.Timber
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -32,6 +37,12 @@ class MainActivity : AppCompatActivity() {
         setAppTheme()
         setContentView(R.layout.activity_main)
 
+        // read intents extra message, if a shortcut caused the intent we read the data and
+        //      direct the user to the correct page
+        readIntentsAndPrepareRedirectionsForShortcuts()
+
+        // prepare shortcuts
+        prepareShortcuts()
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
 
         // prepare ui
@@ -41,8 +52,133 @@ class MainActivity : AppCompatActivity() {
         observeOnUserLoggedInLive()
     }
 
+    override fun onResume() {
+        super.onResume()
+        readIntentsAndPrepareRedirectionsForShortcuts()
+    }
+
+    private fun readIntentsAndPrepareRedirectionsForShortcuts() {
+        val intentMsg = intent?.extras?.get(MainNavScreen.toString())
+        intentMsg.let {
+            val navController = findNavController(R.id.main_nav_host_fragment)
+            val rootScreenNavOptions = NavOptions
+                .Builder()
+                .setEnterAnim(R.anim.fade_in)
+                .setExitAnim(R.anim.fade_out)
+                .build()
+
+            when (intentMsg) {
+                MainNavScreen.HOME_SCREEN -> {
+                    navController.currentDestination?.label = MainNavScreen.HOME_SCREEN
+                    navController.navigate(
+                        R.id.home_screen, null, rootScreenNavOptions
+                    )
+                }
+                MainNavScreen.ADD_TOKE_SCREEN -> {
+                    navController.currentDestination?.label = MainNavScreen.TOKE_LOG_SCREEN
+                    navController.navigate(
+                        R.id.toke_log_screen, null, rootScreenNavOptions
+                    )
+                    navController.currentDestination?.label = MainNavScreen.ADD_TOKE_SCREEN
+                    navController.navigate(
+                        R.id.add_toke_screen, null, rootScreenNavOptions
+                    )
+                }
+                MainNavScreen.TOKE_LOG_SCREEN -> {
+                    navController.currentDestination?.label = MainNavScreen.TOKE_LOG_SCREEN
+                    navController.navigate(
+                        R.id.toke_log_screen, null, rootScreenNavOptions
+                    )
+                }
+            }
+        }
+    }
+
+    private fun prepareShortcuts() {
+        val shortcutManager = getSystemService<ShortcutManager>(ShortcutManager::class.java)
+
+        val homeIntent = Intent(this, MainActivity::class.java)
+        homeIntent.action = Intent.ACTION_VIEW
+        homeIntent.putExtra(MainNavScreen.toString(), MainNavScreen.HOME_SCREEN)
+
+        val homeShortcut = ShortcutInfo.Builder(this, "home")
+            .setShortLabel("Home")
+            .setLongLabel("Go Home")
+            .setIcon(Icon.createWithResource(this, R.drawable.ic_home_alt_outline_black_24dp))
+            .setIntent(
+                homeIntent
+            )
+            .build()
+
+        val addTokeIntent = Intent(this, MainActivity::class.java)
+        addTokeIntent.action = Intent.ACTION_VIEW
+        addTokeIntent.putExtra(MainNavScreen.toString(), MainNavScreen.ADD_TOKE_SCREEN)
+
+        val addTokeShortcut = ShortcutInfo.Builder(this, "add_toke")
+            .setShortLabel("Add Toke")
+            .setLongLabel("Add a Toke")
+            .setIcon(Icon.createWithResource(this, R.drawable.ic_toke_log_black_24dp))
+            .setIntent(
+                addTokeIntent
+            )
+            .build()
+
+        val tokeLogIntent = Intent(this, MainActivity::class.java)
+        tokeLogIntent.action = Intent.ACTION_VIEW
+        tokeLogIntent.putExtra(MainNavScreen.toString(), MainNavScreen.TOKE_LOG_SCREEN)
+
+        val tokeLogShortcut = ShortcutInfo.Builder(this, "toke_log")
+            .setShortLabel("Toke Log")
+            .setLongLabel("Go to Toke Log")
+            .setIcon(Icon.createWithResource(this, R.drawable.ic_toke_log_black_24dp))
+            .setIntent(
+                tokeLogIntent
+            )
+            .build()
+
+        shortcutManager!!.dynamicShortcuts = Arrays.asList(homeShortcut, addTokeShortcut, tokeLogShortcut)
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        Timber.i(intent.toString())
+        val extras = intent?.extras
+        val navController = findNavController(R.id.main_nav_host_fragment)
+        val rootScreenNavOptions = NavOptions
+            .Builder()
+            .setEnterAnim(R.anim.fade_in)
+            .setExitAnim(R.anim.fade_out)
+            .build()
+        Timber.i(extras?.getString(MainNavScreen.toString()))
+        when (extras?.getString(MainNavScreen.toString())) {
+            MainNavScreen.HOME_SCREEN -> {
+
+                navController.currentDestination?.label = MainNavScreen.HOME_SCREEN
+                navController.navigate(
+                    R.id.home_screen, null, rootScreenNavOptions
+                )
+            }
+            MainNavScreen.ADD_TOKE_SCREEN -> {
+                navController.currentDestination?.label = MainNavScreen.TOKE_LOG_SCREEN
+                navController.navigate(
+                    R.id.toke_log_screen, null, rootScreenNavOptions
+                )
+                navController.currentDestination?.label = MainNavScreen.ADD_TOKE_SCREEN
+                navController.navigate(
+                    R.id.add_toke_screen, null, rootScreenNavOptions
+                )
+            }
+            MainNavScreen.TOKE_LOG_SCREEN -> {
+                navController.currentDestination?.label = MainNavScreen.TOKE_LOG_SCREEN
+                navController.navigate(
+                    R.id.toke_log_screen, null, rootScreenNavOptions
+                )
+            }
+        }
+    }
+
     override fun onSupportNavigateUp() =
-          findNavController(R.id.main_nav_host_fragment).navigateUp()
+        findNavController(R.id.main_nav_host_fragment).navigateUp()
 
     override fun onBackPressed() {
         val navController = findNavController(R.id.main_nav_host_fragment)
@@ -71,7 +207,7 @@ class MainActivity : AppCompatActivity() {
     private fun observeOnUserLoggedInLive() {
         viewModel.loggedInUserLive.observe(this, Observer {
             if (it != null) {
-                Timber.i("logged in user: ${it.username}, ${it.id}")
+//                Timber.i("logged in user: ${it.username}, ${it.id}")
                 loggedInUser = it
             }
         })
@@ -97,31 +233,31 @@ class MainActivity : AppCompatActivity() {
                 setOnNavigationItemSelectedListener {
 
                     val rootScreenNavOptions = NavOptions
-                          .Builder()
-                          .setEnterAnim(R.anim.fade_in)
-                          .setExitAnim(R.anim.fade_out)
-                          .setPopUpTo(it.itemId, true)
-                          .build()
+                        .Builder()
+                        .setEnterAnim(R.anim.fade_in)
+                        .setExitAnim(R.anim.fade_out)
+                        .setPopUpTo(it.itemId, true)
+                        .build()
 
                     when (it.itemId) {
                         R.id.home_screen -> {
                             navController.currentDestination?.label = MainNavScreen.HOME_SCREEN
                             navController.navigate(
-                                  R.id.home_screen, null, rootScreenNavOptions
+                                R.id.home_screen, null, rootScreenNavOptions
                             )
                             return@setOnNavigationItemSelectedListener true
                         }
                         R.id.toke_log_screen -> {
                             navController.currentDestination?.label = MainNavScreen.TOKE_LOG_SCREEN
                             navController.navigate(
-                                  R.id.toke_log_screen, null, rootScreenNavOptions
+                                R.id.toke_log_screen, null, rootScreenNavOptions
                             )
                             return@setOnNavigationItemSelectedListener true
                         }
                         R.id.settings_screen -> {
                             navController.currentDestination?.label = MainNavScreen.SETTINGS_SCREEN
                             navController.navigate(
-                                  R.id.settings_screen, null, rootScreenNavOptions
+                                R.id.settings_screen, null, rootScreenNavOptions
                             )
                             return@setOnNavigationItemSelectedListener true
                         }
@@ -142,7 +278,7 @@ class MainActivity : AppCompatActivity() {
     private fun setDarkThemeStatusBarColor() {
         // dark
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
-              View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
         window.statusBarColor = Color.parseColor(getString(R.color.colorStatusBar))
     }
 
@@ -156,8 +292,8 @@ class MainActivity : AppCompatActivity() {
     private fun setLightThemeStatusBarColor() {
         // light
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
-              View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-              View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         window.statusBarColor = Color.parseColor(getString(R.color.colorStatusBar))
     }
 
