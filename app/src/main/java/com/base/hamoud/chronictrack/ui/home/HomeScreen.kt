@@ -9,6 +9,14 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.anychart.AnyChart
+import com.anychart.AnyChartView
+import com.anychart.chart.common.dataentry.DataEntry
+import com.anychart.enums.HoverMode
+import com.anychart.enums.MarkerType
+import com.anychart.enums.TooltipDisplayMode
+import com.anychart.graphics.vector.SolidFill
+import com.anychart.graphics.vector.text.HAlign
 import com.base.hamoud.chronictrack.R
 import com.base.hamoud.chronictrack.data.entity.User
 import timber.log.Timber
@@ -20,6 +28,9 @@ class HomeScreen : Fragment() {
 
     private var tokeCountView: TextView? = null
     private var tokeTimerChronometer: Chronometer? = null
+    private var todaysTokesTrendChartView: AnyChartView? = null
+
+    private lateinit var todaysTokesData: List<DataEntry>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.screen_home, container, false)
@@ -36,9 +47,14 @@ class HomeScreen : Fragment() {
         observeOnUserLoggedInLive()
         observeOnGetUserTokesCountLive()
         observeOnUserLastTokeTodayLive()
+        observeOnTodayTokesScatterData()
 
-        // trigger
+        // triggers
         viewModel.refreshTokesTotalCount()
+        viewModel.getTodaysTokesScatterData()
+
+        // prepare chart
+        todaysTokesTrendChartView = view.findViewById<AnyChartView>(R.id.home_screen_todays_tokes_trend)
     }
 
     private fun observeOnUserLastTokeTodayLive() {
@@ -61,6 +77,49 @@ class HomeScreen : Fragment() {
         viewModel.userTokesCountLive.observe(this, Observer {
             if (it != null) {
                 tokeCountView?.text = it.toString()
+            }
+        })
+    }
+
+    private fun observeOnTodayTokesScatterData() {
+        viewModel.todayTokesScatterData.observe(this, Observer {
+            Timber.i("$it")
+            if (it != null) {
+                todaysTokesData = it
+
+                val scatter = AnyChart.scatter()
+                scatter.apply {
+                    animation(true)
+                    title("Todays Tokes")
+                    xScale()
+                        .minimum(7)
+                        .maximum(7)
+                    xAxis(0).title("Hour of day")
+                    yScale()
+                        .minimum(0)
+                        .maximum(59)
+                    yAxis(0).title("Minute in Hour")
+                    interactivity()
+                        .hoverMode(HoverMode.BY_SPOT)
+                        .spotRadius(20)
+                    tooltip()
+                        .displayMode(TooltipDisplayMode.UNION)
+                }
+
+
+                val marker = scatter.marker(todaysTokesData)
+                marker.apply {
+                    type(MarkerType.TRIANGLE_UP)
+                        .size(4)
+                    hovered()
+                        .size(7)
+                        .fill(SolidFill("green", 1))
+                        .stroke("anychart.color.darken(green)")
+                    tooltip()
+                        .hAlign(HAlign.START)
+                        .format("Toke at: %X:%Y")
+                }
+                todaysTokesTrendChartView?.setChart(scatter)
             }
         })
     }

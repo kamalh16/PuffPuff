@@ -43,6 +43,7 @@ dependencies {
     def constraint_layout_version = "1.1.3"
     def timber_version = "4.7.1"
     def logger_version = "2.2.0"
+    def anychart_version = "1.1.2"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -81,6 +82,9 @@ dependencies {
 
     // TimeAgo (https://github.com/marlonlom/timeago)
     implementation 'com.github.marlonlom:timeago:4.0.1'
+
+    // AnyChart (https://github.com/AnyChart/AnyChart-Android)
+    implementation "com.github.AnyChart:AnyChart-Android:$anychart_version"
 
     // region Test helpers
     testImplementation 'junit:junit:4.12'
