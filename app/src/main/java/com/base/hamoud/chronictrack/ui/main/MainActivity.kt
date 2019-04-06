@@ -59,6 +59,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun readIntentsAndPrepareRedirectionsForShortcuts() {
         val intentMsg = intent?.extras?.get(MainNavScreen.toString())
+        Timber.i("IntentMsg: $intentMsg")
         intentMsg.let {
             val navController = findNavController(R.id.main_nav_host_fragment)
             val rootScreenNavOptions = NavOptions
