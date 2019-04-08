@@ -28,12 +28,22 @@ class TokeRepo(private val tokeDao: TokeDao) {
     }
 
     @WorkerThread
-    suspend fun getTodaysTokes():
-          List<Toke> {
+    suspend fun getTodaysTokes(): List<Toke> {
         val today = OffsetDateTime.now()
 
         return getAllTokes().filter {
             (it.tokeDateTime.dayOfYear == today.dayOfYear && it.tokeDateTime.year == today.year)
+        }.sortedByDescending {
+            it.tokeDateTime
+        }
+    }
+
+    @WorkerThread
+    suspend fun getThisWeeksTokes(): List<Toke> {
+        val today = OffsetDateTime.now()
+
+        return getAllTokes().filter {
+            (it.tokeDateTime.dayOfYear >= today.dayOfYear - today.dayOfWeek.value && it.tokeDateTime.year == today.year)
         }.sortedByDescending {
             it.tokeDateTime
         }

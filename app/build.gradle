@@ -83,8 +83,8 @@ dependencies {
     // TimeAgo (https://github.com/marlonlom/timeago)
     implementation 'com.github.marlonlom:timeago:4.0.1'
 
-    // AnyChart (https://github.com/AnyChart/AnyChart-Android)
-    implementation "com.github.AnyChart:AnyChart-Android:$anychart_version"
+    // MPAndroidChart https://github.com/PhilJay/MPAndroidChart
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
     // region Test helpers
     testImplementation 'junit:junit:4.12'

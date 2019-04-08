@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
 
         // read intents extra message, if a shortcut caused the intent we read the data and
         //      direct the user to the correct page
-        readIntentsAndPrepareRedirectionsForShortcuts()
+//        readIntentsAndPrepareRedirectionsForShortcuts()
 
         // prepare shortcuts
         prepareShortcuts()
