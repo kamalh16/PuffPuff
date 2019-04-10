@@ -70,19 +70,6 @@
             app:layout_constraintTop_toBottomOf="@id/add_toke_screen_label_border_bottom"
             tools:text="6:05"/>
 
-    <!-- Add Toke Type Dropdown -->
-    <Spinner
-            android:id="@+id/add_toke_type_dropdown"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="32dp"
-            android:text="@string/indica"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/add_toke_time_field"
-            app:layout_constraintWidth_percent="0.4"/>
-
     <!-- Add Toke Tool Dropdown -->
     <Spinner
             android:id="@+id/add_toke_tool_used_dropdown"
@@ -130,6 +117,7 @@
     <!-- Add Toke Type ChipGroup -->
     <com.google.android.material.chip.ChipGroup
             android:id="@+id/add_toke_strain_type_chip_group"
+            android:theme="@style/ChipGroupTheme"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"

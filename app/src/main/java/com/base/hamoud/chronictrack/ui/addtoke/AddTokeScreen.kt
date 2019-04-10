@@ -97,7 +97,7 @@ class AddTokeScreen : Fragment() {
 
         dateInputTextView?.setOnClickListener {
             val datePickerDialog = DatePickerDialog(
-                  activity)
+                  activity!!)
             datePickerDialog.setOnDateSetListener { view, year, month, dayOfMonth ->
                 viewModel.updateDate(year = year, month = month, dayOfMonth = dayOfMonth)
             }
@@ -116,7 +116,6 @@ class AddTokeScreen : Fragment() {
                       viewModel.updateTime(hour = hourOfDay, minute = minute)
                   }), viewModel.now.hour, viewModel.now.minute,
                   android.text.format.DateFormat.is24HourFormat(activity))
-
             timePickerDialog.show()
         }
     }
