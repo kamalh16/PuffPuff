@@ -10,6 +10,6 @@
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
     </style>
 
-    <style name="ChipGroupTheme" parent="Theme.MaterialComponents.DayNight" />
+    <style name="ChipGroupTheme" parent="Theme.MaterialComponents.DayNight"/>
 
 </resources>
