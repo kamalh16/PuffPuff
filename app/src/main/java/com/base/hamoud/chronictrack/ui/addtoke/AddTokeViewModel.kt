@@ -32,7 +32,13 @@ class AddTokeViewModel(private var app: Application) : BaseAndroidViewModel(app)
         parentJob.cancel()
     }
 
-    fun insertToke(toke: Toke) = ioScope.launch {
+    fun saveToke() = ioScope.launch {
+        val toke = Toke(
+              tokeType = typeSelection,
+              strain = strainSelection,
+              tokeDateTime = now,
+              toolUsed = methodSelection
+        )
         tokeRepo.insert(toke)
     }
 

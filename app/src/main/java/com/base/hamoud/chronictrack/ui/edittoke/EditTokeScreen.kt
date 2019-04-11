@@ -15,6 +15,7 @@ import com.base.hamoud.chronictrack.R
 import com.base.hamoud.chronictrack.data.entity.Toke
 import com.base.hamoud.chronictrack.data.model.ChronicTypes
 import com.base.hamoud.chronictrack.data.model.Tools
+import com.google.android.material.chip.ChipGroup
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.time.OffsetDateTime
 
@@ -41,12 +42,13 @@ class EditTokeScreen : Fragment() {
     private var dateInputTextView: TextView? = null
     private var chronicTypeSpinner: Spinner? = null
     private var toolUsedSpinner: Spinner? = null
+    private var chronicTypeChipGroup: ChipGroup? = null
 
     override fun onCreateView(
           inflater: LayoutInflater,
           container: ViewGroup?,
           savedInstanceState: Bundle?): View? {
-        
+
         // retrieve tokeId from bundle args
         tokeId = arguments?.getString(ARG_TOKE_ID)
 
@@ -62,7 +64,7 @@ class EditTokeScreen : Fragment() {
         prepareView()
 
         // observe
-        observeDateTimeLiveData(view)
+        observeDateTimeLiveData()
         observeOnLastAddedTokeLive()
 
         // trigger
@@ -76,7 +78,7 @@ class EditTokeScreen : Fragment() {
         cleanupReferences()
     }
 
-    private fun observeDateTimeLiveData(view: View) {
+    private fun observeDateTimeLiveData() {
         viewModel.dateTimeLiveData.observe(this, Observer<OffsetDateTime> {
             dateInputTextView?.text = viewModel.getFormattedTokeDate()
             timeInputTextView?.text = viewModel.getFormattedTokeTime()
@@ -88,7 +90,7 @@ class EditTokeScreen : Fragment() {
             toke?.let {
                 strainEditText?.setText(it.strain)
                 setToolUsedSpinnerSelection(it.toolUsed)
-                setChronicTypeSpinnerSelection(it.tokeType)
+                setTypeChipGroupSelection(it.tokeType)
             }
         })
     }
@@ -97,7 +99,7 @@ class EditTokeScreen : Fragment() {
         prepareScreenTitleLabel()
         prepareDateField()
         prepareTimeField()
-        prepareTypeSpinner()
+        prepareTypeChipGroup()
         prepareMethodSpinner()
         prepareStrainField()
         prepareSaveBtn()
@@ -124,7 +126,7 @@ class EditTokeScreen : Fragment() {
 
         dateInputTextView?.setOnClickListener {
             val datePickerDialog = DatePickerDialog(
-                  activity!!.themedContext)
+                  activity!!)
             datePickerDialog.setOnDateSetListener { view, year, month, dayOfMonth ->
                 viewModel.updateDate(year = year, month = month, dayOfMonth = dayOfMonth)
             }
@@ -138,7 +140,7 @@ class EditTokeScreen : Fragment() {
         timeInputTextView?.text = viewModel.getFormattedTokeTime()
 
         timeInputTextView?.setOnClickListener {
-            val timePickerDialog = TimePickerDialog(activity!!.themedContext,
+            val timePickerDialog = TimePickerDialog(activity,
                   TimePickerDialog.OnTimeSetListener(function = { view, hourOfDay, minute ->
                       viewModel.updateTime(hour = hourOfDay, minute = minute)
                   }), viewModel.now.hour, viewModel.now.minute,
@@ -190,39 +192,45 @@ class EditTokeScreen : Fragment() {
         }
     }
 
-    private fun prepareTypeSpinner() {
-        chronicTypeSpinner = view?.findViewById(R.id.add_toke_type_dropdown)
-        ArrayAdapter.createFromResource(
-              context!!,
-              R.array.chronic_type,
-              android.R.layout.simple_spinner_item
-        ).also {
-            it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            chronicTypeSpinner?.adapter = it
-        }
-        chronicTypeSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                viewModel.typeSelection = parent?.getItemAtPosition(0).toString()
+    private fun prepareTypeChipGroup() {
+        chronicTypeChipGroup = view?.findViewById(R.id.add_toke_strain_type_chip_group)
+        chronicTypeChipGroup?.setOnCheckedChangeListener { group, checkedId ->
+            // force the ChipGroup to act like a RadioGroup
+            // as in at least one chip must always be selected in the group
+            for (i in 0 until group.childCount) {
+                val chip = group.getChildAt(i)
+                chip.isClickable = chip.id != group.checkedChipId
             }
 
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
-                viewModel.typeSelection = parent?.getItemAtPosition(pos).toString()
+            when (checkedId) {
+                R.id.add_toke_cbd_chip -> {
+                    viewModel.typeSelection = ChronicTypes.CBD.name
+                }
+                R.id.add_toke_hybrid_chip -> {
+                    viewModel.typeSelection = ChronicTypes.Hybrid.name
+                }
+                R.id.add_toke_indica_chip -> {
+                    viewModel.typeSelection = ChronicTypes.Indica.name
+                }
+                R.id.add_toke_sativa_chip -> {
+                    viewModel.typeSelection = ChronicTypes.Sativa.name
+                }
             }
         }
     }
 
-    private fun setChronicTypeSpinnerSelection(tokeType: String): Unit? {
-        return when (tokeType) {
+    private fun setTypeChipGroupSelection(tokeType: String) {
+        when (tokeType) {
             ChronicTypes.Indica.name ->
-                chronicTypeSpinner?.setSelection(ChronicTypes.Indica.ordinal, true)
+                chronicTypeChipGroup?.check(R.id.add_toke_indica_chip)
             ChronicTypes.Hybrid.name ->
-                chronicTypeSpinner?.setSelection(ChronicTypes.Hybrid.ordinal, true)
+                chronicTypeChipGroup?.check(R.id.add_toke_hybrid_chip)
             ChronicTypes.Sativa.name ->
-                chronicTypeSpinner?.setSelection(ChronicTypes.Sativa.ordinal, true)
+                chronicTypeChipGroup?.check(R.id.add_toke_sativa_chip)
             ChronicTypes.CBD.name ->
-                chronicTypeSpinner?.setSelection(ChronicTypes.CBD.ordinal, true)
+                chronicTypeChipGroup?.check(R.id.add_toke_cbd_chip)
             else ->
-                chronicTypeSpinner?.setSelection(1, true)
+                chronicTypeChipGroup?.check(R.id.add_toke_sativa_chip)
         }
     }
 
