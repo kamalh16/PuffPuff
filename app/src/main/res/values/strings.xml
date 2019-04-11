@@ -20,6 +20,9 @@
     <string name="last_toke">Last Toke</string>
     <string name="tokes_today">Tokes Today</string>
     <string name="toke_log_screen_empty_list_desc">No Tokes to show for today, not yet at least…</string>
+    <string name="hybrid">Hybrid</string>
+    <string name="sativa">Sativa</string>
+    <string name="cbd">CBD</string>
 
     <string-array name="chronic_type">
         <item>Indica</item>
