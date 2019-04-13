@@ -39,4 +39,6 @@
         <item>Edible</item>
         <item>Dab</item>
     </string-array>
+
+    <string name="attribution_launcher_icon">Icon made/designed by <a href="https://www.flaticon.com/authors/flat-icons-com">Flat-icons-com</a> from www.flaticon.com</string>
 </resources>
