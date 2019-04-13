@@ -3,4 +3,6 @@
 
 # Puff Puff
 
-![](app/src/main/res/mipmap-xxhdpi/ic_launcher.png) Puff Puff helps you track your chronic habits and usages.
+![](app/src/main/res/mipmap-xxhdpi/ic_launcher.png) 
+
+Puff Puff helps you track your chronic habits and usages.
