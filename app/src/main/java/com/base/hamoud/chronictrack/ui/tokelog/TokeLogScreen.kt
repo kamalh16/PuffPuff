@@ -163,7 +163,7 @@ class TokeLogScreen : Fragment() {
     }
 
     private fun prepareAddTokeBtn() {
-        val addTokeBtn = view?.findViewById<FloatingActionButton>(R.id.toke_log_add_toke_btn)
+        val addTokeBtn = view?.findViewById<FloatingActionButton>(R.id.toke_log_screen_add_toke_btn)
         addTokeBtn?.setOnClickListener {
             findNavController().navigate(R.id.action_toke_log_screen_to_add_toke_screen)
         }
