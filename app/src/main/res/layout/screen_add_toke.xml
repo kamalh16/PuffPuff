@@ -87,7 +87,7 @@
             android:fontFamily="@font/montserrat"
             android:text="@string/label_toke_type"
             android:textColor="@color/colorPrimaryTextLabelColor"
-            android:textSize="20sp"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@+id/add_toke_strain_type_chip_group"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/add_toke_date_field" />
@@ -193,7 +193,7 @@
             android:fontFamily="@font/montserrat"
             android:text="@string/label_toke_tool"
             android:textColor="@color/colorPrimaryTextLabelColor"
-            android:textSize="20sp"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@+id/add_toke_tool_chip_group"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/add_toke_type_label" />
@@ -224,7 +224,7 @@
             android:fontFamily="@font/montserrat"
             android:text="@string/label_toke_strain"
             android:textColor="@color/colorPrimaryTextLabelColor"
-            android:textSize="20sp"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@+id/add_toke_strain_name_field"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/add_toke_strain_name_field" />
