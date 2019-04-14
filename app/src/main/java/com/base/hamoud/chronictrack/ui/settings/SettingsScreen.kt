@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.base.hamoud.chronictrack.R
-import com.base.hamoud.chronictrack.ui.settings.model.SettingsItem.itemList
+import com.base.hamoud.chronictrack.ui.settings.model.SettingsItem
 
 
 class SettingsScreen : Fragment() {
@@ -50,7 +50,7 @@ class SettingsScreen : Fragment() {
             settingsListAdapter = SettingsListAdapter(viewModel)
             it.adapter = settingsListAdapter
             // set data
-            settingsListAdapter.setData(itemList)
+            settingsListAdapter.setData(SettingsItem.itemList)
         }
     }
 
