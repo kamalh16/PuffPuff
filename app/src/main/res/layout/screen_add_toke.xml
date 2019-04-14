@@ -18,7 +18,7 @@
             android:id="@+id/add_toke_screen_label"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="48dp"
             android:fontFamily="@font/roboto_condensed_bold"
             android:gravity="start"
             android:paddingStart="16dp"
