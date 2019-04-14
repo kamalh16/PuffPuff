@@ -50,9 +50,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:nestedScrollingEnabled="false"
+            app:layout_constraintBottom_toTopOf="@+id/settings_screen_icon_attribution_textview"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/settings_screen_label"
+            app:layout_constraintTop_toBottomOf="@+id/settings_screen_label_border_bottom"
+            app:layout_constraintVertical_chainStyle="spread_inside"
             tools:listitem="@android:layout/simple_list_item_checked" />
 
         <!-- Settings Attribution Text -->
@@ -69,7 +72,9 @@
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/settings_screen_options_recyclerview" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>
