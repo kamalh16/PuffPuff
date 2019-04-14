@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.EditText
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -15,6 +17,7 @@ import com.base.hamoud.chronictrack.R
 import com.base.hamoud.chronictrack.data.entity.Toke
 import com.base.hamoud.chronictrack.data.model.ChronicTypes
 import com.base.hamoud.chronictrack.data.model.Tools
+import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.time.OffsetDateTime
@@ -40,14 +43,14 @@ class EditTokeScreen : Fragment() {
     private var strainEditText: EditText? = null
     private var timeInputTextView: TextView? = null
     private var dateInputTextView: TextView? = null
-    private var chronicTypeSpinner: Spinner? = null
-    private var toolUsedSpinner: Spinner? = null
-    private var chronicTypeChipGroup: ChipGroup? = null
+    private var tokeTypeChipGroup: ChipGroup? = null
+    private var tokeToolChipGroup: ChipGroup? = null
 
     override fun onCreateView(
-          inflater: LayoutInflater,
-          container: ViewGroup?,
-          savedInstanceState: Bundle?): View? {
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
         // retrieve tokeId from bundle args
         tokeId = arguments?.getString(ARG_TOKE_ID)
@@ -89,8 +92,8 @@ class EditTokeScreen : Fragment() {
         viewModel.tokeForEditLive.observe(this, Observer { toke ->
             toke?.let {
                 strainEditText?.setText(it.strain)
-                setToolUsedSpinnerSelection(it.toolUsed)
                 setTypeChipGroupSelection(it.tokeType)
+                setToolChipGroupSelection(it.toolUsed)
             }
         })
     }
@@ -100,19 +103,18 @@ class EditTokeScreen : Fragment() {
         prepareDateField()
         prepareTimeField()
         prepareTypeChipGroup()
-        prepareMethodSpinner()
+        prepareToolChipGroup()
         prepareStrainField()
         prepareSaveBtn()
     }
 
     private fun cleanupReferences() {
-        screenTitleLabel = null
         saveButton = null
         strainEditText = null
         timeInputTextView = null
         dateInputTextView = null
-        chronicTypeSpinner = null
-        toolUsedSpinner = null
+        tokeTypeChipGroup = null
+        tokeToolChipGroup = null
     }
 
     private fun prepareScreenTitleLabel() {
@@ -126,11 +128,16 @@ class EditTokeScreen : Fragment() {
 
         dateInputTextView?.setOnClickListener {
             val datePickerDialog = DatePickerDialog(
-                  activity!!)
+                activity!!
+            )
             datePickerDialog.setOnDateSetListener { view, year, month, dayOfMonth ->
                 viewModel.updateDate(year = year, month = month, dayOfMonth = dayOfMonth)
             }
-            datePickerDialog.updateDate(viewModel.now.year, viewModel.now.monthValue, viewModel.now.dayOfMonth)
+            datePickerDialog.updateDate(
+                viewModel.now.year,
+                viewModel.now.monthValue,
+                viewModel.now.dayOfMonth
+            )
             datePickerDialog.show()
         }
     }
@@ -140,11 +147,13 @@ class EditTokeScreen : Fragment() {
         timeInputTextView?.text = viewModel.getFormattedTokeTime()
 
         timeInputTextView?.setOnClickListener {
-            val timePickerDialog = TimePickerDialog(activity,
-                  TimePickerDialog.OnTimeSetListener(function = { view, hourOfDay, minute ->
-                      viewModel.updateTime(hour = hourOfDay, minute = minute)
-                  }), viewModel.now.hour, viewModel.now.minute,
-                  android.text.format.DateFormat.is24HourFormat(activity))
+            val timePickerDialog = TimePickerDialog(
+                activity,
+                TimePickerDialog.OnTimeSetListener(function = { view, hourOfDay, minute ->
+                    viewModel.updateTime(hour = hourOfDay, minute = minute)
+                }), viewModel.now.hour, viewModel.now.minute,
+                android.text.format.DateFormat.is24HourFormat(activity)
+            )
 
             timePickerDialog.show()
         }
@@ -160,41 +169,21 @@ class EditTokeScreen : Fragment() {
         saveButton?.setOnClickListener {
             viewModel.strainSelection = strainEditText?.text.toString()
             val toke = Toke(
-                  id = tokeId!!,
-                  tokeType = viewModel.typeSelection,
-                  strain = viewModel.strainSelection,
-                  tokeDateTime = viewModel.now,
-                  toolUsed = viewModel.methodSelection
+                id = tokeId!!,
+                tokeType = viewModel.typeSelection,
+                strain = viewModel.strainSelection,
+                tokeDateTime = viewModel.now,
+                toolUsed = viewModel.toolSelection
             )
             viewModel.updateToke(toke)
             findNavController().navigate(R.id.toke_log_screen)
         }
     }
 
-    private fun prepareMethodSpinner() {
-        toolUsedSpinner = view?.findViewById(R.id.add_toke_tool_used_dropdown)
-        ArrayAdapter.createFromResource(
-              context!!,
-              R.array.tool_used,
-              android.R.layout.simple_spinner_item
-        ).also {
-            it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            toolUsedSpinner?.adapter = it
-        }
-        toolUsedSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                viewModel.methodSelection = parent?.getItemAtPosition(0).toString()
-            }
-
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
-                viewModel.methodSelection = parent?.getItemAtPosition(pos).toString()
-            }
-        }
-    }
 
     private fun prepareTypeChipGroup() {
-        chronicTypeChipGroup = view?.findViewById(R.id.add_toke_strain_type_chip_group)
-        chronicTypeChipGroup?.setOnCheckedChangeListener { group, checkedId ->
+        tokeTypeChipGroup = view?.findViewById(R.id.add_toke_strain_type_chip_group)
+        tokeTypeChipGroup?.setOnCheckedChangeListener { group, checkedId ->
             // force the ChipGroup to act like a RadioGroup
             // as in at least one chip must always be selected in the group
             for (i in 0 until group.childCount) {
@@ -219,38 +208,95 @@ class EditTokeScreen : Fragment() {
         }
     }
 
+
+    private fun prepareToolChipGroup() {
+        tokeToolChipGroup = view?.findViewById(R.id.add_toke_tool_chip_group)
+        // add tool chips
+        for (tool in Tools.values()) {
+            val chip = Chip(tokeToolChipGroup?.context)
+                .apply {
+                    id = tool.ordinal
+                    text = tool.name
+                    setTextColor(ContextCompat.getColor(activity!!, R.color.colorPrimaryText))
+                    setTextAppearanceResource(R.style.TextAppearance_MaterialComponents_Chip)
+                    isCheckable = true
+                    isClickable = true
+                    isFocusable = true
+                    checkedIcon =
+                        ContextCompat.getDrawable(activity!!, R.drawable.ic_check_mark_24dp)
+                    isCheckedIconVisible = true
+                    setChipBackgroundColorResource(R.color.colorPrimary)
+                    setEnsureMinTouchTargetSize(true)
+                    setChipStrokeColorResource(R.color.colorPrimaryText)
+                    setChipStrokeWidthResource(R.dimen.chip_stroke_width)
+                }
+
+            tokeToolChipGroup?.addView(chip)
+        }
+
+        // handle onClick
+        tokeToolChipGroup?.setOnCheckedChangeListener { group, checkedId ->
+            // force the ChipGroup to act like a RadioGroup
+            // as in at least one chip must always be selected in the group
+            for (i in 0 until group.childCount) {
+                val chip = group.getChildAt(i)
+                chip.isClickable = chip.id != group.checkedChipId
+            }
+
+            // set viewModel.toolSelection
+            when (checkedId) {
+                Tools.Joint.ordinal ->
+                    viewModel.toolSelection = Tools.Joint.name
+                Tools.Vape.ordinal ->
+                    viewModel.toolSelection = Tools.Vape.name
+                Tools.Bong.ordinal ->
+                    viewModel.toolSelection = Tools.Bong.name
+                Tools.Pipe.ordinal ->
+                    viewModel.toolSelection = Tools.Pipe.name
+                Tools.Edible.ordinal ->
+                    viewModel.toolSelection = Tools.Edible.name
+                Tools.Dab.ordinal ->
+                    viewModel.toolSelection = Tools.Dab.name
+            }
+        }
+
+        // set default checked chip
+        tokeToolChipGroup?.check(0)
+    }
+
     private fun setTypeChipGroupSelection(tokeType: String) {
         when (tokeType) {
             ChronicTypes.Indica.name ->
-                chronicTypeChipGroup?.check(R.id.add_toke_indica_chip)
+                tokeTypeChipGroup?.check(R.id.add_toke_indica_chip)
             ChronicTypes.Hybrid.name ->
-                chronicTypeChipGroup?.check(R.id.add_toke_hybrid_chip)
+                tokeTypeChipGroup?.check(R.id.add_toke_hybrid_chip)
             ChronicTypes.Sativa.name ->
-                chronicTypeChipGroup?.check(R.id.add_toke_sativa_chip)
+                tokeTypeChipGroup?.check(R.id.add_toke_sativa_chip)
             ChronicTypes.CBD.name ->
-                chronicTypeChipGroup?.check(R.id.add_toke_cbd_chip)
+                tokeTypeChipGroup?.check(R.id.add_toke_cbd_chip)
             else ->
-                chronicTypeChipGroup?.check(R.id.add_toke_sativa_chip)
+                tokeTypeChipGroup?.check(R.id.add_toke_sativa_chip)
         }
     }
 
-    private fun setToolUsedSpinnerSelection(toolUsed: String): Unit? {
-        return when (toolUsed) {
+    private fun setToolChipGroupSelection(tokeTool: String) {
+        when (tokeTool) {
             Tools.Joint.name ->
-                toolUsedSpinner?.setSelection(Tools.Joint.ordinal, true)
+                tokeToolChipGroup?.check(Tools.Joint.ordinal)
             Tools.Vape.name ->
-                toolUsedSpinner?.setSelection(Tools.Vape.ordinal, true)
-            Tools.WaterBong.name ->
-                toolUsedSpinner?.setSelection(Tools.WaterBong.ordinal, true)
+                tokeToolChipGroup?.check(Tools.Vape.ordinal)
+            Tools.Bong.name ->
+                tokeToolChipGroup?.check(Tools.Bong.ordinal)
             Tools.Pipe.name ->
-                toolUsedSpinner?.setSelection(Tools.Pipe.ordinal, true)
+                tokeToolChipGroup?.check(Tools.Pipe.ordinal)
             Tools.Edible.name ->
-                toolUsedSpinner?.setSelection(Tools.Edible.ordinal, true)
+                tokeToolChipGroup?.check(Tools.Edible.ordinal)
             Tools.Dab.name ->
-                toolUsedSpinner?.setSelection(Tools.Dab.ordinal, true)
+                tokeToolChipGroup?.check(Tools.Dab.ordinal)
             else ->
-                toolUsedSpinner?.setSelection(1, true)
+                tokeToolChipGroup?.check(0)
         }
     }
+
 
 }

@@ -11,7 +11,7 @@
         android:id="@+id/home_screen_label"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="48dp"
         android:fontFamily="@font/roboto_condensed_bold"
         android:gravity="start"
         android:paddingStart="16dp"
