@@ -14,7 +14,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.base.hamoud.chronictrack.R
-import com.base.hamoud.chronictrack.data.entity.User
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
@@ -24,7 +23,6 @@ import timber.log.Timber
 
 class TokeLogScreen : Fragment() {
 
-    private var loggedInUser: User? = null
     private lateinit var viewModel: TokeLogViewModel
 
     private var tokeLogListView: RecyclerView? = null
@@ -51,7 +49,6 @@ class TokeLogScreen : Fragment() {
         prepareView()
 
         // observe
-        observeOnUserLoggedInLive()
         observeOnGetUserTokeListLive()
         observeOnGetUserTokesCountLive()
         observeOnUserLastTokeTodayLive()
@@ -79,15 +76,6 @@ class TokeLogScreen : Fragment() {
         viewModel.getTodaysTokesData()
     }
 
-    private fun observeOnUserLoggedInLive() {
-        viewModel.loggedInUserLive.observe(this, Observer {
-            if (it != null) {
-                Timber.i("logged in user: ${it.username}, ${it.id}")
-                loggedInUser = it
-            }
-        })
-    }
-
     private fun observeOnGetUserTokeListLive() {
         viewModel.userTokeListLive.observe(this, Observer {
             if (it != null) {
@@ -101,8 +89,10 @@ class TokeLogScreen : Fragment() {
 
     private fun observeOnUserLastTokeTodayLive() {
         viewModel.userLastTokeTodayLive.observe(this, Observer {
-            lastTokeTimeChronometer?.base = it
-            lastTokeTimeChronometer?.start()
+            if (it != null) {
+                lastTokeTimeChronometer?.base = it
+                lastTokeTimeChronometer?.start()
+            }
         })
     }
 

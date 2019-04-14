@@ -3,7 +3,6 @@ package com.base.hamoud.chronictrack.data.dao
 import androidx.room.Dao
 import androidx.room.Query
 import com.base.hamoud.chronictrack.data.entity.Toke
-import java.time.OffsetDateTime
 
 @Dao
 abstract class TokeDao : BaseDao<Toke> {
@@ -25,12 +24,18 @@ abstract class TokeDao : BaseDao<Toke> {
     abstract suspend fun getAllTokes(): MutableList<Toke>
 
     /**
-     * Get all hits by [userId] for specific [date] dd-mm-yyyy
+     * Get the current days' [Toke]s
      *
-     * @return List of hits by [userId] and [date]
      */
-    @Query("SELECT * FROM TOKE_TABLE WHERE toke_date_time = :date ORDER BY datetime(toke_date_time)")
-    abstract suspend fun getTokeByUserIdAndDate(date: OffsetDateTime): List<Toke>
+    @Query("SELECT * FROM TOKE_TABLE where date(datetime(toke_date_time / 1000 , 'unixepoch')) = date('now')")
+    abstract suspend fun getTodaysTokes(): MutableList<Toke>
+
+    /**
+     * Get the current week's [Toke]s
+     *
+     */
+    @Query("SELECT * FROM TOKE_TABLE WHERE date(datetime(toke_date_time / 1000 , 'unixepoch')) >= date('now', 'weekday 0', '-7 days')")
+    abstract suspend fun getThisWeeksTokes(): MutableList<Toke>
 
     /**
      * Delete all [Toke]s in the table
