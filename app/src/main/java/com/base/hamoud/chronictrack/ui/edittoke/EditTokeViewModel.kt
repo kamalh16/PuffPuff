@@ -36,6 +36,13 @@ class EditTokeViewModel(private var app: Application) : BaseAndroidViewModel(app
         tokeRepo.update(toke)
     }
 
+    fun deleteToke(tokeId: String) = ioScope.launch {
+        val tokeToDelete = tokeRepo.getTokeById(tokeId)
+        tokeToDelete?.let {
+            tokeRepo.deleteToke(it)
+        }
+    }
+
     fun getTokeForEdit(tokeId: String) {
         ioScope.launch {
             tokeRepo.getTokeById(tokeId)?.let {
@@ -76,9 +83,9 @@ class EditTokeViewModel(private var app: Application) : BaseAndroidViewModel(app
         }
         // apply pattern and return
         return DateTimeFormatter
-              .ofPattern(pattern)
-              .format(now)
-              .replace("AM", "am")
-              .replace("PM", "pm")
+            .ofPattern(pattern)
+            .format(now)
+            .replace("AM", "am")
+            .replace("PM", "pm")
     }
 }

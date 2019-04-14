@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -40,6 +41,7 @@ class EditTokeScreen : Fragment() {
 
     private var screenTitleLabel: TextView? = null
     private var saveButton: FloatingActionButton? = null
+    private var deleteButton: FloatingActionButton? = null
     private var strainEditText: EditText? = null
     private var timeInputTextView: TextView? = null
     private var dateInputTextView: TextView? = null
@@ -106,10 +108,12 @@ class EditTokeScreen : Fragment() {
         prepareToolChipGroup()
         prepareStrainField()
         prepareSaveBtn()
+        prepareDeleteBtn()
     }
 
     private fun cleanupReferences() {
         saveButton = null
+        deleteButton = null
         strainEditText = null
         timeInputTextView = null
         dateInputTextView = null
@@ -127,9 +131,7 @@ class EditTokeScreen : Fragment() {
         dateInputTextView?.text = viewModel.getFormattedTokeDate()
 
         dateInputTextView?.setOnClickListener {
-            val datePickerDialog = DatePickerDialog(
-                activity!!
-            )
+            val datePickerDialog = DatePickerDialog(activity!!)
             datePickerDialog.setOnDateSetListener { view, year, month, dayOfMonth ->
                 viewModel.updateDate(year = year, month = month, dayOfMonth = dayOfMonth)
             }
@@ -168,18 +170,29 @@ class EditTokeScreen : Fragment() {
         saveButton = view?.findViewById(R.id.add_toke_save_button)
         saveButton?.setOnClickListener {
             viewModel.strainSelection = strainEditText?.text.toString()
-            val toke = Toke(
-                id = tokeId!!,
-                tokeType = viewModel.typeSelection,
-                strain = viewModel.strainSelection,
-                tokeDateTime = viewModel.now,
-                toolUsed = viewModel.toolSelection
-            )
-            viewModel.updateToke(toke)
+            tokeId?.let {
+                val toke = Toke(
+                    id = it,
+                    tokeType = viewModel.typeSelection,
+                    strain = viewModel.strainSelection,
+                    tokeDateTime = viewModel.now,
+                    toolUsed = viewModel.toolSelection
+                )
+                viewModel.updateToke(toke)
+            }
             findNavController().navigate(R.id.toke_log_screen)
         }
     }
 
+    private fun prepareDeleteBtn() {
+        deleteButton = view?.findViewById(R.id.add_toke_delete_button)
+        deleteButton?.visibility = View.VISIBLE
+        deleteButton?.setOnClickListener {
+            tokeId?.let {
+                showDeleteTokeConfirmationDialog(it)
+            }
+        }
+    }
 
     private fun prepareTypeChipGroup() {
         tokeTypeChipGroup = view?.findViewById(R.id.add_toke_strain_type_chip_group)
@@ -207,7 +220,6 @@ class EditTokeScreen : Fragment() {
             }
         }
     }
-
 
     private fun prepareToolChipGroup() {
         tokeToolChipGroup = view?.findViewById(R.id.add_toke_tool_chip_group)
@@ -296,6 +308,27 @@ class EditTokeScreen : Fragment() {
             else ->
                 tokeToolChipGroup?.check(0)
         }
+    }
+
+    /**
+     * Prepare and show this confirmation dialog when [deleteButton] is clicked
+     *
+     * @param tokeId the id of the toke to delete
+     */
+    private fun showDeleteTokeConfirmationDialog(tokeId: String) {
+        val dialog = AlertDialog.Builder(activity!!)
+        dialog
+            .setTitle("Delete Toke?")
+            .setMessage("This will permanently delete the Toke.")
+            .setPositiveButton("Delete") { dialogBox, _ ->
+                viewModel.deleteToke(tokeId)
+                dialogBox.dismiss()
+                findNavController().navigate(R.id.toke_log_screen)
+            }
+            .setNegativeButton("Cancel") { dialogBox, _ ->
+                dialogBox.dismiss()
+            }
+            .show()
     }
 
 
