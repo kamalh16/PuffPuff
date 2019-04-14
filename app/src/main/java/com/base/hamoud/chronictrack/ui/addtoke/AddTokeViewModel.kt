@@ -15,7 +15,7 @@ class AddTokeViewModel(private var app: Application) : BaseAndroidViewModel(app)
     var tokeRepo: TokeRepo = TokeRepo(db.tokeDao())
 
     lateinit var typeSelection: String
-    lateinit var methodSelection: String
+    lateinit var toolSelection: String
     lateinit var strainSelection: String
 
     var now: OffsetDateTime
@@ -37,7 +37,7 @@ class AddTokeViewModel(private var app: Application) : BaseAndroidViewModel(app)
               tokeType = typeSelection,
               strain = strainSelection,
               tokeDateTime = now,
-              toolUsed = methodSelection
+              toolUsed = toolSelection
         )
         tokeRepo.insert(toke)
     }

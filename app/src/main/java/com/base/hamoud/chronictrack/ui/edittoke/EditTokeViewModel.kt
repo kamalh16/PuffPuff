@@ -15,7 +15,7 @@ class EditTokeViewModel(private var app: Application) : BaseAndroidViewModel(app
     var tokeRepo: TokeRepo = TokeRepo(db.tokeDao())
 
     lateinit var typeSelection: String
-    lateinit var methodSelection: String
+    lateinit var toolSelection: String
     lateinit var strainSelection: String
 
     var now: OffsetDateTime
