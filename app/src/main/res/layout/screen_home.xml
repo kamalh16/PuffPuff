@@ -94,40 +94,18 @@
         app:layout_constraintBottom_toBottomOf="@+id/home_screen_last_hit_label"
         app:layout_constraintStart_toStartOf="@+id/home_screen_todays_toke_count" />
 
-    <!-- graph containers -->
-    <HorizontalScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/graph_container" app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/home_screen_last_hit_label"
-        android:padding="8dp">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
-            <!-- Daily hits trend -->
-            <com.github.mikephil.charting.charts.LineChart
-                    android:id="@+id/home_screen_todays_tokes_trend"
-                    android:layout_width="360dp"
-                    android:layout_height="200dp"
-                    android:background="@color/colorAccent"
-                    android:layout_margin="4dp"
-                    android:padding="4dp"
-            />
-            <!-- Weekly hits trend -->
-            <com.github.mikephil.charting.charts.LineChart
-                    android:id="@+id/home_screen_weekly_tokes_trend"
-                    android:layout_width="360dp"
-                    android:layout_height="200dp"
-                    android:background="@color/colorAccent"
-                    android:padding="4dp"
-                    android:layout_margin="4dp"
-            />
-        </LinearLayout>
-    </HorizontalScrollView>
-
+    <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/home_screen_weekly_tokes_trend"
+            android:layout_width="360dp"
+            android:layout_height="200dp"
+            android:background="@color/colorAccent"
+            android:layout_margin="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/home_screen_last_hit_label"
+            android:padding="8dp"
+             android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="8dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

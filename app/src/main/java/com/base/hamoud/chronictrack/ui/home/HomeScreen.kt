@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.base.hamoud.chronictrack.R
 import com.base.hamoud.chronictrack.data.entity.User
 import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.LimitLine
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import timber.log.Timber
@@ -24,7 +25,6 @@ class HomeScreen : Fragment() {
     private var tokeCountView: TextView? = null
     private var tokeTimerChronometer: Chronometer? = null
 
-    private lateinit var todaysTokesLineGraph: LineChart
     private lateinit var weeklyTokesLineChart: LineChart
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -37,17 +37,15 @@ class HomeScreen : Fragment() {
 
         // prepare ui
         prepareTodaysTokeCountView()
-        // prepare todaysTokesLineGraph todo
-        todaysTokesLineGraph = view.findViewById(R.id.home_screen_todays_tokes_trend)
-        todaysTokesLineGraph.apply {
-            setBackgroundColor(resources.getColor(R.color.colorPrimary))
-            setDrawGridBackground(false)
-        }
         weeklyTokesLineChart = view.findViewById(R.id.home_screen_weekly_tokes_trend)
-        weeklyTokesLineChart.apply {
-            setBackgroundColor(resources.getColor(R.color.colorPrimary))
-            setDrawGridBackground(false)
-        }
+        weeklyTokesLineChart.setBackgroundColor(resources.getColor(R.color.colorPrimary))
+        weeklyTokesLineChart.setDrawGridBackground(false)
+        val limitLine: LimitLine = LimitLine(7f, "Days")
+        limitLine.lineWidth = 3f
+        limitLine.labelPosition = LimitLine.LimitLabelPosition.RIGHT_BOTTOM
+        limitLine.textSize = 8f
+        weeklyTokesLineChart.xAxis.addLimitLine(limitLine)
+
 
         // observe
         observeOnUserLoggedInLive()
@@ -57,7 +55,6 @@ class HomeScreen : Fragment() {
 
         // triggers
         viewModel.refreshTokesTotalCount()
-        viewModel.getTodaysTokesData()
         viewModel.getThisWeeksTokesData()
 
     }
@@ -87,29 +84,18 @@ class HomeScreen : Fragment() {
     }
 
     private fun observeOnChartData() {
-        viewModel.todayTokesData.observe(this, Observer {
-            Timber.i("TodaysTokes: $it")
-            if (!it.isNullOrEmpty()) {
-                // todo
-                val dataSet = LineDataSet(it, "Todays Tokes")
-                Timber.i("DataSet: ${dataSet.toSimpleString()}")
-                dataSet.color = R.color.colorAccent
-                val lineData = LineData(dataSet)
-                todaysTokesLineGraph?.data = lineData
-                todaysTokesLineGraph?.invalidate()
-            }
-        })
-
         viewModel.weeksTokesData.observe(this, Observer {
             Timber.i("Weeks Tokes: $it")
             if (!it.isNullOrEmpty()) {
                 // todo
                 val dataSet = LineDataSet(it, "Weeks Tokes")
                 Timber.i("DataSet: ${dataSet.toSimpleString()}")
+                val weekNames = arrayOf(" ","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
+
                 dataSet.color = R.color.colorAccent
                 val lineData = LineData(dataSet)
-                weeklyTokesLineChart?.data = lineData
-                weeklyTokesLineChart?.invalidate()
+                weeklyTokesLineChart.data = lineData
+                weeklyTokesLineChart.invalidate()
             }
         })
 

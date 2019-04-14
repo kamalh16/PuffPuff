@@ -23,7 +23,6 @@ class HomeViewModel(application: Application) : BaseAndroidViewModel(application
     var loggedInUserLive: MutableLiveData<User> = MutableLiveData()
     var userTokesCountLive: MutableLiveData<Int> = MutableLiveData()
     var userLastTokeTodayLive: MutableLiveData<Long> = MutableLiveData()
-    var todayTokesData: MutableLiveData<List<Entry>?> = MutableLiveData()
     var weeksTokesData: MutableLiveData<List<Entry>?> = MutableLiveData()
 
     init {
@@ -65,38 +64,18 @@ class HomeViewModel(application: Application) : BaseAndroidViewModel(application
         }
     }
 
-    fun getTodaysTokesData() {
-        ioScope.launch {
-            val todaysTokes = tokeRepo.getTodaysTokes()
 
-            todaysTokes.let {
-                val entries = ArrayList<Entry>(it.size)
-
-                for (toke in todaysTokes) {
-                    // get tokeCount in hour
-                    val tempHour = toke.tokeDateTime.hour
-                    val tempMin = toke.tokeDateTime.minute
-                    entries.add(Entry(tempHour.toFloat(), tempMin.toFloat()))
-                }
-                entries.sortBy {
-                    it.x
-                }
-                todayTokesData.postValue(entries)
-            }
-        }
-    }
 
     fun getThisWeeksTokesData() {
         ioScope.launch {
             val weeksTokes = tokeRepo.getThisWeeksTokes() // todo
             weeksTokes.let {
                 val entries = ArrayList<Entry>(it.size)
-                val weeksArr = arrayOf(0,0,0,0,0,0,0,0)
+                val weeksArr = IntArray(7) { 0 }
                 for (toke in it) {
                     // get tokeCount in hour
-                    weeksArr[toke.tokeDateTime.dayOfWeek.value]++
+                    weeksArr[toke.tokeDateTime.dayOfWeek.value - 1]++
                 }
-                val weekNames = arrayOf(" ","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
 
                 for ((count, day) in weeksArr.withIndex()) {
                     entries.add(Entry(count.toFloat(), day.toFloat()))
