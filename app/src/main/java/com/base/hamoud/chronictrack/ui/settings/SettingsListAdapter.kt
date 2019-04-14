@@ -24,40 +24,8 @@ class SettingsListAdapter(private val viewModel: SettingsViewModel) :
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        var itemLabel: TextView = itemView.findViewById(R.id.item_settings_option_label)
-        private val itemDeleteIcon: ImageView = itemView.findViewById(R.id.item_settings_delete_all_icon)
-        private val itemThemeIcon: ImageView = itemView.findViewById(R.id.item_settings_theme_icon)
-        private val itemAboutIcon: ImageView = itemView.findViewById(R.id.item_settings_about_icon)
-
-        fun showDeleteIcon() {
-            itemDeleteIcon.visibility = View.VISIBLE
-            showThemeIcon()
-            hideAboutIcon()
-        }
-
-        private fun hideDeleteIcon() {
-            itemDeleteIcon.visibility = View.INVISIBLE
-        }
-
-        fun showThemeSwitch() {
-            itemThemeIcon.visibility = View.VISIBLE
-            hideDeleteIcon()
-            hideAboutIcon()
-        }
-
-        private fun showThemeIcon() {
-            itemThemeIcon.visibility = View.INVISIBLE
-        }
-
-        fun showAboutIcon() {
-            itemAboutIcon.visibility = View.VISIBLE
-            hideDeleteIcon()
-            showThemeIcon()
-        }
-
-        private fun hideAboutIcon() {
-            itemAboutIcon.visibility = View.INVISIBLE
-        }
+        val itemLabel: TextView = itemView.findViewById(R.id.item_settings_option_label)
+        val itemIcon: ImageView = itemView.findViewById(R.id.item_settings_icon)
 
     }
 
@@ -77,13 +45,19 @@ class SettingsListAdapter(private val viewModel: SettingsViewModel) :
         // set row icon
         when (item) {
             SettingsItem.SWITCH_THEME -> {
-                holder.showThemeSwitch()
+                holder.itemIcon.setImageResource(R.drawable.ic_invert_colors_black_24dp)
+            }
+            SettingsItem.SET_NEXT_TOKE_REMINDER -> {
+                holder.itemIcon.setImageResource(R.drawable.ic_smoking_rooms_white_24dp)
+            }
+            SettingsItem.SET_HOME_PAGE -> {
+                holder.itemIcon.setImageResource(R.drawable.ic_toke_log_black_24dp)
             }
             SettingsItem.CLEAR_DATA -> {
-                holder.showDeleteIcon()
+                holder.itemIcon.setImageResource(R.drawable.ic_delete_sweep_black_24dp)
             }
             SettingsItem.ABOUT -> {
-                holder.showAboutIcon()
+                holder.itemIcon.setImageResource(R.drawable.ic_info_black_24dp)
             }
         }
 
@@ -93,10 +67,19 @@ class SettingsListAdapter(private val viewModel: SettingsViewModel) :
                 SettingsItem.SWITCH_THEME -> {
                     onClickSwitchThemeRow(holder.itemView.context)
                 }
+                SettingsItem.SET_NEXT_TOKE_REMINDER -> {
+                    // TODO
+                    Toast.makeText(holder.itemView.context, "Set Toke Reminder", Toast.LENGTH_SHORT).show()
+                }
+                SettingsItem.SET_HOME_PAGE -> {
+                    // TODO
+                    Toast.makeText(holder.itemView.context, "Set Home Page", Toast.LENGTH_SHORT).show()
+                }
                 SettingsItem.CLEAR_DATA -> {
                     showClearDataConfirmationDialog(holder.itemView.context)
                 }
                 SettingsItem.ABOUT -> {
+                    // TODO
                     Toast.makeText(holder.itemView.context, "Go to About", Toast.LENGTH_SHORT).show()
                 }
             }
