@@ -7,6 +7,7 @@ import com.base.hamoud.chronictrack.data.entity.Toke
 import com.base.hamoud.chronictrack.data.entity.User
 import com.base.hamoud.chronictrack.data.repository.TokeRepo
 import com.base.hamoud.chronictrack.data.repository.UserRepo
+import com.github.mikephil.charting.data.Entry
 import kotlinx.coroutines.launch
 
 class TokeLogViewModel(application: Application) : BaseAndroidViewModel(application) {
@@ -16,9 +17,33 @@ class TokeLogViewModel(application: Application) : BaseAndroidViewModel(applicat
 
     var loggedInUserLive: MutableLiveData<User> = MutableLiveData()
     var userTokeListLive: MutableLiveData<List<Toke>> = MutableLiveData()
+    var todayTokesData: MutableLiveData<List<Entry>?> = MutableLiveData()
 
     init {
         getLoggedInUser()
+    }
+
+    fun getTodaysTokesData() {
+        ioScope.launch {
+            val todaysTokes = tokeRepo.getTodaysTokes()
+
+            todaysTokes.let { tokes ->
+                val entries = ArrayList<Entry>(tokes.size)
+                val twentyFourHrArr = IntArray(24) { 0 }
+                for (toke in tokes) {
+                    // get tokeCount in hour
+                    twentyFourHrArr[toke.tokeDateTime.hour]++
+                }
+
+                for ((count, hour) in twentyFourHrArr.withIndex()) {
+                    entries.add(Entry(count.toFloat(), hour.toFloat()))
+                }
+                entries.sortBy {
+                    it.x
+                }
+                todayTokesData.postValue(entries)
+            }
+        }
     }
 
     override fun onCleared() {

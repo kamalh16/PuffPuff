@@ -8,12 +8,12 @@ import com.base.hamoud.chronictrack.data.entity.Toke
 import com.base.hamoud.chronictrack.data.entity.User
 import com.base.hamoud.chronictrack.data.repository.TokeRepo
 import com.base.hamoud.chronictrack.data.repository.UserRepo
+import com.github.mikephil.charting.data.Entry
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.time.Duration
 import java.time.OffsetDateTime
-import java.util.concurrent.TimeUnit
 
 class HomeViewModel(application: Application) : BaseAndroidViewModel(application) {
 
@@ -23,21 +23,68 @@ class HomeViewModel(application: Application) : BaseAndroidViewModel(application
     var loggedInUserLive: MutableLiveData<User> = MutableLiveData()
     var userTokesCountLive: MutableLiveData<Int> = MutableLiveData()
     var userLastTokeTodayLive: MutableLiveData<Long> = MutableLiveData()
+    var weeksTokesData: MutableLiveData<List<Entry>?> = MutableLiveData()
 
     init {
 //        createFakeHitsWithRandomDates(10)
+        createFakeHitsWithRandomHours(20)
 
         getLoggedInUser()
     }
 
     private fun createFakeHitsWithRandomDates(fakeHits: Int) {
         ioScope.launch {
-            for (i in 1..fakeHits) {
-                val toke = Toke(
-                    tokeDateTime = OffsetDateTime.now().minusDays((1L..3L).shuffled().first())
-                )
+            if (tokeRepo.getTodaysTokes().count() == 0) {
+                for (i in 1..fakeHits) {
+                    val toke = Toke(
+                        tokeDateTime = OffsetDateTime.now().minusDays((1L..3L).shuffled().first())
+                    )
 
-                tokeRepo.insert(toke)
+                    tokeRepo.insert(toke)
+                }
+            }
+
+        }
+    }
+
+    private fun createFakeHitsWithRandomHours(fakeHits: Int) {
+        ioScope.launch {
+            if (tokeRepo.getTodaysTokes().count() == 0) {
+                for (i in 1..fakeHits) {
+                    val time = OffsetDateTime.now()
+                        .minusHours((0L..10L).shuffled().first())
+                        .minusDays((0L..4L).shuffled().first())
+                    Timber.i("time: $time")
+                    val toke = Toke(
+                        tokeDateTime =time.plusMinutes((1L..39L).shuffled().first())
+                    )
+                    tokeRepo.insert(toke)
+                }
+            }
+        }
+    }
+
+
+
+    fun getThisWeeksTokesData() {
+        ioScope.launch {
+            val weeksTokes = tokeRepo.getThisWeeksTokes() // todo
+            weeksTokes.let {
+                val entries = ArrayList<Entry>(it.size)
+                val weeksArr = IntArray(7) { 0 }
+                for (toke in it) {
+                    // get tokeCount in hour
+                    weeksArr[toke.tokeDateTime.dayOfWeek.value - 1]++
+                }
+
+                for ((count, day) in weeksArr.withIndex()) {
+                    entries.add(Entry(count.toFloat(), day.toFloat()))
+                }
+
+                entries.sortBy {
+                    it.x
+                }
+                weeksTokesData.postValue(entries)
             }
         }
     }

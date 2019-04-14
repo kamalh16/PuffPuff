@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
 
         // read intents extra message, if a shortcut caused the intent we read the data and
         //      direct the user to the correct page
-        readIntentsAndPrepareRedirectionsForShortcuts()
+//        readIntentsAndPrepareRedirectionsForShortcuts()
 
         // prepare shortcuts
         prepareShortcuts()
@@ -76,10 +76,6 @@ class MainActivity : AppCompatActivity() {
                     )
                 }
                 MainNavScreen.ADD_TOKE_SCREEN -> {
-                    navController.currentDestination?.label = MainNavScreen.TOKE_LOG_SCREEN
-                    navController.navigate(
-                        R.id.toke_log_screen, null, rootScreenNavOptions
-                    )
                     navController.currentDestination?.label = MainNavScreen.ADD_TOKE_SCREEN
                     navController.navigate(
                         R.id.add_toke_screen, null, rootScreenNavOptions

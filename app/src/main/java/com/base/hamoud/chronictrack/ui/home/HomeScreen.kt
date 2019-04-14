@@ -11,6 +11,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.base.hamoud.chronictrack.R
 import com.base.hamoud.chronictrack.data.entity.User
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.LimitLine
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
 import timber.log.Timber
 
 class HomeScreen : Fragment() {
@@ -20,6 +24,8 @@ class HomeScreen : Fragment() {
 
     private var tokeCountView: TextView? = null
     private var tokeTimerChronometer: Chronometer? = null
+
+    private lateinit var weeklyTokesLineChart: LineChart
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.screen_home, container, false)
@@ -31,14 +37,26 @@ class HomeScreen : Fragment() {
 
         // prepare ui
         prepareTodaysTokeCountView()
+        weeklyTokesLineChart = view.findViewById(R.id.home_screen_weekly_tokes_trend)
+        weeklyTokesLineChart.setBackgroundColor(resources.getColor(R.color.colorPrimary))
+        weeklyTokesLineChart.setDrawGridBackground(false)
+        val limitLine: LimitLine = LimitLine(7f, "Days")
+        limitLine.lineWidth = 3f
+        limitLine.labelPosition = LimitLine.LimitLabelPosition.RIGHT_BOTTOM
+        limitLine.textSize = 8f
+        weeklyTokesLineChart.xAxis.addLimitLine(limitLine)
+
 
         // observe
         observeOnUserLoggedInLive()
         observeOnGetUserTokesCountLive()
         observeOnUserLastTokeTodayLive()
+        observeOnChartData()
 
-        // trigger
+        // triggers
         viewModel.refreshTokesTotalCount()
+        viewModel.getThisWeeksTokesData()
+
     }
 
     private fun observeOnUserLastTokeTodayLive() {
@@ -63,6 +81,24 @@ class HomeScreen : Fragment() {
                 tokeCountView?.text = it.toString()
             }
         })
+    }
+
+    private fun observeOnChartData() {
+        viewModel.weeksTokesData.observe(this, Observer {
+            Timber.i("Weeks Tokes: $it")
+            if (!it.isNullOrEmpty()) {
+                // todo
+                val dataSet = LineDataSet(it, "Weeks Tokes")
+                Timber.i("DataSet: ${dataSet.toSimpleString()}")
+                val weekNames = arrayOf(" ","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
+
+                dataSet.color = R.color.colorAccent
+                val lineData = LineData(dataSet)
+                weeklyTokesLineChart.data = lineData
+                weeklyTokesLineChart.invalidate()
+            }
+        })
+
     }
 
     private fun prepareTodaysTokeCountView() {

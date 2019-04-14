@@ -7,17 +7,28 @@
     android:background="@color/colorPrimary"
     tools:context=".ui.main.MainActivity">
 
+    <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/home_screen_todays_tokes_trend"
+            android:layout_width="360dp"
+            android:layout_height="200dp"
+            android:background="@color/colorAccent"
+            android:layout_margin="8dp"
+            android:padding="16dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/toke_log_screen_label" android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
     <!-- Toke Log List -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/toke_log_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="76dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toke_log_screen_label"
-        tools:listitem="@layout/item_toke" />
+            android:id="@+id/toke_log_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:listitem="@layout/item_toke" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/home_screen_todays_tokes_trend"/>
 
     <!-- Toke Log Screen Label -->
     <TextView

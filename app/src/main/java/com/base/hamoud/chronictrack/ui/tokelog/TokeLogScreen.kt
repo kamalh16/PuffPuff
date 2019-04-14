@@ -13,6 +13,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.base.hamoud.chronictrack.R
 import com.base.hamoud.chronictrack.data.entity.User
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import timber.log.Timber
 
@@ -24,6 +27,7 @@ class TokeLogScreen : Fragment() {
     private var tokeEmptyListMsgView: TextView? = null
     private var hitListRecyclerView: RecyclerView? = null
     private lateinit var adapter: TokeLogListAdapter
+    private lateinit var todaysTokesLineGraph: LineChart
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.screen_toke_log, container, false)
@@ -37,13 +41,33 @@ class TokeLogScreen : Fragment() {
         prepareTokeRvList()
         prepareTokeEmptyListMsgView()
         prepareAddTokeBtn()
+        // prepare todaysTokesLineGraph todo
+        todaysTokesLineGraph = view.findViewById(R.id.home_screen_todays_tokes_trend)
+        todaysTokesLineGraph.apply {
+            setBackgroundColor(resources.getColor(R.color.colorPrimary))
+            setDrawGridBackground(false)
+        }
 
         // observe
         observeOnUserLoggedInLive()
         observeOnGetUserTokeListLive()
 
+        viewModel.todayTokesData.observe(this, Observer {
+            Timber.i("TodaysTokes: $it")
+            if (!it.isNullOrEmpty()) {
+                // todo
+                val dataSet = LineDataSet(it, "Todays Tokes")
+                Timber.i("DataSet: ${dataSet.toSimpleString()}")
+                dataSet.color = R.color.colorAccent
+                val lineData = LineData(dataSet)
+                todaysTokesLineGraph.data = lineData
+                todaysTokesLineGraph.invalidate()
+            }
+        })
+
         // trigger
         viewModel.refreshTokeList()
+        viewModel.getTodaysTokesData()
     }
 
     private fun observeOnUserLoggedInLive() {
