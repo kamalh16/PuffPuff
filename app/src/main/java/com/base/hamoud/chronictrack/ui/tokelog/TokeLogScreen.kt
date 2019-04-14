@@ -21,6 +21,7 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import timber.log.Timber
 
+
 class TokeLogScreen : Fragment() {
 
     private var loggedInUser: User? = null
@@ -60,7 +61,8 @@ class TokeLogScreen : Fragment() {
                 // todo
                 val dataSet = LineDataSet(it, "Todays Tokes")
                 Timber.i("DataSet: ${dataSet.toSimpleString()}")
-                dataSet.color = R.color.colorAccent
+                val color = ContextCompat.getColor(context!!, R.color.colorPrimaryText)
+                dataSet.color = color
                 val lineData = LineData(dataSet)
                 todaysTokesLineGraph?.data = lineData
                 todaysTokesLineGraph?.invalidate()
@@ -123,9 +125,13 @@ class TokeLogScreen : Fragment() {
 
     private fun prepareTodaysTokesLineGraph() {
         todaysTokesLineGraph = view?.findViewById(R.id.toke_log_screen_todays_tokes_trend)
+        val textColor = ContextCompat.getColor(context!!, R.color.colorPrimaryText)
         todaysTokesLineGraph?.apply {
             setBackgroundColor(ContextCompat.getColor(activity!!, R.color.colorPrimary))
             setDrawGridBackground(false)
+            axisLeft?.textColor = textColor // left y-axis
+            xAxis?.textColor = textColor
+            legend?.textColor = textColor
         }
     }
 
