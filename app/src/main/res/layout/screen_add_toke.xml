@@ -245,7 +245,7 @@
             app:layout_constraintStart_toEndOf="@+id/add_toke_strain_label"
             app:layout_constraintTop_toBottomOf="@+id/add_toke_tool_chip_group" />
 
-        <!-- Add Toke Delete Floating Action Bottom -->
+        <!-- Edit Toke Delete Floating Action Bottom -->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/add_toke_delete_button"
             android:layout_width="wrap_content"
