@@ -127,7 +127,10 @@ class AddTokeScreen : Fragment() {
             val timePickerDialog = TimePickerDialog(
                 activity,
                 TimePickerDialog.OnTimeSetListener(function = { view, hourOfDay, minute ->
-                    viewModel.updateTime(hour = hourOfDay, minute = minute)
+                    viewModel.updateTime(
+                        hour = hourOfDay,
+                        minute = minute
+                    )
                 }),
                 viewModel.now.get(Calendar.HOUR_OF_DAY),
                 viewModel.now.get(Calendar.MINUTE),
