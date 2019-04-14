@@ -69,18 +69,18 @@ class SettingsListAdapter(private val viewModel: SettingsViewModel) :
                 }
                 SettingsItem.SET_NEXT_TOKE_REMINDER -> {
                     // TODO
-                    Toast.makeText(holder.itemView.context, "Set Toke Reminder", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(holder.itemView.context, "TODO: Set Toke Reminder", Toast.LENGTH_SHORT).show()
                 }
                 SettingsItem.SET_HOME_PAGE -> {
                     // TODO
-                    Toast.makeText(holder.itemView.context, "Set Home Page", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(holder.itemView.context, "TODO: Set Home Page", Toast.LENGTH_SHORT).show()
                 }
                 SettingsItem.CLEAR_DATA -> {
                     showClearDataConfirmationDialog(holder.itemView.context)
                 }
                 SettingsItem.ABOUT -> {
                     // TODO
-                    Toast.makeText(holder.itemView.context, "Go to About", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(holder.itemView.context, "TODO: Go to About", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -116,7 +116,7 @@ class SettingsListAdapter(private val viewModel: SettingsViewModel) :
 
                   Toast.makeText(
                         ctx,
-                        "Deleted all Tokes data.",
+                        "Deleted all saved Tokes data.",
                         Toast.LENGTH_SHORT
                   ).show()
               }
