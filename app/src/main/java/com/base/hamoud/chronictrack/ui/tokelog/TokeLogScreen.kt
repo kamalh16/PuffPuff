@@ -61,8 +61,11 @@ class TokeLogScreen : Fragment() {
                 // todo
                 val dataSet = LineDataSet(it, "Todays Tokes")
                 Timber.i("DataSet: ${dataSet.toSimpleString()}")
-                val color = ContextCompat.getColor(context!!, R.color.colorPrimaryText)
-                dataSet.color = color
+                val colorPrimaryText = ContextCompat.getColor(context!!, R.color.colorPrimaryText)
+                val colorAccent = ContextCompat.getColor(context!!, R.color.colorAccent)
+                dataSet.color = colorPrimaryText
+                dataSet.setCircleColor(colorAccent)
+                dataSet.valueTextColor = colorAccent
                 val lineData = LineData(dataSet)
                 todaysTokesLineGraph?.data = lineData
                 todaysTokesLineGraph?.invalidate()
