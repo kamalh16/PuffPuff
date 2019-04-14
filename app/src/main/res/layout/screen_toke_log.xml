@@ -74,6 +74,8 @@
                 android:text="@string/tokes_today"
                 android:textColor="@color/colorPrimaryTextLabelColor"
                 android:textSize="16sp"
+                app:layout_constraintEnd_toStartOf="@+id/toke_log_screen_last_toke_label"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/toke_log_screen_label_border_bottom" />
 
@@ -82,41 +84,73 @@
                 android:id="@+id/toke_log_screen_todays_toke_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
                 android:fontFamily="@font/montserrat"
                 android:text="@string/zero"
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="22sp"
-                app:layout_constraintBottom_toBottomOf="@+id/toke_log_screen_tokes_today_label"
-                app:layout_constraintStart_toEndOf="@+id/toke_log_screen_tokes_today_label" />
+                app:layout_constraintEnd_toEndOf="@+id/toke_log_screen_tokes_today_label"
+                app:layout_constraintStart_toStartOf="@+id/toke_log_screen_tokes_today_label"
+                app:layout_constraintTop_toBottomOf="@+id/toke_log_screen_tokes_today_label" />
 
             <!-- Last Toke Time Label -->
             <TextView
-                android:id="@+id/toke_log_screen_last_hit_label"
+                android:id="@+id/toke_log_screen_last_toke_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
                 android:fontFamily="@font/montserrat"
                 android:gravity="center"
                 android:padding="4dp"
                 android:text="@string/last_toke"
                 android:textColor="@color/colorPrimaryTextLabelColor"
                 android:textSize="16sp"
-                app:layout_constraintStart_toEndOf="@+id/toke_log_screen_todays_toke_count"
-                app:layout_constraintTop_toTopOf="@+id/toke_log_screen_todays_toke_count" />
+                app:layout_constraintEnd_toStartOf="@+id/toke_log_screen_next_toke_label"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/toke_log_screen_tokes_today_label"
+                app:layout_constraintTop_toTopOf="@+id/toke_log_screen_tokes_today_label" />
 
             <!-- Last Toke Chronometer Timer -->
             <Chronometer
-                android:id="@+id/toke_log_screen_last_hit_chronometer"
+                android:id="@+id/toke_log_screen_last_toke_chronometer"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:layout_marginStart="16dp"
                 android:fontFamily="@font/montserrat"
                 android:text="@string/zero"
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="22sp"
-                app:layout_constraintBottom_toBottomOf="@+id/toke_log_screen_last_hit_label"
-                app:layout_constraintStart_toEndOf="@+id/toke_log_screen_last_hit_label" />
+                app:layout_constraintEnd_toEndOf="@+id/toke_log_screen_last_toke_label"
+                app:layout_constraintStart_toStartOf="@+id/toke_log_screen_last_toke_label"
+                app:layout_constraintTop_toBottomOf="@+id/toke_log_screen_last_toke_label" />
+
+            <!-- Next Toke Time Label -->
+            <TextView
+                android:id="@+id/toke_log_screen_next_toke_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/montserrat"
+                android:gravity="center"
+                android:padding="4dp"
+                android:text="@string/next_toke"
+                android:textColor="@color/colorPrimaryTextLabelColor"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/toke_log_screen_last_toke_label"
+                app:layout_constraintTop_toBottomOf="@+id/toke_log_screen_label_border_bottom" />
+
+            <!-- Next Toke Chronometer Timer -->
+            <Chronometer
+                android:id="@+id/toke_log_screen_next_toke_chronometer"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:fontFamily="@font/montserrat"
+                android:text="@string/zero"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="22sp"
+                app:layout_constraintEnd_toEndOf="@+id/toke_log_screen_next_toke_label"
+                app:layout_constraintStart_toStartOf="@+id/toke_log_screen_next_toke_label"
+                app:layout_constraintTop_toBottomOf="@+id/toke_log_screen_next_toke_label" />
 
             <!-- Tokes Today Chart -->
             <com.github.mikephil.charting.charts.LineChart
@@ -127,7 +161,7 @@
                 android:background="@color/colorAccent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toke_log_screen_last_hit_label" />
+                app:layout_constraintTop_toBottomOf="@+id/toke_log_screen_last_toke_chronometer" />
 
             <!-- Screen Empty List Msg -->
             <TextView

@@ -27,12 +27,13 @@ class TokeLogScreen : Fragment() {
     private var loggedInUser: User? = null
     private lateinit var viewModel: TokeLogViewModel
 
+    private var tokeLogListView: RecyclerView? = null
+    private lateinit var tokeLogListAdapter: TokeLogListAdapter
     private var tokeEmptyListMsgView: TextView? = null
-    private var tokeListView: RecyclerView? = null
-    private lateinit var logListAdapter: TokeLogListAdapter
     private var todaysTokesLineGraph: LineChart? = null
-    private var tokeCountView: TextView? = null
-    private var tokeTimerChronometer: Chronometer? = null
+    private var todaysTotalTokeCountView: TextView? = null
+    private var lastTokeTimeChronometer: Chronometer? = null
+    private var nextTokeTimeChronometer: Chronometer? = null // TODO - need to implement
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -93,22 +94,22 @@ class TokeLogScreen : Fragment() {
                 if (it.isEmpty()) {
                     showTokeEmptyListMsgView()
                 }
-                logListAdapter.setTokeList(it)
+                tokeLogListAdapter.setTokeList(it)
             }
         })
     }
 
     private fun observeOnUserLastTokeTodayLive() {
         viewModel.userLastTokeTodayLive.observe(this, Observer {
-            tokeTimerChronometer?.base = it
-            tokeTimerChronometer?.start()
+            lastTokeTimeChronometer?.base = it
+            lastTokeTimeChronometer?.start()
         })
     }
 
     private fun observeOnGetUserTokesCountLive() {
         viewModel.userTokesCountLive.observe(this, Observer {
             if (it != null) {
-                tokeCountView?.text = it.toString()
+                todaysTotalTokeCountView?.text = it.toString()
             }
         })
     }
@@ -122,8 +123,8 @@ class TokeLogScreen : Fragment() {
     }
 
     private fun prepareTodaysTokeCountView() {
-        tokeCountView = view?.findViewById(R.id.toke_log_screen_todays_toke_count)
-        tokeTimerChronometer = view?.findViewById(R.id.toke_log_screen_last_hit_chronometer)
+        todaysTotalTokeCountView = view?.findViewById(R.id.toke_log_screen_todays_toke_count)
+        lastTokeTimeChronometer = view?.findViewById(R.id.toke_log_screen_last_toke_chronometer)
     }
 
     private fun prepareTodaysTokesLineGraph() {
@@ -139,14 +140,14 @@ class TokeLogScreen : Fragment() {
     }
 
     private fun prepareTokeRvList() {
-        tokeListView = view?.findViewById(R.id.toke_log_recycler_view)
-        logListAdapter = TokeLogListAdapter(context!!)
+        tokeLogListView = view?.findViewById(R.id.toke_log_recycler_view)
+        tokeLogListAdapter = TokeLogListAdapter(context!!)
 
         // setup RecyclerView
-        tokeListView?.adapter = logListAdapter
-        tokeListView?.layoutManager = LinearLayoutManager(context)
-        tokeListView?.setHasFixedSize(true)
-        tokeListView?.setItemViewCacheSize(10)
+        tokeLogListView?.adapter = tokeLogListAdapter
+        tokeLogListView?.layoutManager = LinearLayoutManager(context)
+        tokeLogListView?.setHasFixedSize(true)
+        tokeLogListView?.setItemViewCacheSize(10)
     }
 
     private fun prepareTokeEmptyListMsgView() {
