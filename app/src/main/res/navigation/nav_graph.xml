@@ -10,7 +10,17 @@
         android:id="@+id/home_screen"
         android:name="com.base.hamoud.chronictrack.ui.home.HomeScreen"
         android:label="HomeScreen"
-        tools:layout="@layout/screen_home" />
+        tools:layout="@layout/screen_home">
+
+        <!-- ACTION: Home Screen to Add Toke Screen -->
+        <action
+            android:id="@+id/action_home_screen_to_add_toke_screen"
+            app:destination="@id/add_toke_screen"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
+    </fragment>
 
     <!-- Toke Log Screen -->
     <fragment
