@@ -57,6 +57,7 @@
         android:autoLink="web"
         android:gravity="center"
         android:padding="8dp"
+        android:fontFamily="@font/montserrat"
         android:text="@string/attribution_launcher_icon"
         android:textColor="@color/colorPrimaryText"
         app:layout_constraintBottom_toBottomOf="parent"
