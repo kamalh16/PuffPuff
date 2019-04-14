@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary">
@@ -37,75 +36,17 @@
         app:layout_constraintTop_toBottomOf="@id/home_screen_label"
         app:layout_constraintWidth_percent="1" />
 
-    <!-- Tokes Today Label -->
-    <TextView
-        android:id="@+id/home_screen_tokes_today_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="76dp"
-        android:fontFamily="@font/roboto"
-        android:gravity="center"
-        android:padding="4dp"
-        android:text="@string/tokes_today"
-        android:textColor="@color/colorPrimaryTextLabelColor"
-        android:textSize="26sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/home_screen_label_border_bottom" />
-
-    <!-- Tokes Today Total Count -->
-    <TextView
-        android:id="@+id/home_screen_todays_toke_count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:fontFamily="@font/roboto"
-        android:text="@string/zero"
-        android:textColor="@color/colorPrimaryText"
-        android:textSize="38sp"
-        app:layout_constraintBottom_toBottomOf="@+id/home_screen_tokes_today_label"
-        app:layout_constraintStart_toEndOf="@+id/home_screen_tokes_today_label" />
-
-    <!-- Last Toke Time Label -->
-    <TextView
-        android:id="@+id/home_screen_last_hit_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="48dp"
-        android:fontFamily="@font/roboto"
-        android:gravity="center"
-        android:padding="4dp"
-        android:text="@string/last_toke"
-        android:textColor="@color/colorPrimaryTextLabelColor"
-        android:textSize="26sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/home_screen_tokes_today_label" />
-
-    <!-- Last Toke Chronometer Timer -->
-    <Chronometer
-        android:id="@+id/home_screen_last_hit_chronometer"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:fontFamily="@font/roboto"
-        android:text="@string/zero"
-        android:textColor="@color/colorPrimaryText"
-        android:textSize="38sp"
-        app:layout_constraintBottom_toBottomOf="@+id/home_screen_last_hit_label"
-        app:layout_constraintStart_toStartOf="@+id/home_screen_todays_toke_count" />
-
     <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/home_screen_weekly_tokes_trend"
-            android:layout_width="360dp"
-            android:layout_height="200dp"
-            android:background="@color/colorAccent"
-            android:layout_margin="8dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/home_screen_last_hit_label"
-            android:padding="8dp"
-             android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginStart="8dp"/>
+        android:id="@+id/home_screen_weekly_tokes_trend"
+        android:layout_width="360dp"
+        android:layout_height="200dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/colorAccent"
+        android:padding="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/home_screen_label" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
