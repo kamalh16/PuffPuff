@@ -7,8 +7,9 @@ import com.base.hamoud.chronictrack.BaseAndroidViewModel
 import com.base.hamoud.chronictrack.data.entity.Toke
 import com.base.hamoud.chronictrack.data.repository.TokeRepo
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.time.OffsetDateTime
-import java.time.format.DateTimeFormatter
+import java.util.*
 
 class EditTokeViewModel(private var app: Application) : BaseAndroidViewModel(app) {
 
@@ -18,14 +19,10 @@ class EditTokeViewModel(private var app: Application) : BaseAndroidViewModel(app
     lateinit var toolSelection: String
     lateinit var strainSelection: String
 
-    var now: OffsetDateTime
+    var now: Calendar = Calendar.getInstance()
 
-    var dateTimeLiveData: MutableLiveData<OffsetDateTime> = MutableLiveData()
+    var dateTimeLiveData: MutableLiveData<Calendar> = MutableLiveData()
     var tokeForEditLive: MutableLiveData<Toke> = MutableLiveData()
-
-    init {
-        now = OffsetDateTime.now()
-    }
 
     override fun onCleared() {
         super.onCleared()
@@ -46,7 +43,7 @@ class EditTokeViewModel(private var app: Application) : BaseAndroidViewModel(app
     fun getTokeForEdit(tokeId: String) {
         ioScope.launch {
             tokeRepo.getTokeById(tokeId)?.let {
-                now = it.tokeDateTime
+                now.timeInMillis = it.tokeDateTime
                 dateTimeLiveData.postValue(now)
                 tokeForEditLive.postValue(it)
             }
@@ -54,19 +51,34 @@ class EditTokeViewModel(private var app: Application) : BaseAndroidViewModel(app
     }
 
     fun updateDate(year: Int, month: Int, dayOfMonth: Int) {
-        now = now.withYear(year).withMonth(month).withDayOfMonth(dayOfMonth)
+        now.set(
+            year,
+            month - 1,
+            dayOfMonth,
+            now.get(Calendar.HOUR_OF_DAY),
+            now.get(Calendar.MINUTE),
+            now.get(Calendar.SECOND)
+        )
         dateTimeLiveData.postValue(now)
     }
 
     fun updateTime(hour: Int, minute: Int) {
-        now = now.withHour(hour).withMinute(minute)
+        now.set(
+            now.get(Calendar.YEAR),
+            now.get(Calendar.MONTH),
+            now.get(Calendar.DATE),
+            hour,
+            minute
+        )
         dateTimeLiveData.postValue(now)
     }
 
     /**
      * @return [String] formatted date
      */
-    fun getFormattedTokeDate() = "${now.dayOfMonth} / ${now.monthValue} / ${now.year}"
+    fun getFormattedTokeDate(): String {
+        return "${now.get(Calendar.DAY_OF_MONTH)}/${now.get(Calendar.MONTH)}/${now.get(Calendar.YEAR)}"
+    }
 
     /**
      * Format [now] to a readable time format based on the
@@ -82,10 +94,7 @@ class EditTokeViewModel(private var app: Application) : BaseAndroidViewModel(app
             "h:mm a"
         }
         // apply pattern and return
-        return DateTimeFormatter
-            .ofPattern(pattern)
-            .format(now)
-            .replace("AM", "am")
-            .replace("PM", "pm")
+        val spf = SimpleDateFormat(pattern, Locale.getDefault())
+        return spf.format(now.time)
     }
 }

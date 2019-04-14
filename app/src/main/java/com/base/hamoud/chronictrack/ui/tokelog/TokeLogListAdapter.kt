@@ -15,8 +15,8 @@ import com.base.hamoud.chronictrack.data.entity.Toke
 import com.base.hamoud.chronictrack.data.model.Tools
 import com.base.hamoud.chronictrack.ui.edittoke.EditTokeScreen
 import com.github.marlonlom.utilities.timeago.TimeAgo
-import java.time.OffsetDateTime
-import java.time.format.DateTimeFormatter
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class TokeLogListAdapter internal constructor(val context: Context) :
@@ -41,11 +41,13 @@ class TokeLogListAdapter internal constructor(val context: Context) :
 
     override fun onBindViewHolder(holder: HitViewHolder, position: Int) {
         val tokeItem = tokeList[position]
-        val tokeTime = formatTime(tokeItem.tokeDateTime)
-        val tokeTimeAgo = getTimeAgo(tokeItem.tokeDateTime.toInstant().toEpochMilli())
+        val cal = Calendar.getInstance()
+        cal.timeInMillis = tokeItem.tokeDateTime
+        val tokeTime = formatTime(cal)
+        val tokeTimeAgo = getTimeAgo(tokeItem.tokeDateTime)
 
         holder.tokeTimeView.text = String.format(
-            "%s %s | %s", context.getString(R.string.today_at), tokeTime, tokeTimeAgo
+            "%s %s - %s", context.getString(R.string.today_at), tokeTime, tokeTimeAgo
         )
         setTokeToolIcon(holder.tokeIconView, tokeItem.toolUsed)
         holder.tokeTypeView.text = tokeItem.tokeType
@@ -92,18 +94,15 @@ class TokeLogListAdapter internal constructor(val context: Context) :
         }
     }
 
-    private fun dateCreator(date: OffsetDateTime) =
-        "${date.dayOfMonth} / ${date.monthValue} / ${date.year}"
-
     /**
      * Format [date] to a readable time format based on the
      * device's format (whether 24-hour format is set in the device's system settings).
      *
-     * @param date [OffsetDateTime] to format
+     * @param date [Calendar] to format
      *
-     * @return formatted [OffsetDateTime] as [String]
+     * @return formatted [Calendar] as [String]
      */
-    private fun formatTime(date: OffsetDateTime): String {
+    private fun formatTime(date: Calendar): String {
         val isDevice24HourClock = DateFormat.is24HourFormat(context.applicationContext)
         val pattern = if (isDevice24HourClock) {
             "H:mm a"
@@ -111,9 +110,8 @@ class TokeLogListAdapter internal constructor(val context: Context) :
             "h:mm a"
         }
         // apply pattern and return
-        return DateTimeFormatter
-            .ofPattern(pattern)
-            .format(date)
+        val spf = SimpleDateFormat(pattern, Locale.getDefault())
+        return spf.format(date.time)
             .replace("AM", "am")
             .replace("PM", "pm")
     }

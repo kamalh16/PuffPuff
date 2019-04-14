@@ -21,7 +21,7 @@ import com.base.hamoud.chronictrack.data.model.Tools
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import java.time.OffsetDateTime
+import java.util.*
 
 class EditTokeScreen : Fragment() {
 
@@ -84,7 +84,7 @@ class EditTokeScreen : Fragment() {
     }
 
     private fun observeDateTimeLiveData() {
-        viewModel.dateTimeLiveData.observe(this, Observer<OffsetDateTime> {
+        viewModel.dateTimeLiveData.observe(this, Observer<Calendar> {
             dateInputTextView?.text = viewModel.getFormattedTokeDate()
             timeInputTextView?.text = viewModel.getFormattedTokeTime()
         })
@@ -131,14 +131,18 @@ class EditTokeScreen : Fragment() {
         dateInputTextView?.text = viewModel.getFormattedTokeDate()
 
         dateInputTextView?.setOnClickListener {
-            val datePickerDialog = DatePickerDialog(activity!!)
-            datePickerDialog.setOnDateSetListener { view, year, month, dayOfMonth ->
-                viewModel.updateDate(year = year, month = month, dayOfMonth = dayOfMonth)
-            }
-            datePickerDialog.updateDate(
-                viewModel.now.year,
-                viewModel.now.monthValue,
-                viewModel.now.dayOfMonth
+            val datePickerDialog = DatePickerDialog(
+                activity,
+                DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+                    viewModel.updateDate(
+                        year = year,
+                        month = month,
+                        dayOfMonth = dayOfMonth
+                    )
+                },
+                viewModel.now.get(Calendar.YEAR) - 1,
+                viewModel.now.get(Calendar.MONTH + 1),
+                viewModel.now.get(Calendar.DAY_OF_MONTH)
             )
             datePickerDialog.show()
         }
@@ -151,12 +155,16 @@ class EditTokeScreen : Fragment() {
         timeInputTextView?.setOnClickListener {
             val timePickerDialog = TimePickerDialog(
                 activity,
-                TimePickerDialog.OnTimeSetListener(function = { view, hourOfDay, minute ->
-                    viewModel.updateTime(hour = hourOfDay, minute = minute)
-                }), viewModel.now.hour, viewModel.now.minute,
+                TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
+                    viewModel.updateTime(
+                        hour = hourOfDay,
+                        minute = minute
+                    )
+                },
+                viewModel.now.get(Calendar.HOUR_OF_DAY),
+                viewModel.now.get(Calendar.MINUTE),
                 android.text.format.DateFormat.is24HourFormat(activity)
             )
-
             timePickerDialog.show()
         }
     }
@@ -175,7 +183,7 @@ class EditTokeScreen : Fragment() {
                     id = it,
                     tokeType = viewModel.typeSelection,
                     strain = viewModel.strainSelection,
-                    tokeDateTime = viewModel.now,
+                    tokeDateTime = viewModel.now.timeInMillis,
                     toolUsed = viewModel.toolSelection
                 )
                 viewModel.updateToke(toke)

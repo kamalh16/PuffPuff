@@ -9,7 +9,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.base.hamoud.chronictrack.R
-import com.base.hamoud.chronictrack.data.entity.User
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.LimitLine
 import com.github.mikephil.charting.data.LineData
@@ -19,7 +18,6 @@ import timber.log.Timber
 
 class HomeScreen : Fragment() {
 
-    private var loggedInUser: User? = null
     private lateinit var viewModel: HomeViewModel
 
     private lateinit var weeklyTokesLineChart: LineChart
@@ -48,21 +46,11 @@ class HomeScreen : Fragment() {
         weeklyTokesLineChart.xAxis.addLimitLine(limitLine)
 
         // observe
-        observeOnUserLoggedInLive()
         observeOnChartData()
 
         // triggers
         viewModel.getThisWeeksTokesData()
 
-    }
-
-    private fun observeOnUserLoggedInLive() {
-        viewModel.loggedInUserLive.observe(this, Observer {
-            if (it != null) {
-//                Timber.i("logged in user: ${it.username}, ${it.id}")
-                loggedInUser = it
-            }
-        })
     }
 
     private fun observeOnChartData() {

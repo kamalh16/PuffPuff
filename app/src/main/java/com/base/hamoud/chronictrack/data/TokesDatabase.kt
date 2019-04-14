@@ -4,23 +4,17 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
-import com.base.hamoud.chronictrack.data.converter.OffsetDateTimeConverter
 import com.base.hamoud.chronictrack.data.dao.TokeDao
-import com.base.hamoud.chronictrack.data.dao.UserDao
-import com.base.hamoud.chronictrack.data.entity.User
 import com.base.hamoud.chronictrack.data.entity.Toke
 
 @Database(
-      entities = [
-          User::class,
-          Toke::class],
-      version = 3
+    entities = [
+        Toke::class],
+    version = 4,
+    exportSchema = false
 )
-@TypeConverters(OffsetDateTimeConverter::class)
 abstract class TokesDatabase : RoomDatabase() {
 
-    abstract fun userDao(): UserDao
     abstract fun tokeDao(): TokeDao
 
     companion object {
@@ -33,12 +27,13 @@ abstract class TokesDatabase : RoomDatabase() {
                 synchronized(TokesDatabase::class.java) {
                     if (INSTANCE == null) {
                         INSTANCE =
-                              Room.databaseBuilder(
-                                    context.applicationContext,
-                                    TokesDatabase::class.java,
-                                    "Tokes_database")
-                                    .fallbackToDestructiveMigration()
-                                    .build()
+                            Room.databaseBuilder(
+                                context.applicationContext,
+                                TokesDatabase::class.java,
+                                "Tokes_database"
+                            )
+                                .fallbackToDestructiveMigration()
+                                .build()
                     }
                 }
             }
