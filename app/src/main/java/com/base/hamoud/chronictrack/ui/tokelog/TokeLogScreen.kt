@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Chronometer
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -25,11 +27,17 @@ class TokeLogScreen : Fragment() {
     private lateinit var viewModel: TokeLogViewModel
 
     private var tokeEmptyListMsgView: TextView? = null
-    private var hitListRecyclerView: RecyclerView? = null
-    private lateinit var adapter: TokeLogListAdapter
-    private lateinit var todaysTokesLineGraph: LineChart
+    private var tokeListView: RecyclerView? = null
+    private lateinit var logListAdapter: TokeLogListAdapter
+    private var todaysTokesLineGraph: LineChart? = null
+    private var tokeCountView: TextView? = null
+    private var tokeTimerChronometer: Chronometer? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.screen_toke_log, container, false)
     }
 
@@ -38,21 +46,15 @@ class TokeLogScreen : Fragment() {
         viewModel = ViewModelProviders.of(this).get(TokeLogViewModel::class.java)
 
         // prepare ui
-        prepareTokeRvList()
-        prepareTokeEmptyListMsgView()
-        prepareAddTokeBtn()
-        // prepare todaysTokesLineGraph todo
-        todaysTokesLineGraph = view.findViewById(R.id.home_screen_todays_tokes_trend)
-        todaysTokesLineGraph.apply {
-            setBackgroundColor(resources.getColor(R.color.colorPrimary))
-            setDrawGridBackground(false)
-        }
+        prepareView()
 
         // observe
         observeOnUserLoggedInLive()
         observeOnGetUserTokeListLive()
+        observeOnGetUserTokesCountLive()
+        observeOnUserLastTokeTodayLive()
 
-        viewModel.todayTokesData.observe(this, Observer {
+        viewModel.todayTokesDataLive.observe(this, Observer {
             Timber.i("TodaysTokes: $it")
             if (!it.isNullOrEmpty()) {
                 // todo
@@ -60,13 +62,14 @@ class TokeLogScreen : Fragment() {
                 Timber.i("DataSet: ${dataSet.toSimpleString()}")
                 dataSet.color = R.color.colorAccent
                 val lineData = LineData(dataSet)
-                todaysTokesLineGraph.data = lineData
-                todaysTokesLineGraph.invalidate()
+                todaysTokesLineGraph?.data = lineData
+                todaysTokesLineGraph?.invalidate()
             }
         })
 
         // trigger
         viewModel.refreshTokeList()
+        viewModel.refreshTokesTotalCount()
         viewModel.getTodaysTokesData()
     }
 
@@ -85,20 +88,56 @@ class TokeLogScreen : Fragment() {
                 if (it.isEmpty()) {
                     showTokeEmptyListMsgView()
                 }
-                adapter.setTokeList(it)
+                logListAdapter.setTokeList(it)
             }
         })
     }
 
+    private fun observeOnUserLastTokeTodayLive() {
+        viewModel.userLastTokeTodayLive.observe(this, Observer {
+            tokeTimerChronometer?.base = it
+            tokeTimerChronometer?.start()
+        })
+    }
+
+    private fun observeOnGetUserTokesCountLive() {
+        viewModel.userTokesCountLive.observe(this, Observer {
+            if (it != null) {
+                tokeCountView?.text = it.toString()
+            }
+        })
+    }
+
+    private fun prepareView() {
+        prepareTodaysTokeCountView()
+        prepareTodaysTokesLineGraph()
+        prepareTokeRvList()
+        prepareTokeEmptyListMsgView()
+        prepareAddTokeBtn()
+    }
+
+    private fun prepareTodaysTokeCountView() {
+        tokeCountView = view?.findViewById(R.id.toke_log_screen_todays_toke_count)
+        tokeTimerChronometer = view?.findViewById(R.id.toke_log_screen_last_hit_chronometer)
+    }
+
+    private fun prepareTodaysTokesLineGraph() {
+        todaysTokesLineGraph = view?.findViewById(R.id.toke_log_screen_todays_tokes_trend)
+        todaysTokesLineGraph?.apply {
+            setBackgroundColor(ContextCompat.getColor(activity!!, R.color.colorPrimary))
+            setDrawGridBackground(false)
+        }
+    }
+
     private fun prepareTokeRvList() {
-        hitListRecyclerView = view?.findViewById(R.id.toke_log_recycler_view)
-        adapter = TokeLogListAdapter(context!!)
+        tokeListView = view?.findViewById(R.id.toke_log_recycler_view)
+        logListAdapter = TokeLogListAdapter(context!!)
 
         // setup RecyclerView
-        hitListRecyclerView?.adapter = adapter
-        hitListRecyclerView?.layoutManager = LinearLayoutManager(context)
-        hitListRecyclerView?.setHasFixedSize(true)
-        hitListRecyclerView?.setItemViewCacheSize(10)
+        tokeListView?.adapter = logListAdapter
+        tokeListView?.layoutManager = LinearLayoutManager(context)
+        tokeListView?.setHasFixedSize(true)
+        tokeListView?.setItemViewCacheSize(10)
     }
 
     private fun prepareTokeEmptyListMsgView() {

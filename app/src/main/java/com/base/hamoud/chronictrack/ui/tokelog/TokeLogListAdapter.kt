@@ -5,12 +5,14 @@ import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.Navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.base.hamoud.chronictrack.R
 import com.base.hamoud.chronictrack.data.entity.Toke
+import com.base.hamoud.chronictrack.data.model.Tools
 import com.base.hamoud.chronictrack.ui.edittoke.EditTokeScreen
 import com.github.marlonlom.utilities.timeago.TimeAgo
 import java.time.OffsetDateTime
@@ -25,10 +27,11 @@ class TokeLogListAdapter internal constructor(val context: Context) :
 
     inner class HitViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val itemContainer: ConstraintLayout = itemView.findViewById(R.id.item_toke_container)
+        val tokeIconView: ImageView = itemView.findViewById(R.id.item_toke_icon)
         val tokeTimeView: TextView = itemView.findViewById(R.id.item_toke_date_time_field)
-        val chronicTypeView: TextView = itemView.findViewById(R.id.item_toke_type_field)
-        val chronicStrainView: TextView = itemView.findViewById(R.id.item_toke_strain_field)
-        val toolUsedView: TextView = itemView.findViewById(R.id.item_toke_tool_field)
+        val tokeTypeView: TextView = itemView.findViewById(R.id.item_toke_type_field)
+        val tokeStrainView: TextView = itemView.findViewById(R.id.item_toke_strain_field)
+        val tokeTookView: TextView = itemView.findViewById(R.id.item_toke_tool_field)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HitViewHolder {
@@ -44,9 +47,10 @@ class TokeLogListAdapter internal constructor(val context: Context) :
         holder.tokeTimeView.text = String.format(
             "%s %s | %s", context.getString(R.string.today_at), tokeTime, tokeTimeAgo
         )
-        holder.chronicTypeView.text = tokeItem.tokeType
-        holder.chronicStrainView.text = tokeItem.strain
-        holder.toolUsedView.text = tokeItem.toolUsed
+        setTokeToolIcon(holder.tokeIconView, tokeItem.toolUsed)
+        holder.tokeTypeView.text = tokeItem.tokeType
+        holder.tokeStrainView.text = tokeItem.strain
+        holder.tokeTookView.text = tokeItem.toolUsed
 
         // handle onClick
         holder.itemContainer.setOnClickListener {
@@ -69,7 +73,27 @@ class TokeLogListAdapter internal constructor(val context: Context) :
         notifyDataSetChanged()
     }
 
-    private fun dateCreator(date: OffsetDateTime) = "${date.dayOfMonth} / ${date.monthValue} / ${date.year}"
+    private fun setTokeToolIcon(itemIcon: ImageView, toolUsed: String) {
+        when (toolUsed) {
+            Tools.Joint.name ->
+                itemIcon.setImageResource(R.drawable.icon_joint)
+            Tools.Vape.name ->
+                itemIcon.setImageResource(R.drawable.icon_vape)
+            Tools.Bong.name ->
+                itemIcon.setImageResource(R.drawable.icon_bong)
+            Tools.Pipe.name ->
+                itemIcon.setImageResource(R.drawable.icon_pipe)
+            Tools.Edible.name ->
+                itemIcon.setImageResource(R.drawable.icon_edible)
+            Tools.Dab.name ->
+                itemIcon.setImageResource(R.drawable.icon_dab)
+            else ->
+                itemIcon.setImageResource(R.drawable.icon_joint)
+        }
+    }
+
+    private fun dateCreator(date: OffsetDateTime) =
+        "${date.dayOfMonth} / ${date.monthValue} / ${date.year}"
 
     /**
      * Format [date] to a readable time format based on the

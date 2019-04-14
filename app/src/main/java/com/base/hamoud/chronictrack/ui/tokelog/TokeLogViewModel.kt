@@ -1,6 +1,7 @@
 package com.base.hamoud.chronictrack.ui.tokelog
 
 import android.app.Application
+import android.os.SystemClock
 import androidx.lifecycle.MutableLiveData
 import com.base.hamoud.chronictrack.BaseAndroidViewModel
 import com.base.hamoud.chronictrack.data.entity.Toke
@@ -9,6 +10,8 @@ import com.base.hamoud.chronictrack.data.repository.TokeRepo
 import com.base.hamoud.chronictrack.data.repository.UserRepo
 import com.github.mikephil.charting.data.Entry
 import kotlinx.coroutines.launch
+import java.time.Duration
+import java.time.OffsetDateTime
 
 class TokeLogViewModel(application: Application) : BaseAndroidViewModel(application) {
 
@@ -17,7 +20,10 @@ class TokeLogViewModel(application: Application) : BaseAndroidViewModel(applicat
 
     var loggedInUserLive: MutableLiveData<User> = MutableLiveData()
     var userTokeListLive: MutableLiveData<List<Toke>> = MutableLiveData()
-    var todayTokesData: MutableLiveData<List<Entry>?> = MutableLiveData()
+    var todayTokesDataLive: MutableLiveData<List<Entry>?> = MutableLiveData()
+
+    var userTokesCountLive: MutableLiveData<Int> = MutableLiveData()
+    var userLastTokeTodayLive: MutableLiveData<Long> = MutableLiveData()
 
     init {
         getLoggedInUser()
@@ -41,7 +47,7 @@ class TokeLogViewModel(application: Application) : BaseAndroidViewModel(applicat
                 entries.sortBy {
                     it.x
                 }
-                todayTokesData.postValue(entries)
+                todayTokesDataLive.postValue(entries)
             }
         }
     }
@@ -58,10 +64,26 @@ class TokeLogViewModel(application: Application) : BaseAndroidViewModel(applicat
         }
     }
 
+    fun refreshTokesTotalCount() {
+        ioScope.launch {
+            val todaysTokes = tokeRepo.getTodaysTokes()
+            val hitCount = todaysTokes.count()
+            userTokesCountLive.postValue(hitCount)
+
+            if (hitCount > 0) {
+                val lastTokeDateTime = todaysTokes[0].tokeDateTime
+                val now = OffsetDateTime.now()
+                val difference = Duration.between(lastTokeDateTime, now)
+                userLastTokeTodayLive.postValue(SystemClock.elapsedRealtime() - difference.toMillis())
+            }
+
+        }
+    }
+
     private fun getLoggedInUser() {
         ioScope.launch {
             loggedInUserLive.postValue(
-                  userRepo.getUserByUsername("Chron")
+                userRepo.getUserByUsername("Chron")
             )
         }
     }

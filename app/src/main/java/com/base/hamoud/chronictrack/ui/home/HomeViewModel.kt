@@ -1,7 +1,6 @@
 package com.base.hamoud.chronictrack.ui.home
 
 import android.app.Application
-import android.os.SystemClock
 import androidx.lifecycle.MutableLiveData
 import com.base.hamoud.chronictrack.BaseAndroidViewModel
 import com.base.hamoud.chronictrack.data.entity.Toke
@@ -12,7 +11,6 @@ import com.github.mikephil.charting.data.Entry
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.time.Duration
 import java.time.OffsetDateTime
 
 class HomeViewModel(application: Application) : BaseAndroidViewModel(application) {
@@ -21,8 +19,6 @@ class HomeViewModel(application: Application) : BaseAndroidViewModel(application
     var tokeRepo: TokeRepo = TokeRepo(db.tokeDao())
 
     var loggedInUserLive: MutableLiveData<User> = MutableLiveData()
-    var userTokesCountLive: MutableLiveData<Int> = MutableLiveData()
-    var userLastTokeTodayLive: MutableLiveData<Long> = MutableLiveData()
     var weeksTokesData: MutableLiveData<List<Entry>?> = MutableLiveData()
 
     init {
@@ -56,15 +52,13 @@ class HomeViewModel(application: Application) : BaseAndroidViewModel(application
                         .minusDays((0L..4L).shuffled().first())
                     Timber.i("time: $time")
                     val toke = Toke(
-                        tokeDateTime =time.plusMinutes((1L..39L).shuffled().first())
+                        tokeDateTime = time.plusMinutes((1L..39L).shuffled().first())
                     )
                     tokeRepo.insert(toke)
                 }
             }
         }
     }
-
-
 
     fun getThisWeeksTokesData() {
         ioScope.launch {
@@ -94,26 +88,10 @@ class HomeViewModel(application: Application) : BaseAndroidViewModel(application
         parentJob.cancel()
     }
 
-    fun refreshTokesTotalCount() {
-        ioScope.launch {
-            val todaysTokes = tokeRepo.getTodaysTokes()
-            val hitCount = todaysTokes.count()
-            userTokesCountLive.postValue(hitCount)
-
-            if (hitCount > 0) {
-                val lastTokeDateTime = todaysTokes[0].tokeDateTime
-                val now = OffsetDateTime.now()
-                val difference =  Duration.between(lastTokeDateTime, now)
-                userLastTokeTodayLive.postValue(SystemClock.elapsedRealtime() - difference.toMillis())
-            }
-
-        }
-    }
-
     private fun getLoggedInUser() {
         ioScope.launch(Dispatchers.IO) {
             loggedInUserLive.postValue(
-                  userRepo.getUserByUsername("Chron")
+                userRepo.getUserByUsername("Chron")
             )
         }
     }

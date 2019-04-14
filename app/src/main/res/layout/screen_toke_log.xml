@@ -7,18 +7,6 @@
     android:background="@color/colorPrimary"
     tools:context=".ui.main.MainActivity">
 
-    <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/home_screen_todays_tokes_trend"
-            android:layout_width="360dp"
-            android:layout_height="200dp"
-            android:background="@color/colorAccent"
-            android:layout_margin="8dp"
-            android:padding="16dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/toke_log_screen_label" android:layout_marginStart="8dp"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
     <!-- Toke Log List -->
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/toke_log_recycler_view"
@@ -28,7 +16,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:listitem="@layout/item_toke" android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/home_screen_todays_tokes_trend"/>
+            app:layout_constraintTop_toBottomOf="@+id/toke_log_screen_todays_tokes_trend"/>
 
     <!-- Toke Log Screen Label -->
     <TextView
@@ -60,6 +48,74 @@
         app:layout_constraintStart_toStartOf="@+id/toke_log_screen_label"
         app:layout_constraintTop_toBottomOf="@id/toke_log_screen_label"
         app:layout_constraintWidth_percent="1" />
+
+    <!-- Tokes Today Chart -->
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/toke_log_screen_todays_tokes_trend"
+        android:layout_width="360dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/colorAccent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toke_log_screen_last_hit_label" />
+
+    <!-- Tokes Today Label -->
+    <TextView
+        android:id="@+id/toke_log_screen_tokes_today_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/roboto"
+        android:gravity="center"
+        android:padding="4dp"
+        android:text="@string/tokes_today"
+        android:textColor="@color/colorPrimaryTextLabelColor"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toke_log_screen_label_border_bottom" />
+
+    <!-- Tokes Today Total Count -->
+    <TextView
+        android:id="@+id/toke_log_screen_todays_toke_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/roboto"
+        android:text="@string/zero"
+        android:textColor="@color/colorPrimaryText"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="@+id/toke_log_screen_tokes_today_label"
+        app:layout_constraintStart_toEndOf="@+id/toke_log_screen_tokes_today_label" />
+
+    <!-- Last Toke Time Label -->
+    <TextView
+        android:id="@+id/toke_log_screen_last_hit_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:fontFamily="@font/roboto"
+        android:gravity="center"
+        android:padding="4dp"
+        android:text="@string/last_toke"
+        android:textColor="@color/colorPrimaryTextLabelColor"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/toke_log_screen_todays_toke_count"
+        app:layout_constraintTop_toTopOf="@+id/toke_log_screen_todays_toke_count" />
+
+    <!-- Last Toke Chronometer Timer -->
+    <Chronometer
+        android:id="@+id/toke_log_screen_last_hit_chronometer"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/roboto"
+        android:text="@string/zero"
+        android:textColor="@color/colorPrimaryText"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="@+id/toke_log_screen_last_hit_label"
+        app:layout_constraintStart_toEndOf="@+id/toke_log_screen_last_hit_label" />
 
     <!-- Screen Empty List Msg -->
     <TextView

@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Chronometer
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -22,12 +20,13 @@ class HomeScreen : Fragment() {
     private var loggedInUser: User? = null
     private lateinit var viewModel: HomeViewModel
 
-    private var tokeCountView: TextView? = null
-    private var tokeTimerChronometer: Chronometer? = null
-
     private lateinit var weeklyTokesLineChart: LineChart
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.screen_home, container, false)
     }
 
@@ -36,7 +35,6 @@ class HomeScreen : Fragment() {
         viewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
 
         // prepare ui
-        prepareTodaysTokeCountView()
         weeklyTokesLineChart = view.findViewById(R.id.home_screen_weekly_tokes_trend)
         weeklyTokesLineChart.setBackgroundColor(resources.getColor(R.color.colorPrimary))
         weeklyTokesLineChart.setDrawGridBackground(false)
@@ -46,24 +44,13 @@ class HomeScreen : Fragment() {
         limitLine.textSize = 8f
         weeklyTokesLineChart.xAxis.addLimitLine(limitLine)
 
-
         // observe
         observeOnUserLoggedInLive()
-        observeOnGetUserTokesCountLive()
-        observeOnUserLastTokeTodayLive()
         observeOnChartData()
 
         // triggers
-        viewModel.refreshTokesTotalCount()
         viewModel.getThisWeeksTokesData()
 
-    }
-
-    private fun observeOnUserLastTokeTodayLive() {
-        viewModel.userLastTokeTodayLive.observe(this, Observer {
-            tokeTimerChronometer?.base = it
-            tokeTimerChronometer?.start()
-        })
     }
 
     private fun observeOnUserLoggedInLive() {
@@ -75,14 +62,6 @@ class HomeScreen : Fragment() {
         })
     }
 
-    private fun observeOnGetUserTokesCountLive() {
-        viewModel.userTokesCountLive.observe(this, Observer {
-            if (it != null) {
-                tokeCountView?.text = it.toString()
-            }
-        })
-    }
-
     private fun observeOnChartData() {
         viewModel.weeksTokesData.observe(this, Observer {
             Timber.i("Weeks Tokes: $it")
@@ -90,7 +69,16 @@ class HomeScreen : Fragment() {
                 // todo
                 val dataSet = LineDataSet(it, "Weeks Tokes")
                 Timber.i("DataSet: ${dataSet.toSimpleString()}")
-                val weekNames = arrayOf(" ","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
+                val weekNames = arrayOf(
+                    " ",
+                    "Monday",
+                    "Tuesday",
+                    "Wednesday",
+                    "Thursday",
+                    "Friday",
+                    "Saturday",
+                    "Sunday"
+                )
 
                 dataSet.color = R.color.colorAccent
                 val lineData = LineData(dataSet)
@@ -99,11 +87,6 @@ class HomeScreen : Fragment() {
             }
         })
 
-    }
-
-    private fun prepareTodaysTokeCountView() {
-        tokeCountView = view?.findViewById(R.id.home_screen_todays_toke_count)
-        tokeTimerChronometer = view?.findViewById(R.id.home_screen_last_hit_chronometer)
     }
 
 }
