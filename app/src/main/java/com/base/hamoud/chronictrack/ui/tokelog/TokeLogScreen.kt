@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.base.hamoud.chronictrack.R
 import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.Description
+import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -120,12 +122,25 @@ class TokeLogScreen : Fragment() {
     private fun prepareTodaysTokesLineGraph() {
         todaysTokesLineGraph = view?.findViewById(R.id.toke_log_screen_todays_tokes_trend)
         val textColor = ContextCompat.getColor(context!!, R.color.colorPrimaryText)
+        val des = Description().also {
+            it.text = "todays tokes over 24 hour period"
+        }
+
         todaysTokesLineGraph?.apply {
             setBackgroundColor(ContextCompat.getColor(activity!!, R.color.colorPrimary))
             setDrawGridBackground(false)
+            legend.isEnabled = false
+            description = des
             axisLeft?.textColor = textColor // left y-axis
+            axisLeft.axisMinimum = 0f
+            axisLeft.granularity = 1f
+            axisLeft.labelCount = 4
+            axisRight?.textColor = textColor // left y-axis
+            axisRight.axisMinimum = 0f
+            axisRight.granularity = 1f
+            axisRight.labelCount = 4
             xAxis?.textColor = textColor
-            legend?.textColor = textColor
+            xAxis?.position = XAxis.XAxisPosition.BOTTOM
         }
     }
 

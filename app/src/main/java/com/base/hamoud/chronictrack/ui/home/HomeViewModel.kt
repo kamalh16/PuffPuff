@@ -18,8 +18,8 @@ class HomeViewModel(application: Application) : BaseAndroidViewModel(application
     var weeksTokesData: MutableLiveData<List<Entry>?> = MutableLiveData()
 
     init {
-//        createFakeHitsWithRandomDates(10)
-//        createFakeHitsWithRandomHours(20)
+        createFakeHitsWithRandomDates(20)
+        createFakeHitsWithRandomHours(10)
     }
 
     private fun createFakeHitsWithRandomDates(fakeHits: Int) {
@@ -29,8 +29,8 @@ class HomeViewModel(application: Application) : BaseAndroidViewModel(application
 //                    val toke = Toke(
 //                        tokeDateTime = OffsetDateTime.now().minusDays((1L..3L).shuffled().first())
 //                    )
-
-                    val toke = Toke(tokeDateTime = Calendar.getInstance().timeInMillis)
+                    val tokeDateTime = Calendar.getInstance().timeInMillis - ((8.64*10000000*(1L..4L).shuffled().first()))
+                    val toke = Toke(tokeDateTime = tokeDateTime.toLong())
 
                     tokeRepo.insert(toke)
                 }
