@@ -48,9 +48,9 @@ class SettingsListAdapter(private val viewModel: SettingsViewModel) :
                 holder.itemIcon.setImageResource(R.drawable.ic_invert_colors_black_24dp)
             }
             SettingsItem.SET_NEXT_TOKE_REMINDER -> {
-                holder.itemIcon.setImageResource(R.drawable.ic_smoking_rooms_white_24dp)
+                holder.itemIcon.setImageResource(R.drawable.ic_add_alert_black_24dp)
             }
-            SettingsItem.SET_HOME_PAGE -> {
+            SettingsItem.SET_STARTUP_PAGE -> {
                 holder.itemIcon.setImageResource(R.drawable.ic_toke_log_black_24dp)
             }
             SettingsItem.CLEAR_DATA -> {
@@ -71,7 +71,7 @@ class SettingsListAdapter(private val viewModel: SettingsViewModel) :
                     // TODO
                     Toast.makeText(holder.itemView.context, "TODO: Set Toke Reminder", Toast.LENGTH_SHORT).show()
                 }
-                SettingsItem.SET_HOME_PAGE -> {
+                SettingsItem.SET_STARTUP_PAGE -> {
                     // TODO
                     Toast.makeText(holder.itemView.context, "TODO: Set Home Page", Toast.LENGTH_SHORT).show()
                 }
