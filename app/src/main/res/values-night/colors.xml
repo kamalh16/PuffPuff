@@ -3,6 +3,7 @@
     <color name="colorPrimary">@color/colorPageBackground</color>
     <color name="colorPrimaryDark">@color/colorPageBackground</color>
     <color name="colorAccent">#008577</color>
+    <color name="colorAccentRipple">#382B2B2B</color>
     <color name="colorStatusBar">#1A000000</color>
     <color name="colorBottomNavigationBar">#080808</color>
     <color name="colorPageBackground">#0f0f0f</color>
@@ -11,4 +12,3 @@
     <color name="colorSwipeToDeleteBg">#F44336</color>
     <color name="colorItemTokeBorderBottom">#80818181</color>
 </resources>
-

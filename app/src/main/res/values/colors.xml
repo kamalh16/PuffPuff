@@ -3,6 +3,7 @@
     <color name="colorPrimary">@color/colorPageBackground</color>
     <color name="colorPrimaryDark">@color/colorPageBackground</color>
     <color name="colorAccent">#008577</color>
+    <color name="colorAccentRipple">#47AFADAD</color>
     <color name="colorStatusBar">#19000000</color>
     <color name="colorBottomNavigationBar">#FFFFFF</color>
     <color name="colorPageBackground">#fcfcfc</color>

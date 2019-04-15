@@ -8,8 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorPrimary">@color/colorPrimaryText</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="colorControlHighlight">@color/colorAccentRipple</item>
     </style>
 
-    <style name="ChipGroupTheme" parent="Theme.MaterialComponents.DayNight"/>
+    <style name="ChipGroupTheme" parent="Theme.MaterialComponents.DayNight" />
 
 </resources>
