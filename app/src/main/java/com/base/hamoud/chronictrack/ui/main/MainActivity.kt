@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun prepareView() {
         // prepare shortcuts
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
             prepareShortcuts()
         }
     }
