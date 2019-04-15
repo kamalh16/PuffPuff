@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="56dp"
+    android:layout_height="72dp"
+    android:background="?android:attr/selectableItemBackground"
     android:clickable="true"
-    android:focusable="true"
-    android:foreground="?android:attr/selectableItemBackgroundBorderless">
+    android:focusable="true">
 
     <!-- Item Label -->
     <TextView
@@ -38,4 +38,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/item_settings_option_label" />
 
+    <!-- Item Toke Border Bottom -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/colorItemTokeBorderBottom"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
