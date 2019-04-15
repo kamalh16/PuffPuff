@@ -4,13 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.base.hamoud.chronictrack.R
 import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.components.LimitLine
+import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -36,14 +39,26 @@ class HomeScreen : Fragment() {
 
         // prepare ui
         prepareView()
+        val textColor = ContextCompat.getColor(context!!, R.color.colorPrimaryText)
+        val des = Description().also {
+            it.text = "this weeks tokes over 7 day period"
+        }
         weeklyTokesLineChart = view.findViewById(R.id.home_screen_weekly_tokes_trend)
-        weeklyTokesLineChart.setBackgroundColor(resources.getColor(R.color.colorPrimary))
-        weeklyTokesLineChart.setDrawGridBackground(false)
-        val limitLine: LimitLine = LimitLine(7f, "Days")
-        limitLine.lineWidth = 3f
-        limitLine.labelPosition = LimitLine.LimitLabelPosition.RIGHT_BOTTOM
-        limitLine.textSize = 8f
-        weeklyTokesLineChart.xAxis.addLimitLine(limitLine)
+        weeklyTokesLineChart.apply {
+            setBackgroundColor(ContextCompat.getColor(activity!!, R.color.colorPrimary))
+            setDrawGridBackground(false)
+            xAxis?.position = XAxis.XAxisPosition.BOTTOM
+            xAxis.labelCount
+            xAxis?.textColor = textColor
+            legend.isEnabled = false
+            axisRight?.textColor = textColor
+            axisLeft?.textColor = textColor
+            description = des
+        }
+        weeklyTokesLineChart.xAxis.addLimitLine(generateLimitlineFor(0f, "M"))
+        weeklyTokesLineChart.xAxis.addLimitLine(generateLimitlineFor(2f, "W"))
+        weeklyTokesLineChart.xAxis.addLimitLine(generateLimitlineFor(4f, "F"))
+        weeklyTokesLineChart.xAxis.addLimitLine(generateLimitlineFor(6f, "S"))
 
         // observe
         observeOnChartData()
@@ -53,6 +68,17 @@ class HomeScreen : Fragment() {
 
     }
 
+    private fun generateLimitlineFor(limit: Float, label: String): LimitLine {
+        val textColor = ContextCompat.getColor(context!!, R.color.colorPrimaryText)
+        return LimitLine(limit, label).apply {
+            this.lineWidth = 1f
+            this.lineColor = textColor
+            this.labelPosition = LimitLine.LimitLabelPosition.RIGHT_TOP
+            this.textSize = 8f
+            this.textColor = textColor
+        }
+    }
+
     private fun observeOnChartData() {
         viewModel.weeksTokesData.observe(this, Observer {
             Timber.i("Weeks Tokes: $it")
@@ -60,18 +86,8 @@ class HomeScreen : Fragment() {
                 // todo
                 val dataSet = LineDataSet(it, "Weeks Tokes")
                 Timber.i("DataSet: ${dataSet.toSimpleString()}")
-                val weekNames = arrayOf(
-                      " ",
-                      "Monday",
-                      "Tuesday",
-                      "Wednesday",
-                      "Thursday",
-                      "Friday",
-                      "Saturday",
-                      "Sunday"
-                )
-
-                dataSet.color = R.color.colorAccent
+                val colorAccent = ContextCompat.getColor(context!!, R.color.colorAccent)
+                dataSet.color = colorAccent
                 val lineData = LineData(dataSet)
                 weeklyTokesLineChart.data = lineData
                 weeklyTokesLineChart.invalidate()
