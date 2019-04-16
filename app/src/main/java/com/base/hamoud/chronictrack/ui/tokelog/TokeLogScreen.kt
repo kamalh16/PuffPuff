@@ -30,10 +30,10 @@ class TokeLogScreen : Fragment() {
     private var tokeLogListView: RecyclerView? = null
     private lateinit var tokeLogListAdapter: TokeLogListAdapter
     private var tokeEmptyListMsgView: TextView? = null
-    private var todaysTokesLineGraph: LineChart? = null
-    private var todaysTotalTokeCountView: TextView? = null
-    private var lastTokeTimeChronometer: Chronometer? = null
-    private var nextTokeTimeChronometer: Chronometer? = null // TODO - need to implement
+    private var tokesLineGraph: LineChart? = null
+    private var totalTokeCountView: TextView? = null
+    private var lastTokedAtTimeChronometer: Chronometer? = null
+    private var nextTokeAtTimeChronometer: Chronometer? = null // TODO - need to implement
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -67,8 +67,8 @@ class TokeLogScreen : Fragment() {
                 dataSet.setCircleColor(colorAccent)
                 dataSet.valueTextColor = colorAccent
                 val lineData = LineData(dataSet)
-                todaysTokesLineGraph?.data = lineData
-                todaysTokesLineGraph?.invalidate()
+                tokesLineGraph?.data = lineData
+                tokesLineGraph?.invalidate()
             }
         })
 
@@ -103,8 +103,8 @@ class TokeLogScreen : Fragment() {
     private fun observeOnLastTokedAtTimeLive() {
         viewModel.lastTokedAtTimeLive.observe(viewLifecycleOwner, Observer {
             if (it != null) {
-                lastTokeTimeChronometer?.base = it
-                lastTokeTimeChronometer?.start()
+                lastTokedAtTimeChronometer?.base = it
+                lastTokedAtTimeChronometer?.start()
             }
         })
     }
@@ -112,7 +112,7 @@ class TokeLogScreen : Fragment() {
     private fun observeOnTotalTokesCountLive() {
         viewModel.totalTokeCountLive.observe(viewLifecycleOwner, Observer {
             if (it != null) {
-                todaysTotalTokeCountView?.text = it.toString()
+                totalTokeCountView?.text = it.toString()
             }
         })
     }
@@ -126,18 +126,18 @@ class TokeLogScreen : Fragment() {
     }
 
     private fun prepareTodaysTokeCountView() {
-        todaysTotalTokeCountView = view?.findViewById(R.id.toke_log_screen_todays_toke_count)
-        lastTokeTimeChronometer = view?.findViewById(R.id.toke_log_screen_last_toke_chronometer)
+        totalTokeCountView = view?.findViewById(R.id.toke_log_screen_todays_toke_count)
+        lastTokedAtTimeChronometer = view?.findViewById(R.id.toke_log_screen_last_toke_chronometer)
     }
 
     private fun prepareTodaysTokesLineGraph() {
-        todaysTokesLineGraph = view?.findViewById(R.id.toke_log_screen_todays_tokes_trend)
+        tokesLineGraph = view?.findViewById(R.id.toke_log_screen_todays_tokes_trend)
         val textColor = ContextCompat.getColor(context!!, R.color.colorPrimaryText)
         val des = Description().also {
             it.text = "todays tokes over 24 hour period"
         }
 
-        todaysTokesLineGraph?.apply {
+        tokesLineGraph?.apply {
             setBackgroundColor(ContextCompat.getColor(activity!!, R.color.colorPrimary))
             setDrawGridBackground(false)
             legend.isEnabled = false
