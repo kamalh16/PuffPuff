@@ -3,6 +3,7 @@ package com.base.hamoud.chronictrack.data.repository
 import androidx.annotation.WorkerThread
 import com.base.hamoud.chronictrack.data.dao.TokeDao
 import com.base.hamoud.chronictrack.data.entity.Toke
+import org.joda.time.DateTime
 
 class TokeRepo(private val tokeDao: TokeDao) {
 
@@ -28,12 +29,18 @@ class TokeRepo(private val tokeDao: TokeDao) {
 
     @WorkerThread
     suspend fun getTodaysTokes(): List<Toke> {
-        return tokeDao.getTodaysTokes().sortedByDescending { it.tokeDateTime }
+        return tokeDao.getAllTokes()
+            // get Tokes that are from the current day
+            .filter { DateTime(it.tokeDateTime).dayOfWeek == DateTime.now().dayOfWeek }
+            .sortedByDescending { it.tokeDateTime }
     }
 
     @WorkerThread
     suspend fun getThisWeeksTokes(): List<Toke> {
-        return tokeDao.getThisWeeksTokes()
+        return tokeDao.getAllTokes()
+            // get Tokes that are from the current week
+            .filter { DateTime(it.tokeDateTime).weekOfWeekyear == DateTime.now().weekOfWeekyear }
+            .sortedByDescending { it.tokeDateTime }
     }
 
     @WorkerThread

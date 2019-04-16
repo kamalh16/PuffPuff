@@ -8,6 +8,7 @@ import com.orhanobut.logger.PrettyFormatStrategy
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import net.danlew.android.joda.JodaTimeAndroid
 import timber.log.Timber
 
 
@@ -16,6 +17,7 @@ class ChronicTrackerApp : Application() {
     override fun onCreate() {
         super.onCreate()
 
+        JodaTimeAndroid.init(this)
         forceInitDatabase()
         initLogger()
     }
