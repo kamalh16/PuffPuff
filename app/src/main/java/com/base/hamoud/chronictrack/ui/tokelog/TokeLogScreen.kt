@@ -78,6 +78,12 @@ class TokeLogScreen : Fragment() {
         viewModel.getTodaysTokesData()
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.refreshTokeList()
+    }
+
     private fun observeOnGetUserTokeListLive() {
         viewModel.userTokeListLive.observe(this, Observer {
             if (it != null) {

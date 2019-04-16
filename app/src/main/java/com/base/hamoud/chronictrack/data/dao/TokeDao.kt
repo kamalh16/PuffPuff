@@ -20,7 +20,7 @@ abstract class TokeDao : BaseDao<Toke> {
      *
      * @return List of hits in db
      */
-    @Query("SELECT * FROM TOKE_TABLE")
+    @Query("SELECT * FROM TOKE_TABLE ORDER BY toke_date_time DESC")
     abstract suspend fun getAllTokes(): MutableList<Toke>
 
     /**

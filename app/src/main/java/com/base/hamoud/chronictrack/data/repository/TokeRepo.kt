@@ -32,7 +32,6 @@ class TokeRepo(private val tokeDao: TokeDao) {
         return tokeDao.getAllTokes()
             // get Tokes that are from the current day
             .filter { DateTime(it.tokeDateTime).dayOfWeek == DateTime.now().dayOfWeek }
-            .sortedByDescending { it.tokeDateTime }
     }
 
     @WorkerThread
@@ -40,7 +39,6 @@ class TokeRepo(private val tokeDao: TokeDao) {
         return tokeDao.getAllTokes()
             // get Tokes that are from the current week
             .filter { DateTime(it.tokeDateTime).weekOfWeekyear == DateTime.now().weekOfWeekyear }
-            .sortedByDescending { it.tokeDateTime }
     }
 
     @WorkerThread
