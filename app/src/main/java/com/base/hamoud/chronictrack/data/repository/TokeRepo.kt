@@ -42,12 +42,16 @@ class TokeRepo(private val tokeDao: TokeDao) {
     }
 
     @WorkerThread
-    suspend fun getLastTokeTaken(): Toke? {
-        val todaysTokes = getTodaysTokes()
-        if (todaysTokes.isNotEmpty()) {
-            return todaysTokes.first()
-        }
-        return null
+    suspend fun getLastTokeAdded(): Toke? {
+        return getTodaysTokes().firstOrNull()
+    }
+
+    @WorkerThread
+    suspend fun getLastTokedAtTime(): Long? {
+        return getTodaysTokes()
+            // return the last time the user Toked at; avoids the case where
+            // the countdown is a negative number when user adds a Toke in a future time
+            .firstOrNull { DateTime(it.tokeDateTime).isBefore(DateTime.now()) }?.tokeDateTime
     }
 
     @WorkerThread

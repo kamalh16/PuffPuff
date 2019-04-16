@@ -43,7 +43,7 @@ class AddTokeViewModel(private var app: Application) : BaseAndroidViewModel(app)
 
     fun getLastAddedToke() {
         ioScope.launch {
-            tokeRepo.getLastTokeTaken().let {
+            tokeRepo.getLastTokeAdded().let {
                 lastAddedTokeLive.postValue(it)
             }
         }

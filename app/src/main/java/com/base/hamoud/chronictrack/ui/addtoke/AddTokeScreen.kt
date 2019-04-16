@@ -63,14 +63,14 @@ class AddTokeScreen : Fragment() {
     }
 
     private fun observeDateTimeLiveData() {
-        viewModel.dateTimeLiveData.observe(this, Observer<DateTime> {
+        viewModel.dateTimeLiveData.observe(viewLifecycleOwner, Observer<DateTime> {
             dateInputTextView?.text = viewModel.getFormattedTokeDate()
             timeInputTextView?.text = viewModel.getFormattedTokeTime()
         })
     }
 
     private fun observeOnLastAddedTokeLive() {
-        viewModel.lastAddedTokeLive.observe(this, Observer { toke ->
+        viewModel.lastAddedTokeLive.observe(viewLifecycleOwner, Observer { toke ->
             toke?.let {
                 strainEditText?.setText(it.strain)
                 setTypeChipGroupSelection(it.tokeType)

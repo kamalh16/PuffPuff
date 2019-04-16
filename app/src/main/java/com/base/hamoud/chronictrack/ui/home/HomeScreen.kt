@@ -26,9 +26,9 @@ class HomeScreen : Fragment() {
     private lateinit var weeklyTokesLineChart: LineChart
 
     override fun onCreateView(
-          inflater: LayoutInflater,
-          container: ViewGroup?,
-          savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.screen_home, container, false)
     }
@@ -80,7 +80,7 @@ class HomeScreen : Fragment() {
     }
 
     private fun observeOnChartData() {
-        viewModel.weeksTokesData.observe(this, Observer {
+        viewModel.weeksTokesData.observe(viewLifecycleOwner, Observer {
             Timber.i("Weeks Tokes: $it")
             if (!it.isNullOrEmpty()) {
                 // todo

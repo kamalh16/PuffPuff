@@ -51,11 +51,11 @@ class TokeLogScreen : Fragment() {
         prepareView()
 
         // observe
-        observeOnGetUserTokeListLive()
-        observeOnGetUserTokesCountLive()
-        observeOnUserLastTokeTodayLive()
+        observeOnTokeListLive()
+        observeOnTotalTokesCountLive()
+        observeOnLastTokedAtTimeLive()
 
-        viewModel.todayTokesDataLive.observe(this, Observer {
+        viewModel.todayTokesDataLive.observe(viewLifecycleOwner, Observer {
             Timber.i("TodaysTokes: $it")
             if (!it.isNullOrEmpty()) {
                 // todo
@@ -75,17 +75,22 @@ class TokeLogScreen : Fragment() {
         // trigger
         viewModel.refreshTokeList()
         viewModel.refreshTokesTotalCount()
+        viewModel.refreshLastTokedAtTime()
         viewModel.getTodaysTokesData()
     }
 
     override fun onResume() {
         super.onResume()
 
+        // trigger
         viewModel.refreshTokeList()
+        viewModel.refreshTokesTotalCount()
+        viewModel.refreshLastTokedAtTime()
+        viewModel.getTodaysTokesData()
     }
 
-    private fun observeOnGetUserTokeListLive() {
-        viewModel.userTokeListLive.observe(this, Observer {
+    private fun observeOnTokeListLive() {
+        viewModel.tokeListLive.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 if (it.isEmpty()) {
                     showTokeEmptyListMsgView()
@@ -95,8 +100,8 @@ class TokeLogScreen : Fragment() {
         })
     }
 
-    private fun observeOnUserLastTokeTodayLive() {
-        viewModel.userLastTokeTodayLive.observe(this, Observer {
+    private fun observeOnLastTokedAtTimeLive() {
+        viewModel.lastTokedAtTimeLive.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 lastTokeTimeChronometer?.base = it
                 lastTokeTimeChronometer?.start()
@@ -104,8 +109,8 @@ class TokeLogScreen : Fragment() {
         })
     }
 
-    private fun observeOnGetUserTokesCountLive() {
-        viewModel.userTokesCountLive.observe(this, Observer {
+    private fun observeOnTotalTokesCountLive() {
+        viewModel.totalTokeCountLive.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 todaysTotalTokeCountView?.text = it.toString()
             }
