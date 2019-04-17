@@ -151,7 +151,7 @@ class AddTokeScreen : Fragment() {
         saveButton?.setOnClickListener {
             viewModel.strainSelection = strainEditText?.text.toString()
             viewModel.saveToke()
-            findNavController().navigate(R.id.toke_log_screen)
+            findNavController().navigate(R.id.journal_screen)
         }
     }
 

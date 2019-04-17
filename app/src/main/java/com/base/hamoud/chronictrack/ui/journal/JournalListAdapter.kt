@@ -1,4 +1,4 @@
-package com.base.hamoud.chronictrack.ui.tokelog
+package com.base.hamoud.chronictrack.ui.journal
 
 import android.content.Context
 import android.text.format.DateFormat
@@ -19,8 +19,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class TokeLogListAdapter internal constructor(val context: Context) :
-    RecyclerView.Adapter<TokeLogListAdapter.HitViewHolder>() {
+class JournalListAdapter internal constructor(val context: Context) :
+    RecyclerView.Adapter<JournalListAdapter.HitViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var tokeList = listOf<Toke>()// cached copy of tokeList
@@ -66,7 +66,7 @@ class TokeLogListAdapter internal constructor(val context: Context) :
     }
 
     /**
-     * Set new tokes and calls [notifyDataSetChanged] to refresh the [TokeLogListAdapter]
+     * Set new tokes and calls [notifyDataSetChanged] to refresh the [JournalListAdapter]
      *
      * @param tokes [List] of [Toke]s
      */

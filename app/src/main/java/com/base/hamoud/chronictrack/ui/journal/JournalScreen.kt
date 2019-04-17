@@ -1,11 +1,13 @@
-package com.base.hamoud.chronictrack.ui.tokelog
+package com.base.hamoud.chronictrack.ui.journal
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Chronometer
+import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -23,12 +25,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import timber.log.Timber
 
 
-class TokeLogScreen : Fragment() {
+class JournalScreen : Fragment() {
 
-    private lateinit var viewModel: TokeLogViewModel
+    private lateinit var viewModel: JournalViewModel
 
-    private var tokeLogListView: RecyclerView? = null
-    private lateinit var tokeLogListAdapter: TokeLogListAdapter
+    private var screenLabelView: TextView? = null
+    private var changeDateBtn: ImageView? = null
+    private var tokeListView: RecyclerView? = null
+    private lateinit var journalListAdapter: JournalListAdapter
     private var tokeEmptyListMsgView: TextView? = null
     private var tokesLineGraph: LineChart? = null
     private var totalTokeCountView: TextView? = null
@@ -40,12 +44,12 @@ class TokeLogScreen : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.screen_toke_log, container, false)
+        return inflater.inflate(R.layout.screen_journal, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(TokeLogViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(JournalViewModel::class.java)
 
         // prepare ui
         prepareView()
@@ -95,7 +99,7 @@ class TokeLogScreen : Fragment() {
                 if (it.isEmpty()) {
                     showTokeEmptyListMsgView()
                 }
-                tokeLogListAdapter.setTokeList(it)
+                journalListAdapter.setTokeList(it)
             }
         })
     }
@@ -118,6 +122,8 @@ class TokeLogScreen : Fragment() {
     }
 
     private fun prepareView() {
+        prepareScreenLabelView()
+        prepareChangeDateBtn()
         prepareTodaysTokeCountView()
         prepareTodaysTokesLineGraph()
         prepareTokeRvList()
@@ -125,13 +131,25 @@ class TokeLogScreen : Fragment() {
         prepareAddTokeBtn()
     }
 
+    private fun prepareScreenLabelView() {
+        screenLabelView = view?.findViewById(R.id.journal_screen_title)
+        screenLabelView?.setText(R.string.label_today)
+    }
+
+    private fun prepareChangeDateBtn() {
+        changeDateBtn = view?.findViewById(R.id.journal_change_date_btn)
+        changeDateBtn?.setOnClickListener {
+            Toast.makeText(activity, "launch calendar view", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     private fun prepareTodaysTokeCountView() {
-        totalTokeCountView = view?.findViewById(R.id.toke_log_screen_todays_toke_count)
-        lastTokedAtTimeChronometer = view?.findViewById(R.id.toke_log_screen_last_toke_chronometer)
+        totalTokeCountView = view?.findViewById(R.id.journal_screen_todays_toke_count)
+        lastTokedAtTimeChronometer = view?.findViewById(R.id.journal_screen_last_toke_chronometer)
     }
 
     private fun prepareTodaysTokesLineGraph() {
-        tokesLineGraph = view?.findViewById(R.id.toke_log_screen_todays_tokes_trend)
+        tokesLineGraph = view?.findViewById(R.id.journal_screen_todays_tokes_trend)
         val textColor = ContextCompat.getColor(context!!, R.color.colorPrimaryText)
         val des = Description().also {
             it.text = "todays tokes over 24 hour period"
@@ -156,18 +174,18 @@ class TokeLogScreen : Fragment() {
     }
 
     private fun prepareTokeRvList() {
-        tokeLogListView = view?.findViewById(R.id.toke_log_recycler_view)
-        tokeLogListAdapter = TokeLogListAdapter(context!!)
+        tokeListView = view?.findViewById(R.id.journal_screen_tokes_recycler_view)
+        journalListAdapter = JournalListAdapter(context!!)
 
         // setup RecyclerView
-        tokeLogListView?.adapter = tokeLogListAdapter
-        tokeLogListView?.layoutManager = LinearLayoutManager(context)
-        tokeLogListView?.setHasFixedSize(true)
-        tokeLogListView?.setItemViewCacheSize(10)
+        tokeListView?.adapter = journalListAdapter
+        tokeListView?.layoutManager = LinearLayoutManager(context)
+        tokeListView?.setHasFixedSize(true)
+        tokeListView?.setItemViewCacheSize(10)
     }
 
     private fun prepareTokeEmptyListMsgView() {
-        tokeEmptyListMsgView = view?.findViewById(R.id.toke_log_screen_empty_list_msg)
+        tokeEmptyListMsgView = view?.findViewById(R.id.journal_screen_empty_list_msg)
         hideTokeEmptyListMsgView()
     }
 
@@ -180,7 +198,7 @@ class TokeLogScreen : Fragment() {
     }
 
     private fun prepareAddTokeBtn() {
-        val addTokeBtn = view?.findViewById<FloatingActionButton>(R.id.toke_log_screen_add_toke_btn)
+        val addTokeBtn = view?.findViewById<FloatingActionButton>(R.id.journal_screen_add_toke_btn)
         addTokeBtn?.setOnClickListener {
             findNavController().navigate(R.id.action_toke_log_screen_to_add_toke_screen)
         }

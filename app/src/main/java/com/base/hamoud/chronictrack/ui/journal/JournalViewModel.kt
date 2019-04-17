@@ -1,4 +1,4 @@
-package com.base.hamoud.chronictrack.ui.tokelog
+package com.base.hamoud.chronictrack.ui.journal
 
 import android.app.Application
 import android.os.SystemClock
@@ -12,7 +12,7 @@ import org.joda.time.DateTime
 import java.util.*
 import kotlin.collections.ArrayList
 
-class TokeLogViewModel(application: Application) : BaseAndroidViewModel(application) {
+class JournalViewModel(application: Application) : BaseAndroidViewModel(application) {
 
     var tokeRepo: TokeRepo = TokeRepo(db.tokeDao())
 

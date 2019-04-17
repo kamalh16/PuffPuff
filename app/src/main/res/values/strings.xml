@@ -1,8 +1,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Puff Puff</string>
 
-    <string name="label_home">Home</string>
-    <string name="label_toke_log" tools:ignore="Typos">Toke Log</string>
+    <string name="label_today">Today</string>
+    <string name="label_stats">Stats</string>
+    <string name="label_journal" tools:ignore="Typos">Journal</string>
     <string name="label_add_toke" tools:ignore="Typos">Add Toke</string>
     <string name="label_edit_toke" tools:ignore="Typos">Edit Toke</string>
     <string name="label_settings">Settings</string>
@@ -17,9 +18,9 @@
     <string name="strain_name">Strain Name</string>
     <string name="save">Save</string>
     <string name="today_at">Today at</string>
-    <string name="last_toke">Last Toke</string>
+    <string name="last_toke" tools:ignore="Typos">Last Toke</string>
     <string name="tokes_today">Tokes Today</string>
-    <string name="toke_log_screen_empty_list_desc">No Tokes to show for today, not yet at least…</string>
+    <string name="toke_log_screen_empty_list_desc">Nothing to show for today, not yet at least…</string>
     <string name="hybrid">Hybrid</string>
     <string name="sativa">Sativa</string>
     <string name="cbd">CBD</string>

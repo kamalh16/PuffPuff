@@ -189,7 +189,7 @@ class EditTokeScreen : Fragment() {
                 )
                 viewModel.updateToke(toke)
             }
-            findNavController().navigate(R.id.toke_log_screen)
+            findNavController().navigate(R.id.journal_screen)
         }
     }
 
@@ -332,7 +332,7 @@ class EditTokeScreen : Fragment() {
             .setPositiveButton("Delete") { dialogBox, _ ->
                 viewModel.deleteToke(tokeId)
                 dialogBox.dismiss()
-                findNavController().navigate(R.id.toke_log_screen)
+                findNavController().navigate(R.id.journal_screen)
             }
             .setNegativeButton("Cancel") { dialogBox, _ ->
                 dialogBox.dismiss()
