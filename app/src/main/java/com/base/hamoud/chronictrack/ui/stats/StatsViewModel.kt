@@ -1,4 +1,4 @@
-package com.base.hamoud.chronictrack.ui.home
+package com.base.hamoud.chronictrack.ui.stats
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
@@ -11,7 +11,7 @@ import timber.log.Timber
 import java.util.*
 import kotlin.collections.ArrayList
 
-class HomeViewModel(application: Application) : BaseAndroidViewModel(application) {
+class StatsViewModel(application: Application) : BaseAndroidViewModel(application) {
 
     var tokeRepo: TokeRepo = TokeRepo(db.tokeDao())
 

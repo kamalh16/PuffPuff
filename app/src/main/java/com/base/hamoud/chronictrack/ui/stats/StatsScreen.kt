@@ -1,4 +1,4 @@
-package com.base.hamoud.chronictrack.ui.home
+package com.base.hamoud.chronictrack.ui.stats
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -19,9 +19,9 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import timber.log.Timber
 
-class HomeScreen : Fragment() {
+class StatsScreen : Fragment() {
 
-    private lateinit var viewModel: HomeViewModel
+    private lateinit var viewModel: StatsViewModel
 
     private lateinit var weeklyTokesLineChart: LineChart
 
@@ -30,12 +30,12 @@ class HomeScreen : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.screen_home, container, false)
+        return inflater.inflate(R.layout.screen_stats, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(StatsViewModel::class.java)
 
         // prepare ui
         prepareView()
@@ -43,7 +43,7 @@ class HomeScreen : Fragment() {
         val des = Description().also {
             it.text = "this weeks tokes over 7 day period"
         }
-        weeklyTokesLineChart = view.findViewById(R.id.home_screen_weekly_tokes_trend)
+        weeklyTokesLineChart = view.findViewById(R.id.stats_screen_weekly_tokes_trend)
         weeklyTokesLineChart.apply {
             setBackgroundColor(ContextCompat.getColor(activity!!, R.color.colorPrimary))
             setDrawGridBackground(false)
@@ -101,7 +101,7 @@ class HomeScreen : Fragment() {
     }
 
     private fun prepareAddTokeBtn() {
-        val addTokeBtn = view?.findViewById<FloatingActionButton>(R.id.home_screen_add_toke_btn)
+        val addTokeBtn = view?.findViewById<FloatingActionButton>(R.id.stats_screen_add_toke_btn)
         addTokeBtn?.setOnClickListener {
             findNavController().navigate(R.id.action_home_screen_to_add_toke_screen)
         }

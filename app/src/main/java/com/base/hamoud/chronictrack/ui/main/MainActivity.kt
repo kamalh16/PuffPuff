@@ -74,22 +74,22 @@ class MainActivity : AppCompatActivity() {
                 .build()
 
             when (intentMsg) {
-                MainNavScreen.HOME_SCREEN -> {
-                    navController.currentDestination?.label = MainNavScreen.HOME_SCREEN
+                MainNavScreen.STATS_SCREEN -> {
+                    navController.currentDestination?.label = MainNavScreen.STATS_SCREEN
                     navController.navigate(
-                        R.id.home_screen, null, rootScreenNavOptions
+                        R.id.stats_screen, null, rootScreenNavOptions
                     )
                 }
                 MainNavScreen.ADD_TOKE_SCREEN -> {
                     navController.currentDestination?.label = MainNavScreen.ADD_TOKE_SCREEN
                     navController.navigate(
-                        R.id.add_toke_screen, null, rootScreenNavOptions
+                        R.id.add_toke_screen, null, null
                     )
                 }
-                MainNavScreen.TOKE_LOG_SCREEN -> {
-                    navController.currentDestination?.label = MainNavScreen.TOKE_LOG_SCREEN
+                MainNavScreen.JOURNAL_SCREEN -> {
+                    navController.currentDestination?.label = MainNavScreen.JOURNAL_SCREEN
                     navController.navigate(
-                        R.id.toke_log_screen, null, rootScreenNavOptions
+                        R.id.journal_screen, null, rootScreenNavOptions
                     )
                 }
             }
@@ -102,7 +102,7 @@ class MainActivity : AppCompatActivity() {
 
         val homeIntent = Intent(this, MainActivity::class.java)
         homeIntent.action = Intent.ACTION_VIEW
-        homeIntent.putExtra(MainNavScreen.toString(), MainNavScreen.HOME_SCREEN)
+        homeIntent.putExtra(MainNavScreen.toString(), MainNavScreen.STATS_SCREEN)
 
         val homeShortcut = ShortcutInfo.Builder(this, "home")
             .setShortLabel("Home")
@@ -128,7 +128,7 @@ class MainActivity : AppCompatActivity() {
 
         val tokeLogIntent = Intent(this, MainActivity::class.java)
         tokeLogIntent.action = Intent.ACTION_VIEW
-        tokeLogIntent.putExtra(MainNavScreen.toString(), MainNavScreen.TOKE_LOG_SCREEN)
+        tokeLogIntent.putExtra(MainNavScreen.toString(), MainNavScreen.JOURNAL_SCREEN)
 
         val tokeLogShortcut = ShortcutInfo.Builder(this, "toke_log")
             .setShortLabel("Toke Log")
@@ -155,27 +155,27 @@ class MainActivity : AppCompatActivity() {
             .build()
         Timber.i(extras?.getString(MainNavScreen.toString()))
         when (extras?.getString(MainNavScreen.toString())) {
-            MainNavScreen.HOME_SCREEN -> {
+            MainNavScreen.STATS_SCREEN -> {
 
-                navController.currentDestination?.label = MainNavScreen.HOME_SCREEN
+                navController.currentDestination?.label = MainNavScreen.STATS_SCREEN
                 navController.navigate(
-                    R.id.home_screen, null, rootScreenNavOptions
+                    R.id.stats_screen, null, rootScreenNavOptions
                 )
             }
             MainNavScreen.ADD_TOKE_SCREEN -> {
-                navController.currentDestination?.label = MainNavScreen.TOKE_LOG_SCREEN
+                navController.currentDestination?.label = MainNavScreen.JOURNAL_SCREEN
                 navController.navigate(
-                    R.id.toke_log_screen, null, rootScreenNavOptions
+                    R.id.journal_screen, null, rootScreenNavOptions
                 )
                 navController.currentDestination?.label = MainNavScreen.ADD_TOKE_SCREEN
                 navController.navigate(
                     R.id.add_toke_screen, null, rootScreenNavOptions
                 )
             }
-            MainNavScreen.TOKE_LOG_SCREEN -> {
-                navController.currentDestination?.label = MainNavScreen.TOKE_LOG_SCREEN
+            MainNavScreen.JOURNAL_SCREEN -> {
+                navController.currentDestination?.label = MainNavScreen.JOURNAL_SCREEN
                 navController.navigate(
-                    R.id.toke_log_screen, null, rootScreenNavOptions
+                    R.id.journal_screen, null, rootScreenNavOptions
                 )
             }
         }
@@ -235,17 +235,17 @@ class MainActivity : AppCompatActivity() {
                         .build()
 
                     when (it.itemId) {
-                        R.id.home_screen -> {
-                            navController.currentDestination?.label = MainNavScreen.HOME_SCREEN
+                        R.id.stats_screen -> {
+                            navController.currentDestination?.label = MainNavScreen.STATS_SCREEN
                             navController.navigate(
-                                R.id.home_screen, null, rootScreenNavOptions
+                                R.id.stats_screen, null, rootScreenNavOptions
                             )
                             return@setOnNavigationItemSelectedListener true
                         }
-                        R.id.toke_log_screen -> {
-                            navController.currentDestination?.label = MainNavScreen.TOKE_LOG_SCREEN
+                        R.id.journal_screen -> {
+                            navController.currentDestination?.label = MainNavScreen.JOURNAL_SCREEN
                             navController.navigate(
-                                R.id.toke_log_screen, null, rootScreenNavOptions
+                                R.id.journal_screen, null, rootScreenNavOptions
                             )
                             return@setOnNavigationItemSelectedListener true
                         }

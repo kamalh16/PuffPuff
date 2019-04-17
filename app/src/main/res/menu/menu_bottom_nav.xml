@@ -3,17 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/home_screen"
+        android:id="@+id/stats_screen"
         android:enabled="true"
-        android:icon="@drawable/menu_item_home_state_selector"
-        android:title="@string/label_home"
+        android:icon="@drawable/menu_item_stats_state_selector"
+        android:title="@string/label_stats"
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/toke_log_screen"
+        android:id="@+id/journal_screen"
         android:enabled="true"
-        android:icon="@drawable/menu_item_toke_log_state_selector"
-        android:title="@string/label_toke_log"
+        android:icon="@drawable/menu_item_journal_state_selector"
+        android:title="@string/label_journal"
         app:showAsAction="ifRoom" />
 
     <item
