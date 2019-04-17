@@ -30,10 +30,10 @@ class TokeLogScreen : Fragment() {
     private var tokeLogListView: RecyclerView? = null
     private lateinit var tokeLogListAdapter: TokeLogListAdapter
     private var tokeEmptyListMsgView: TextView? = null
-    private var todaysTokesLineGraph: LineChart? = null
-    private var todaysTotalTokeCountView: TextView? = null
-    private var lastTokeTimeChronometer: Chronometer? = null
-    private var nextTokeTimeChronometer: Chronometer? = null // TODO - need to implement
+    private var tokesLineGraph: LineChart? = null
+    private var totalTokeCountView: TextView? = null
+    private var lastTokedAtTimeChronometer: Chronometer? = null
+    private var nextTokeAtTimeChronometer: Chronometer? = null // TODO - need to implement
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,11 +51,11 @@ class TokeLogScreen : Fragment() {
         prepareView()
 
         // observe
-        observeOnGetUserTokeListLive()
-        observeOnGetUserTokesCountLive()
-        observeOnUserLastTokeTodayLive()
+        observeOnTokeListLive()
+        observeOnTotalTokesCountLive()
+        observeOnLastTokedAtTimeLive()
 
-        viewModel.todayTokesDataLive.observe(this, Observer {
+        viewModel.todayTokesDataLive.observe(viewLifecycleOwner, Observer {
             Timber.i("TodaysTokes: $it")
             if (!it.isNullOrEmpty()) {
                 // todo
@@ -67,19 +67,30 @@ class TokeLogScreen : Fragment() {
                 dataSet.setCircleColor(colorAccent)
                 dataSet.valueTextColor = colorAccent
                 val lineData = LineData(dataSet)
-                todaysTokesLineGraph?.data = lineData
-                todaysTokesLineGraph?.invalidate()
+                tokesLineGraph?.data = lineData
+                tokesLineGraph?.invalidate()
             }
         })
 
         // trigger
         viewModel.refreshTokeList()
         viewModel.refreshTokesTotalCount()
+        viewModel.refreshLastTokedAtTime()
         viewModel.getTodaysTokesData()
     }
 
-    private fun observeOnGetUserTokeListLive() {
-        viewModel.userTokeListLive.observe(this, Observer {
+    override fun onResume() {
+        super.onResume()
+
+        // trigger
+        viewModel.refreshTokeList()
+        viewModel.refreshTokesTotalCount()
+        viewModel.refreshLastTokedAtTime()
+        viewModel.getTodaysTokesData()
+    }
+
+    private fun observeOnTokeListLive() {
+        viewModel.tokeListLive.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 if (it.isEmpty()) {
                     showTokeEmptyListMsgView()
@@ -89,19 +100,19 @@ class TokeLogScreen : Fragment() {
         })
     }
 
-    private fun observeOnUserLastTokeTodayLive() {
-        viewModel.userLastTokeTodayLive.observe(this, Observer {
+    private fun observeOnLastTokedAtTimeLive() {
+        viewModel.lastTokedAtTimeLive.observe(viewLifecycleOwner, Observer {
             if (it != null) {
-                lastTokeTimeChronometer?.base = it
-                lastTokeTimeChronometer?.start()
+                lastTokedAtTimeChronometer?.base = it
+                lastTokedAtTimeChronometer?.start()
             }
         })
     }
 
-    private fun observeOnGetUserTokesCountLive() {
-        viewModel.userTokesCountLive.observe(this, Observer {
+    private fun observeOnTotalTokesCountLive() {
+        viewModel.totalTokeCountLive.observe(viewLifecycleOwner, Observer {
             if (it != null) {
-                todaysTotalTokeCountView?.text = it.toString()
+                totalTokeCountView?.text = it.toString()
             }
         })
     }
@@ -115,18 +126,18 @@ class TokeLogScreen : Fragment() {
     }
 
     private fun prepareTodaysTokeCountView() {
-        todaysTotalTokeCountView = view?.findViewById(R.id.toke_log_screen_todays_toke_count)
-        lastTokeTimeChronometer = view?.findViewById(R.id.toke_log_screen_last_toke_chronometer)
+        totalTokeCountView = view?.findViewById(R.id.toke_log_screen_todays_toke_count)
+        lastTokedAtTimeChronometer = view?.findViewById(R.id.toke_log_screen_last_toke_chronometer)
     }
 
     private fun prepareTodaysTokesLineGraph() {
-        todaysTokesLineGraph = view?.findViewById(R.id.toke_log_screen_todays_tokes_trend)
+        tokesLineGraph = view?.findViewById(R.id.toke_log_screen_todays_tokes_trend)
         val textColor = ContextCompat.getColor(context!!, R.color.colorPrimaryText)
         val des = Description().also {
             it.text = "todays tokes over 24 hour period"
         }
 
-        todaysTokesLineGraph?.apply {
+        tokesLineGraph?.apply {
             setBackgroundColor(ContextCompat.getColor(activity!!, R.color.colorPrimary))
             setDrawGridBackground(false)
             legend.isEnabled = false

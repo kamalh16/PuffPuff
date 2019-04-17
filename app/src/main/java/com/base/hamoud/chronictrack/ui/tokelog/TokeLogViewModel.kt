@@ -8,6 +8,7 @@ import com.base.hamoud.chronictrack.data.entity.Toke
 import com.base.hamoud.chronictrack.data.repository.TokeRepo
 import com.github.mikephil.charting.data.Entry
 import kotlinx.coroutines.launch
+import org.joda.time.DateTime
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -15,11 +16,16 @@ class TokeLogViewModel(application: Application) : BaseAndroidViewModel(applicat
 
     var tokeRepo: TokeRepo = TokeRepo(db.tokeDao())
 
-    var userTokeListLive: MutableLiveData<List<Toke>> = MutableLiveData()
+    var tokeListLive: MutableLiveData<List<Toke>> = MutableLiveData()
     var todayTokesDataLive: MutableLiveData<List<Entry>?> = MutableLiveData()
 
-    var userTokesCountLive: MutableLiveData<Int> = MutableLiveData()
-    var userLastTokeTodayLive: MutableLiveData<Long> = MutableLiveData()
+    var totalTokeCountLive: MutableLiveData<Int> = MutableLiveData()
+    var lastTokedAtTimeLive: MutableLiveData<Long> = MutableLiveData()
+
+    override fun onCleared() {
+        super.onCleared()
+        parentJob.cancel()
+    }
 
     fun getTodaysTokesData() {
         ioScope.launch {
@@ -46,29 +52,29 @@ class TokeLogViewModel(application: Application) : BaseAndroidViewModel(applicat
         }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        parentJob.cancel()
-    }
-
     fun refreshTokeList() {
         ioScope.launch {
             val tokes = tokeRepo.getTodaysTokes()
-            userTokeListLive.postValue(tokes)
+            tokeListLive.postValue(tokes)
         }
     }
 
     fun refreshTokesTotalCount() {
         ioScope.launch {
             val todaysTokes = tokeRepo.getTodaysTokes()
-            val hitCount = todaysTokes.count()
-            userTokesCountLive.postValue(hitCount)
+            totalTokeCountLive.postValue(todaysTokes.count())
+        }
+    }
 
-            if (hitCount > 0) {
-                val lastTokeDateTime = todaysTokes[0].tokeDateTime
-                val now = Calendar.getInstance().timeInMillis
-                val difference = now - lastTokeDateTime
-                userLastTokeTodayLive.postValue(SystemClock.elapsedRealtime() - difference)
+    fun refreshLastTokedAtTime() {
+        ioScope.launch {
+            val lastTokedAtTime = tokeRepo.getLastTokedAtTime()
+            val now = DateTime.now().millis
+            // determine time since last toked at
+            // and post the result to lastTokedAtTimeLive
+            lastTokedAtTime?.let {
+                val difference = now - it
+                lastTokedAtTimeLive.postValue(SystemClock.elapsedRealtime() - difference)
             }
         }
     }

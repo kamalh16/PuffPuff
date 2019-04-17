@@ -19,7 +19,7 @@ import com.base.hamoud.chronictrack.data.model.Tools
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import java.util.*
+import org.joda.time.DateTime
 
 
 class AddTokeScreen : Fragment() {
@@ -63,14 +63,14 @@ class AddTokeScreen : Fragment() {
     }
 
     private fun observeDateTimeLiveData() {
-        viewModel.dateTimeLiveData.observe(this, Observer<Calendar> {
+        viewModel.dateTimeLiveData.observe(viewLifecycleOwner, Observer<DateTime> {
             dateInputTextView?.text = viewModel.getFormattedTokeDate()
             timeInputTextView?.text = viewModel.getFormattedTokeTime()
         })
     }
 
     private fun observeOnLastAddedTokeLive() {
-        viewModel.lastAddedTokeLive.observe(this, Observer { toke ->
+        viewModel.lastAddedTokeLive.observe(viewLifecycleOwner, Observer { toke ->
             toke?.let {
                 strainEditText?.setText(it.strain)
                 setTypeChipGroupSelection(it.tokeType)
@@ -107,13 +107,14 @@ class AddTokeScreen : Fragment() {
                 DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
                     viewModel.updateDate(
                         year = year,
-                        month = month,
+                        month = month + 1,
                         dayOfMonth = dayOfMonth
                     )
+
                 },
-                viewModel.now.get(Calendar.YEAR) - 1,
-                viewModel.now.get(Calendar.MONTH + 1),
-                viewModel.now.get(Calendar.DAY_OF_MONTH)
+                viewModel.tokeDateTime.year,
+                (viewModel.tokeDateTime.monthOfYear - 1),
+                viewModel.tokeDateTime.dayOfMonth
             )
             datePickerDialog.show()
         }
@@ -132,8 +133,8 @@ class AddTokeScreen : Fragment() {
                         minute = minute
                     )
                 }),
-                viewModel.now.get(Calendar.HOUR_OF_DAY),
-                viewModel.now.get(Calendar.MINUTE),
+                viewModel.tokeDateTime.hourOfDay,
+                viewModel.tokeDateTime.minuteOfHour,
                 android.text.format.DateFormat.is24HourFormat(activity)
             )
             timePickerDialog.show()

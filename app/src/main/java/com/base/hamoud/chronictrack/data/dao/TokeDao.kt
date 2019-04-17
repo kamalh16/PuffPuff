@@ -20,22 +20,8 @@ abstract class TokeDao : BaseDao<Toke> {
      *
      * @return List of hits in db
      */
-    @Query("SELECT * FROM TOKE_TABLE")
+    @Query("SELECT * FROM TOKE_TABLE ORDER BY toke_date_time DESC")
     abstract suspend fun getAllTokes(): MutableList<Toke>
-
-    /**
-     * Get the current days' [Toke]s
-     *
-     */
-    @Query("SELECT * FROM TOKE_TABLE where date(datetime(toke_date_time / 1000 , 'unixepoch')) = date('now')")
-    abstract suspend fun getTodaysTokes(): MutableList<Toke>
-
-    /**
-     * Get the current week's [Toke]s
-     *
-     */
-    @Query("SELECT * FROM TOKE_TABLE WHERE date(datetime(toke_date_time / 1000 , 'unixepoch')) >= date('now', 'weekday 0', '-7 days')")
-    abstract suspend fun getThisWeeksTokes(): MutableList<Toke>
 
     /**
      * Delete all [Toke]s in the table

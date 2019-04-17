@@ -18,8 +18,8 @@ class HomeViewModel(application: Application) : BaseAndroidViewModel(application
     var weeksTokesData: MutableLiveData<List<Entry>?> = MutableLiveData()
 
     init {
-        createFakeHitsWithRandomDates(20)
-        createFakeHitsWithRandomHours(10)
+//        createFakeHitsWithRandomDates(20)
+//        createFakeHitsWithRandomHours(10)
     }
 
     private fun createFakeHitsWithRandomDates(fakeHits: Int) {
@@ -27,7 +27,7 @@ class HomeViewModel(application: Application) : BaseAndroidViewModel(application
             if (tokeRepo.getTodaysTokes().count() == 0) {
                 for (i in 1..fakeHits) {
 //                    val toke = Toke(
-//                        tokeDateTime = OffsetDateTime.now().minusDays((1L..3L).shuffled().first())
+//                        tokeDateTime = OffsetDateTime.tokeDateTime().minusDays((1L..3L).shuffled().first())
 //                    )
                     val tokeDateTime = Calendar.getInstance().timeInMillis - ((8.64*10000000*(1L..4L).shuffled().first()))
                     val toke = Toke(tokeDateTime = tokeDateTime.toLong())
@@ -43,7 +43,7 @@ class HomeViewModel(application: Application) : BaseAndroidViewModel(application
         ioScope.launch {
             if (tokeRepo.getTodaysTokes().count() == 0) {
                 for (i in 1..fakeHits) {
-//                    val time = OffsetDateTime.now()
+//                    val time = OffsetDateTime.tokeDateTime()
 //                        .minusHours((0L..10L).shuffled().first())
 //                        .minusDays((0L..4L).shuffled().first())
 
