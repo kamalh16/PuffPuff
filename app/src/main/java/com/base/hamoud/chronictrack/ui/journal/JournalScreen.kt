@@ -76,11 +76,6 @@ class JournalScreen : Fragment() {
             }
         })
 
-        // trigger
-        viewModel.refreshTokeList()
-        viewModel.refreshTokesTotalCount()
-        viewModel.refreshLastTokedAtTime()
-        viewModel.getTodaysTokesData()
     }
 
     override fun onResume() {
