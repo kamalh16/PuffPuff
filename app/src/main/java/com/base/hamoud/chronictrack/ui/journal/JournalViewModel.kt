@@ -10,6 +10,7 @@ import com.github.mikephil.charting.data.Entry
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
 import timber.log.Timber
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -85,21 +86,24 @@ class JournalViewModel(application: Application) : BaseAndroidViewModel(applicat
 
     fun refreshLastTokedAtTime() {
         ioScope.launch {
-            val lastTokedAtTime = tokeRepo.getLastTokedAtTime()
             val now = DateTime.now().millis
             // determine time since last toked at
             // and post the result to lastTokedAtTimeLive
-            lastTokedAtTime?.let {
+            tokeRepo.getLastTokedAtTime()?.let { lastTokedAtTime ->
                 // we only want to run the lastTokedAt timer if the current day
                 // is the same as the lastTokedAtTime day
-                if (journalDate.dayOfWeek != DateTime(lastTokedAtTime).dayOfWeek) {
+                if (lastTokedAtTime >= journalDate.millis) { // FIXME
                     lastTokedAtTimeLive.postValue(null)
                 } else {
-                    val difference = now - it
+                    val difference = now - lastTokedAtTime
                     lastTokedAtTimeLive.postValue(SystemClock.elapsedRealtime() - difference)
                 }
             }
         }
+    }
+
+    private fun dateCompareDateTime(date: String): Int { // FIXME
+        return SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.US).format(date).compareTo(Date().toString())
     }
 
 }
