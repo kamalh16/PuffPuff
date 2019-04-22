@@ -24,6 +24,14 @@ abstract class TokeDao : BaseDao<Toke> {
     abstract suspend fun getAllTokes(): MutableList<Toke>
 
     /**
+     * Get the first ever saved Toke's datetime.
+     *
+     * @return if found, [Long] datetime otherwise null
+     */
+    @Query("SELECT toke_date_time FROM TOKE_TABLE ORDER BY toke_date_time ASC LIMIT 1")
+    abstract suspend fun getFirstEverTokeDateTime(): Long?
+
+    /**
      * Delete all [Toke]s in the table
      */
     @Query("DELETE FROM TOKE_TABLE")

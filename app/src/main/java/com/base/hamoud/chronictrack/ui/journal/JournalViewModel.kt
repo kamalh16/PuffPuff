@@ -9,6 +9,7 @@ import com.base.hamoud.chronictrack.data.repository.TokeRepo
 import com.github.mikephil.charting.data.Entry
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
+import timber.log.Timber
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -16,20 +17,29 @@ class JournalViewModel(application: Application) : BaseAndroidViewModel(applicat
 
     var tokeRepo: TokeRepo = TokeRepo(db.tokeDao())
 
-    var tokeListLive: MutableLiveData<List<Toke>> = MutableLiveData()
+    var tokeListLive: MutableLiveData<MutableList<Toke>> = MutableLiveData()
     var todayTokesDataLive: MutableLiveData<List<Entry>?> = MutableLiveData()
 
     var totalTokeCountLive: MutableLiveData<Int> = MutableLiveData()
     var lastTokedAtTimeLive: MutableLiveData<Long> = MutableLiveData()
+    var calendarMinDateTimeLive: MutableLiveData<Long> = MutableLiveData()
+
+    var journalDateLive: MutableLiveData<DateTime> = MutableLiveData() // for ui
+    var journalDate: DateTime = DateTime.now() // for this viewModel
 
     override fun onCleared() {
         super.onCleared()
         parentJob.cancel()
     }
 
+    fun updateJournalDate(dt: DateTime) {
+        journalDate = dt
+        journalDateLive.postValue(dt)
+    }
+
     fun getTodaysTokesData() {
         ioScope.launch {
-            val todaysTokes = tokeRepo.getTodaysTokes()
+            val todaysTokes = tokeRepo.getTokesFor(journalDate)
 
             todaysTokes.let { tokes ->
                 val entries = ArrayList<Entry>(tokes.size)
@@ -52,16 +62,23 @@ class JournalViewModel(application: Application) : BaseAndroidViewModel(applicat
         }
     }
 
+    fun getFirstEverSavedToke() {
+        ioScope.launch {
+            val firstEverTokeDateTime = tokeRepo.getFirstEverSavedTokeDateTime()
+            calendarMinDateTimeLive.postValue(firstEverTokeDateTime)
+        }
+    }
+
     fun refreshTokeList() {
         ioScope.launch {
-            val tokes = tokeRepo.getTodaysTokes()
+            val tokes = tokeRepo.getTokesFor(journalDate)
             tokeListLive.postValue(tokes)
         }
     }
 
     fun refreshTokesTotalCount() {
         ioScope.launch {
-            val todaysTokes = tokeRepo.getTodaysTokes()
+            val todaysTokes = tokeRepo.getTokesFor(journalDate)
             totalTokeCountLive.postValue(todaysTokes.count())
         }
     }
