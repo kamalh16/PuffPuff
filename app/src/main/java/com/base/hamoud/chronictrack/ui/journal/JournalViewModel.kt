@@ -90,8 +90,14 @@ class JournalViewModel(application: Application) : BaseAndroidViewModel(applicat
             // determine time since last toked at
             // and post the result to lastTokedAtTimeLive
             lastTokedAtTime?.let {
-                val difference = now - it
-                lastTokedAtTimeLive.postValue(SystemClock.elapsedRealtime() - difference)
+                // we only want to run the lastTokedAt timer if the current day
+                // is the same as the lastTokedAtTime day
+                if (journalDate.dayOfWeek != DateTime(lastTokedAtTime).dayOfWeek) {
+                    lastTokedAtTimeLive.postValue(null)
+                } else {
+                    val difference = now - it
+                    lastTokedAtTimeLive.postValue(SystemClock.elapsedRealtime() - difference)
+                }
             }
         }
     }

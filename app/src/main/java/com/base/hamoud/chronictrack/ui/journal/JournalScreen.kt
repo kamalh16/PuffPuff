@@ -1,6 +1,7 @@
 package com.base.hamoud.chronictrack.ui.journal
 
 import android.os.Bundle
+import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -127,6 +128,10 @@ class JournalScreen : Fragment() {
             if (it != null) {
                 lastTokedAtTimeChronometer?.base = it
                 lastTokedAtTimeChronometer?.start()
+            } else {
+                // reset to 00:00
+                lastTokedAtTimeChronometer?.base = SystemClock.elapsedRealtime()
+                lastTokedAtTimeChronometer?.stop()
             }
         })
     }
