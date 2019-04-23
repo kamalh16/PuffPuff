@@ -48,14 +48,34 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <!--  Screen Subtitle -->
+            <TextView
+                android:id="@+id/journal_screen_subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="@font/roboto"
+                android:gravity="start"
+                android:paddingStart="0dp"
+                android:paddingTop="16dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="8dp"
+                android:text="@string/label_today"
+                android:textColor="@color/colorPrimaryTextLabelColor"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="@+id/journal_screen_title"
+                app:layout_constraintStart_toEndOf="@+id/journal_screen_title" />
+
             <!-- Change Date Btn -->
             <ImageView
                 android:id="@+id/journal_change_date_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
-                android:padding="8dp"
-                android:src="@drawable/ic_date_range_black_36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="16dp"
+                android:src="@drawable/ic_today_black_24dp"
                 android:tint="@color/colorPrimaryText"
                 android:tintMode="src_atop"
                 app:layout_constraintBottom_toBottomOf="@+id/journal_screen_title"

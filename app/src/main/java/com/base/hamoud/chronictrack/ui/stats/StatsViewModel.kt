@@ -7,6 +7,7 @@ import com.base.hamoud.chronictrack.data.entity.Toke
 import com.base.hamoud.chronictrack.data.repository.TokeRepo
 import com.github.mikephil.charting.data.Entry
 import kotlinx.coroutines.launch
+import org.joda.time.DateTime
 import timber.log.Timber
 import java.util.*
 import kotlin.collections.ArrayList
@@ -23,40 +24,40 @@ class StatsViewModel(application: Application) : BaseAndroidViewModel(applicatio
     }
 
     private fun createFakeHitsWithRandomDates(fakeHits: Int) {
-        ioScope.launch {
-            if (tokeRepo.getTodaysTokes().count() == 0) {
-                for (i in 1..fakeHits) {
-//                    val toke = Toke(
-//                        tokeDateTime = OffsetDateTime.tokeDateTime().minusDays((1L..3L).shuffled().first())
-//                    )
-                    val tokeDateTime = Calendar.getInstance().timeInMillis - ((8.64*10000000*(1L..4L).shuffled().first()))
-                    val toke = Toke(tokeDateTime = tokeDateTime.toLong())
-
-                    tokeRepo.insert(toke)
-                }
-            }
-
-        }
+//        ioScope.launch {
+//            if (tokeRepo.getTokesFor(DateTime.now()).count() == 0) {
+//                for (i in 1..fakeHits) {
+////                    val toke = Toke(
+////                        tokeDateTime = OffsetDateTime.tokeDateTime().minusDays((1L..3L).shuffled().first())
+////                    )
+//                    val tokeDateTime = Calendar.getInstance().timeInMillis - ((8.64*10000000*(1L..4L).shuffled().first()))
+//                    val toke = Toke(tokeDateTime = tokeDateTime.toLong())
+//
+//                    tokeRepo.insert(toke)
+//                }
+//            }
+//
+//        }
     }
 
     private fun createFakeHitsWithRandomHours(fakeHits: Int) {
-        ioScope.launch {
-            if (tokeRepo.getTodaysTokes().count() == 0) {
-                for (i in 1..fakeHits) {
-//                    val time = OffsetDateTime.tokeDateTime()
-//                        .minusHours((0L..10L).shuffled().first())
-//                        .minusDays((0L..4L).shuffled().first())
-
-                    val time = Calendar.getInstance().timeInMillis
-                    Timber.i("time: $time")
-//                    val toke = Toke(
-//                        tokeDateTime = time.plusMinutes((1L..39L).shuffled().first())
-//                    )
-                    val toke = Toke(tokeDateTime = time)
-                    tokeRepo.insert(toke)
-                }
-            }
-        }
+//        ioScope.launch {
+//            if (tokeRepo.getTokesFor(DateTime.now()).count() == 0) {
+//                for (i in 1..fakeHits) {
+////                    val time = OffsetDateTime.tokeDateTime()
+////                        .minusHours((0L..10L).shuffled().first())
+////                        .minusDays((0L..4L).shuffled().first())
+//
+//                    val time = Calendar.getInstance().timeInMillis
+//                    Timber.i("time: $time")
+////                    val toke = Toke(
+////                        tokeDateTime = time.plusMinutes((1L..39L).shuffled().first())
+////                    )
+//                    val toke = Toke(tokeDateTime = time)
+//                    tokeRepo.insert(toke)
+//                }
+//            }
+//        }
     }
 
     fun getThisWeeksTokesData() {

@@ -23,7 +23,7 @@ class JournalListAdapter internal constructor(val context: Context) :
     RecyclerView.Adapter<JournalListAdapter.HitViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
-    private var tokeList = listOf<Toke>()// cached copy of tokeList
+    private var tokeList = mutableListOf<Toke>()// cached copy of tokeList
 
     inner class HitViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val itemContainer: ConstraintLayout = itemView.findViewById(R.id.item_toke_container)
@@ -70,8 +70,16 @@ class JournalListAdapter internal constructor(val context: Context) :
      *
      * @param tokes [List] of [Toke]s
      */
-    internal fun setTokeList(tokes: List<Toke>) {
+    internal fun setTokeList(tokes: MutableList<Toke>) {
         this.tokeList = tokes
+        notifyDataSetChanged()
+    }
+
+    /**
+     * Clear [tokeList] and call [notifyDataSetChanged]
+     */
+    internal fun clearTokeList() {
+        tokeList.clear()
         notifyDataSetChanged()
     }
 

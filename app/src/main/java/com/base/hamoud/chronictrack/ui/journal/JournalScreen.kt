@@ -1,13 +1,13 @@
 package com.base.hamoud.chronictrack.ui.journal
 
 import android.os.Bundle
+import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Chronometer
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -16,12 +16,15 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.base.hamoud.chronictrack.R
+import com.base.hamoud.chronictrack.ui.drawer.CalendarBottomSheetFragment
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import org.joda.time.DateTime
+import org.joda.time.format.DateTimeFormat
 import timber.log.Timber
 
 
@@ -29,7 +32,8 @@ class JournalScreen : Fragment() {
 
     private lateinit var viewModel: JournalViewModel
 
-    private var screenLabelView: TextView? = null
+    private var screenTitleView: TextView? = null
+    private var screenSubTitleView: TextView? = null
     private var changeDateBtn: ImageView? = null
     private var tokeListView: RecyclerView? = null
     private lateinit var journalListAdapter: JournalListAdapter
@@ -55,6 +59,7 @@ class JournalScreen : Fragment() {
         prepareView()
 
         // observe
+        observeOnJournalDateLive()
         observeOnTokeListLive()
         observeOnTotalTokesCountLive()
         observeOnLastTokedAtTimeLive()
@@ -71,6 +76,7 @@ class JournalScreen : Fragment() {
                 dataSet.setCircleColor(colorAccent)
                 dataSet.valueTextColor = colorAccent
                 val lineData = LineData(dataSet)
+
                 tokesLineGraph?.data = lineData
                 tokesLineGraph?.invalidate()
             }
@@ -88,13 +94,31 @@ class JournalScreen : Fragment() {
         viewModel.getTodaysTokesData()
     }
 
+    private fun observeOnJournalDateLive() {
+        viewModel.journalDateLive.observe(viewLifecycleOwner, Observer {
+            if (it != null) {
+
+                // set screen title and subtitle
+                screenTitleView?.text = formatTitleDate(it)
+                screenSubTitleView?.text = formatSubtitleDate(it)
+
+                // trigger
+                viewModel.refreshTokeList()
+                viewModel.refreshTokesTotalCount()
+                viewModel.refreshLastTokedAtTime()
+                viewModel.getTodaysTokesData()
+            }
+        })
+    }
+
     private fun observeOnTokeListLive() {
         viewModel.tokeListLive.observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                if (it.isEmpty()) {
-                    showTokeEmptyListMsgView()
-                }
+            if (it != null && it.isNotEmpty()) {
+                hideTokeEmptyListMsgView()
                 journalListAdapter.setTokeList(it)
+            } else {
+                showTokeEmptyListMsgView()
+                journalListAdapter.clearTokeList()
             }
         })
     }
@@ -104,6 +128,10 @@ class JournalScreen : Fragment() {
             if (it != null) {
                 lastTokedAtTimeChronometer?.base = it
                 lastTokedAtTimeChronometer?.start()
+            } else {
+                // reset to 00:00
+                lastTokedAtTimeChronometer?.base = SystemClock.elapsedRealtime()
+                lastTokedAtTimeChronometer?.stop()
             }
         })
     }
@@ -117,7 +145,8 @@ class JournalScreen : Fragment() {
     }
 
     private fun prepareView() {
-        prepareScreenLabelView()
+        prepareScreenTitleView()
+        prepareScreenSubTitleView()
         prepareChangeDateBtn()
         prepareTodaysTokeCountView()
         prepareTodaysTokesLineGraph()
@@ -126,15 +155,24 @@ class JournalScreen : Fragment() {
         prepareAddTokeBtn()
     }
 
-    private fun prepareScreenLabelView() {
-        screenLabelView = view?.findViewById(R.id.journal_screen_title)
-        screenLabelView?.setText(R.string.label_today)
+    private fun prepareScreenTitleView() {
+        screenTitleView = view?.findViewById(R.id.journal_screen_title)
+        screenTitleView?.setText(R.string.label_today)
+    }
+
+    private fun prepareScreenSubTitleView() {
+        screenSubTitleView = view?.findViewById(R.id.journal_screen_subtitle)
+        screenSubTitleView?.text = formatSubtitleDate(DateTime.now())
     }
 
     private fun prepareChangeDateBtn() {
         changeDateBtn = view?.findViewById(R.id.journal_change_date_btn)
         changeDateBtn?.setOnClickListener {
-            Toast.makeText(activity, "launch calendar view", Toast.LENGTH_SHORT).show()
+            val bottomSheetDialog = CalendarBottomSheetFragment.getInstance()
+            bottomSheetDialog.setViewModel(viewModel)
+            fragmentManager?.let {
+                bottomSheetDialog.show(it, CalendarBottomSheetFragment::javaClass.name)
+            }
         }
     }
 
@@ -171,7 +209,6 @@ class JournalScreen : Fragment() {
     private fun prepareTokeRvList() {
         tokeListView = view?.findViewById(R.id.journal_screen_tokes_recycler_view)
         journalListAdapter = JournalListAdapter(context!!)
-
         // setup RecyclerView
         tokeListView?.adapter = journalListAdapter
         tokeListView?.layoutManager = LinearLayoutManager(context)
@@ -197,6 +234,20 @@ class JournalScreen : Fragment() {
         addTokeBtn?.setOnClickListener {
             findNavController().navigate(R.id.action_toke_log_screen_to_add_toke_screen)
         }
+    }
+
+    private fun formatTitleDate(dateTime: DateTime): String {
+        return if (dateTime.dayOfMonth == DateTime.now().dayOfMonth) {
+            resources.getString(R.string.label_today)
+        } else {
+            dateTime.dayOfWeek().asText
+        }
+    }
+
+    private fun formatSubtitleDate(dateTime: DateTime): String {
+        return dateTime
+            .toString(DateTimeFormat.longDate())
+            .split(",")[0]// remove everything after "," to achieve "M, d"
     }
 
 }

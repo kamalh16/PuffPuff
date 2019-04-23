@@ -28,10 +28,10 @@ class TokeRepo(private val tokeDao: TokeDao) {
     }
 
     @WorkerThread
-    suspend fun getTodaysTokes(): List<Toke> {
+    suspend fun getTokesFor(forDateTime: DateTime): MutableList<Toke> {
         return tokeDao.getAllTokes()
             // get Tokes that are from the current day
-            .filter { DateTime(it.tokeDateTime).dayOfWeek == DateTime.now().dayOfWeek }
+            .filter { DateTime(it.tokeDateTime).dayOfYear == forDateTime.dayOfYear }.toMutableList()
     }
 
     @WorkerThread
@@ -43,15 +43,20 @@ class TokeRepo(private val tokeDao: TokeDao) {
 
     @WorkerThread
     suspend fun getLastTokeAdded(): Toke? {
-        return getTodaysTokes().firstOrNull()
+        return getTokesFor(DateTime.now()).firstOrNull()
     }
 
     @WorkerThread
     suspend fun getLastTokedAtTime(): Long? {
-        return getTodaysTokes()
+        return getTokesFor(DateTime.now())
             // return the last time the user Toked at; avoids the case where
             // the countdown is a negative number when user adds a Toke in a future time
             .firstOrNull { DateTime(it.tokeDateTime).isBefore(DateTime.now()) }?.tokeDateTime
+    }
+
+    @WorkerThread
+    suspend fun getFirstEverSavedTokeDateTime(): Long? {
+        return tokeDao.getFirstEverTokeDateTime()
     }
 
     @WorkerThread
