@@ -31,7 +31,7 @@ class TokeRepo(private val tokeDao: TokeDao) {
     suspend fun getTokesFor(forDateTime: DateTime): MutableList<Toke> {
         return tokeDao.getAllTokes()
             // get Tokes that are from the current day
-            .filter { DateTime(it.tokeDateTime).dayOfWeek == forDateTime.dayOfWeek }.toMutableList()
+            .filter { DateTime(it.tokeDateTime).dayOfYear == forDateTime.dayOfYear }.toMutableList()
     }
 
     @WorkerThread

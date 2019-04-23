@@ -90,20 +90,17 @@ class JournalViewModel(application: Application) : BaseAndroidViewModel(applicat
             // determine time since last toked at
             // and post the result to lastTokedAtTimeLive
             tokeRepo.getLastTokedAtTime()?.let { lastTokedAtTime ->
-                // we only want to run the lastTokedAt timer if the current day
-                // is the same as the lastTokedAtTime day
-                if (lastTokedAtTime >= journalDate.millis) { // FIXME
-                    lastTokedAtTimeLive.postValue(null)
-                } else {
+                // We only want to run the lastTokedAt timer if it's today; so if the lastTokedAtTime
+                // is before the selected journalDate. Otherwise, don't run the timer because the
+                // lastTokedAtTime is after the selected journalDate which is in the past.
+                if (DateTime(lastTokedAtTime).isBefore(journalDate)) {
                     val difference = now - lastTokedAtTime
                     lastTokedAtTimeLive.postValue(SystemClock.elapsedRealtime() - difference)
+                } else {
+                    lastTokedAtTimeLive.postValue(null)
                 }
             }
         }
-    }
-
-    private fun dateCompareDateTime(date: String): Int { // FIXME
-        return SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.US).format(date).compareTo(Date().toString())
     }
 
 }
