@@ -74,6 +74,8 @@ class JournalScreen : Fragment() {
                 val colorAccent = ContextCompat.getColor(context!!, R.color.colorAccent)
                 dataSet.color = colorPrimaryText
                 dataSet.setCircleColor(colorAccent)
+                dataSet.setDrawCircles(true)
+                dataSet.circleHoleColor = colorAccent
                 dataSet.valueTextColor = colorAccent
                 val lineData = LineData(dataSet)
 
