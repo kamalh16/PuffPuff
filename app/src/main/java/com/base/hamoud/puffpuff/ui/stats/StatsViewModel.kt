@@ -14,6 +14,7 @@ class StatsViewModel(application: Application) : BaseAndroidViewModel(applicatio
     var tokeRepo: TokeRepo = TokeRepo(db.tokeDao())
 
     var weeksTokesData: MutableLiveData<List<BarEntry>?> = MutableLiveData()
+    var weeksTokesCount: MutableLiveData<Int> = MutableLiveData()
 
     init {
 //        createFakeHitsWithRandomDates(20)
@@ -59,9 +60,9 @@ class StatsViewModel(application: Application) : BaseAndroidViewModel(applicatio
 
     fun getThisWeeksTokesData() {
         ioScope.launch {
-            val weeksTokes = tokeRepo.getThisWeeksTokes() // todo
+            val weeksTokes = tokeRepo.getThisWeeksTokes()
             weeksTokes.let {
-                val entries = ArrayList<BarEntry>(it.size)
+                var entries = ArrayList<BarEntry>(it.size)
                 val weeksArr = IntArray(7) { 0 }
                 for (toke in it) {
                     // get tokeCount in hour
@@ -74,11 +75,34 @@ class StatsViewModel(application: Application) : BaseAndroidViewModel(applicatio
                     entries.add(BarEntry(count.toFloat(), day.toFloat()))
                 }
 
-                entries.sortBy {
-                    it.x
+                entries.sortBy { elem ->
+                    elem.x
                 }
                 weeksTokesData.postValue(entries)
             }
+        }
+    }
+
+    private fun moveFirstFourHoursToEnd(entries: ArrayList<BarEntry>): ArrayList<BarEntry> {
+        var x = 0
+        var tempEntries = entries
+        while (x < 4) {
+            tempEntries = moveFirstElementToLast(tempEntries)
+            x++
+        }
+        return tempEntries
+    }
+
+    private fun moveFirstElementToLast(entries: ArrayList<BarEntry>): ArrayList<BarEntry> {
+        val temp = entries.removeAt(0)
+        entries.add(temp)
+        return entries
+    }
+
+    fun getThisWeeksTokesCount() {
+        ioScope.launch {
+            val weeksTokes = tokeRepo.getThisWeeksTokes()
+            weeksTokesCount.postValue(weeksTokes.size)
         }
     }
 

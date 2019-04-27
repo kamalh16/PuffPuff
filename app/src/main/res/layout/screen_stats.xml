@@ -49,18 +49,46 @@
                 app:layout_constraintWidth_percent="1" />
 
             <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/stats_screen_weekly_tokes_trend"
-                android:layout_width="0dp"
-                android:layout_height="200dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@color/colorAccent"
-                android:padding="8dp"
-                app:layout_constraintWidth_percent="0.85"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/stats_screen_title" />
+                    android:id="@+id/stats_screen_weekly_tokes_trend"
+                    android:layout_width="0dp"
+                    android:layout_height="200dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@color/colorAccent"
+                    android:padding="8dp"
+                    app:layout_constraintWidth_percent="0.85"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/stats_screen_weeks_toke_count"/>
+
+            <!-- Tokes Today Label -->
+            <TextView
+                    android:id="@+id/stats_screen_tokes_week_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat"
+                    android:gravity="center"
+                    android:padding="4dp"
+                    android:text="@string/tokes_this_week"
+                    android:textColor="@color/colorPrimaryTextLabelColor"
+                    android:textSize="16sp"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginTop="16dp" app:layout_constraintTop_toBottomOf="@+id/stats_screen_title"
+                    android:layout_marginEnd="16dp" app:layout_constraintEnd_toEndOf="parent"/>
+
+            <!-- Tokes Today Total Count -->
+            <TextView
+                    android:id="@+id/stats_screen_weeks_toke_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat"
+                    android:text="@string/zero"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="22sp"
+                    app:layout_constraintEnd_toEndOf="@+id/stats_screen_tokes_week_label"
+                    app:layout_constraintStart_toStartOf="@+id/stats_screen_tokes_week_label"
+                    app:layout_constraintTop_toBottomOf="@+id/stats_screen_tokes_week_label" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

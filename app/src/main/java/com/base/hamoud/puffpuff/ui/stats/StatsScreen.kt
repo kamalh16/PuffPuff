@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -44,10 +45,11 @@ class StatsScreen : Fragment() {
 
         // observe
         observeOnChartData()
+        observeOnWeekTokesCount()
 
         // triggers
         viewModel.getThisWeeksTokesData()
-
+        viewModel.getThisWeeksTokesCount()
     }
 
     private fun prepareWeeklyTokesChart(view: View) {
@@ -94,7 +96,6 @@ class StatsScreen : Fragment() {
                 val colorPrimaryText = ContextCompat.getColor(context!!, R.color.colorPrimaryText)
                 val dataSet = BarDataSet(it, "Weeks Tokes")
 
-
                 dataSet.apply {
                     this.color = colorAccent
                     this.barBorderColor = colorPrimaryText
@@ -103,18 +104,27 @@ class StatsScreen : Fragment() {
                     this.valueFormatter = CustomDecimalFormatter()
                     this.valueTextSize = 10f
                 }
-                Timber.i("DataSet: ${dataSet.toSimpleString()}")
-
+                Timber.i("DataSet: ${dataSet.entryCount}")
+                setWeekTokesCountTextView(dataSet.entryCount)
                 val barChartData = BarData(dataSet)
                 weeklyTokesLineChart.data = barChartData
                 weeklyTokesLineChart.invalidate()
             }
         })
-
     }
 
+    private fun observeOnWeekTokesCount() {
+        viewModel.weeksTokesCount.observe(viewLifecycleOwner, Observer {
+            setWeekTokesCountTextView(it)
+        })
+    }
     private fun prepareView() {
         prepareAddTokeBtn()
+    }
+
+    private fun setWeekTokesCountTextView(count: Int) {
+        val weekTokesCountTv = view?.findViewById<TextView>(R.id.stats_screen_weeks_toke_count)
+        weekTokesCountTv?.text = count.toString()
     }
 
     private fun prepareAddTokeBtn() {
