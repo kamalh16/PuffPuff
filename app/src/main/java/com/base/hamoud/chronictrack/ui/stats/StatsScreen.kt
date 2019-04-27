@@ -92,7 +92,6 @@ class StatsScreen : Fragment() {
                     this.color = colorAccent
                     this.valueTextColor = colorAccent
                     this.barBorderWidth = 0.9f
-                    this.valueFormatter =
                 }
                 Timber.i("DataSet: ${dataSet.toSimpleString()}")
 
