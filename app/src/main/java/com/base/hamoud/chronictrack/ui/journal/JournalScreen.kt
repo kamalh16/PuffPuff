@@ -91,7 +91,8 @@ class JournalScreen : Fragment() {
                 val colorAccent = ContextCompat.getColor(context!!, R.color.colorAccent)
                 dataSet.apply {
                     this.color = colorAccent
-                    this.valueTextColor = colorAccent
+                    this.barBorderColor = colorPrimaryText
+                    this.valueTextColor = colorPrimaryText
                     this.barBorderWidth = 0.9f
                     this.valueFormatter = CustomDecimalFormatter()
                 }
@@ -229,6 +230,7 @@ class JournalScreen : Fragment() {
             // xAxis
             this.xAxis?.position = XAxis.XAxisPosition.BOTTOM
             this.xAxis?.textColor = textColor
+            this.xAxis?.axisLineColor = textColor
             this.xAxis?.granularity = 1f
             this.xAxis?.setDrawGridLines(false)
             this.xAxis?.valueFormatter = xAxisFormatter

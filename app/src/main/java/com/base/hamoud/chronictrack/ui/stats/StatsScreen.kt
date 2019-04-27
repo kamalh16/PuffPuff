@@ -59,7 +59,7 @@ class StatsScreen : Fragment() {
         val daysArr = arrayListOf("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
         val xAxisFormatter = IndexAxisValueFormatter(daysArr)
 
-        val textColor = ContextCompat.getColor(context!!, R.color.colorPrimaryText)
+        val colorPrimaryText = ContextCompat.getColor(context!!, R.color.colorPrimaryText)
 
         weeklyTokesLineChart.apply {
             this.legend.isEnabled = false
@@ -78,7 +78,8 @@ class StatsScreen : Fragment() {
             this.setFitBars(true)
             // xAxis
             this.xAxis?.position = XAxis.XAxisPosition.BOTTOM
-            this.xAxis?.textColor = textColor
+            this.xAxis?.textColor = colorPrimaryText
+            this.xAxis?.axisLineColor = colorPrimaryText
             this.xAxis?.granularity = 1f
             this.xAxis?.valueFormatter = xAxisFormatter
             this.xAxis?.setDrawGridLines(false)
@@ -91,12 +92,14 @@ class StatsScreen : Fragment() {
             Timber.i("Weeks Tokes: $it")
             if (!it.isNullOrEmpty()) {
                 val colorAccent = ContextCompat.getColor(context!!, R.color.colorAccent)
+                val colorPrimaryText = ContextCompat.getColor(context!!, R.color.colorPrimaryText)
                 val dataSet = BarDataSet(it, "Weeks Tokes")
 
 
                 dataSet.apply {
                     this.color = colorAccent
-                    this.valueTextColor = colorAccent
+                    this.barBorderColor = colorPrimaryText
+                    this.valueTextColor = colorPrimaryText
                     this.barBorderWidth = 0.9f
                     this.valueFormatter = CustomDecimalFormatter()
                 }
