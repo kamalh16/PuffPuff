@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.base.hamoud.chronictrack.BaseAndroidViewModel
 import com.base.hamoud.chronictrack.data.entity.Toke
 import com.base.hamoud.chronictrack.data.repository.TokeRepo
+import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.Entry
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
@@ -19,7 +20,7 @@ class JournalViewModel(application: Application) : BaseAndroidViewModel(applicat
     var tokeRepo: TokeRepo = TokeRepo(db.tokeDao())
 
     var tokeListLive: MutableLiveData<MutableList<Toke>> = MutableLiveData()
-    var todayTokesDataLive: MutableLiveData<List<Entry>?> = MutableLiveData()
+    var todayTokesDataLive: MutableLiveData<List<BarEntry>?> = MutableLiveData()
 
     var totalTokeCountLive: MutableLiveData<Int> = MutableLiveData()
     var lastTokedAtTimeLive: MutableLiveData<Long> = MutableLiveData()
@@ -41,19 +42,21 @@ class JournalViewModel(application: Application) : BaseAndroidViewModel(applicat
     fun getTodaysTokesData() {
         ioScope.launch {
             val todaysTokes = tokeRepo.getTokesFor(journalDate)
+            val firstTokeOfTheDay = tokeRepo.getFirstTokeOfTheDayFor(journalDate)
 
             todaysTokes.let { tokes ->
-                val entries = ArrayList<Entry>(tokes.size)
+                val entries = ArrayList<BarEntry>(tokes.size)
                 val twentyFourHrArr = IntArray(24) { 0 }
+                val cal = Calendar.getInstance()
                 for (toke in tokes) {
                     // get tokeCount in hour
-                    val cal = Calendar.getInstance()
-                    cal.timeInMillis = toke.tokeDateTime
-                    twentyFourHrArr[cal.get(Calendar.HOUR)]++
+//                    cal.timeInMillis = toke.tokeDateTime
+                    val tokeDatetime = DateTime(toke.tokeDateTime)
+                    twentyFourHrArr[tokeDatetime.hourOfDay]++
                 }
 
                 for ((count, hour) in twentyFourHrArr.withIndex()) {
-                    entries.add(Entry(count.toFloat(), hour.toFloat()))
+                    entries.add(BarEntry(count.toFloat(), hour.toFloat()))
                 }
                 entries.sortBy {
                     it.x

@@ -61,6 +61,11 @@ class TokeRepo(private val tokeDao: TokeDao) {
     }
 
     @WorkerThread
+    suspend fun getFirstTokeOfTheDayFor(forDateTime: DateTime): Toke? {
+        return getTokesFor(forDateTime).last()
+    }
+
+    @WorkerThread
     suspend fun deleteAllTokes() {
         tokeDao.deleteAll()
     }

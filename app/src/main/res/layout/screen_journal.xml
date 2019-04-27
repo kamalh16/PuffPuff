@@ -27,7 +27,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/journal_screen_todays_tokes_trend"
+                app:layout_constraintTop_toBottomOf="@+id/journal_screen_todays_tokes_chart"
                 tools:listitem="@layout/item_toke" />
 
             <!--  Screen Title -->
@@ -186,14 +186,16 @@
                 app:layout_constraintTop_toBottomOf="@+id/journal_screen_next_toke_label" />
 
             <!-- Tokes Today Chart -->
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/journal_screen_todays_tokes_trend"
-                android:layout_width="360dp"
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/journal_screen_todays_tokes_chart"
+                android:layout_width="0dp"
                 android:layout_height="200dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:background="@color/colorAccent"
+                android:layout_marginEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintWidth_percent="0.85"
                 app:layout_constraintTop_toBottomOf="@+id/journal_screen_last_toke_chronometer" />
 
             <!-- Screen Empty List Msg -->
@@ -211,7 +213,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/journal_screen_tokes_recycler_view"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/journal_screen_todays_tokes_trend" />
+                app:layout_constraintTop_toBottomOf="@id/journal_screen_todays_tokes_chart" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

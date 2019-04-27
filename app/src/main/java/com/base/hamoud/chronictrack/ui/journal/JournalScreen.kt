@@ -17,11 +17,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.base.hamoud.chronictrack.R
 import com.base.hamoud.chronictrack.ui.drawer.CalendarBottomSheetFragment
-import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
@@ -38,7 +39,7 @@ class JournalScreen : Fragment() {
     private var tokeListView: RecyclerView? = null
     private lateinit var journalListAdapter: JournalListAdapter
     private var tokeEmptyListMsgView: TextView? = null
-    private var tokesLineGraph: LineChart? = null
+    private var todaysTokesGraph: BarChart? = null
     private var totalTokeCountView: TextView? = null
     private var lastTokedAtTimeChronometer: Chronometer? = null
     private var nextTokeAtTimeChronometer: Chronometer? = null // TODO - need to implement
@@ -82,19 +83,23 @@ class JournalScreen : Fragment() {
             Timber.i("TodaysTokes: $it")
             if (!it.isNullOrEmpty()) {
                 // todo
-                val dataSet = LineDataSet(it, "Todays Tokes")
+                val dataSet = BarDataSet(it, "Todays Tokes")
                 Timber.i("DataSet: ${dataSet.toSimpleString()}")
                 val colorPrimaryText = ContextCompat.getColor(context!!, R.color.colorPrimaryText)
                 val colorAccent = ContextCompat.getColor(context!!, R.color.colorAccent)
-                dataSet.color = colorPrimaryText
-                dataSet.setCircleColor(colorAccent)
-                dataSet.setDrawCircles(true)
-                dataSet.circleHoleColor = colorAccent
-                dataSet.valueTextColor = colorAccent
-                val lineData = LineData(dataSet)
+                dataSet.apply {
+                    this.color = colorAccent
+                    this.valueTextColor = colorAccent
+                    this.barBorderWidth = 0.9f
+                }
 
-                tokesLineGraph?.data = lineData
-                tokesLineGraph?.invalidate()
+                val lineData = BarData(dataSet)
+                todaysTokesGraph?.data = lineData
+                todaysTokesGraph?.invalidate()
+
+                // move to the latest entry
+                todaysTokesGraph?.zoomIn()
+                todaysTokesGraph?.zoomIn()
             }
         })
     }
@@ -154,7 +159,7 @@ class JournalScreen : Fragment() {
         prepareScreenSubTitleView()
         prepareChangeDateBtn()
         prepareTodaysTokeCountView()
-        prepareTodaysTokesLineGraph()
+        prepareTodaysTokesGraph()
         prepareTokeRvList()
         prepareTokeEmptyListMsgView()
         prepareAddTokeBtn()
@@ -186,28 +191,40 @@ class JournalScreen : Fragment() {
         lastTokedAtTimeChronometer = view?.findViewById(R.id.journal_screen_last_toke_chronometer)
     }
 
-    private fun prepareTodaysTokesLineGraph() {
-        tokesLineGraph = view?.findViewById(R.id.journal_screen_todays_tokes_trend)
+    private fun prepareTodaysTokesGraph() {
+        todaysTokesGraph = view?.findViewById(R.id.journal_screen_todays_tokes_chart)
         val textColor = ContextCompat.getColor(context!!, R.color.colorPrimaryText)
         val des = Description().also {
             it.text = "todays tokes over 24 hour period"
         }
 
-        tokesLineGraph?.apply {
-            setBackgroundColor(ContextCompat.getColor(activity!!, R.color.colorPrimary))
-            setDrawGridBackground(false)
-            legend.isEnabled = false
-            description = des
-            axisLeft?.textColor = textColor // left y-axis
-            axisLeft.axisMinimum = 0f
-            axisLeft.granularity = 1f
-            axisLeft.labelCount = 4
-            axisRight?.textColor = textColor // left y-axis
-            axisRight.axisMinimum = 0f
-            axisRight.granularity = 1f
-            axisRight.labelCount = 4
-            xAxis?.textColor = textColor
-            xAxis?.position = XAxis.XAxisPosition.BOTTOM
+        // x-axis value formatter
+        val hrsArr = arrayListOf(
+            "midnight",
+            "1", "2", "3", "4", "5",
+            "6", "7", "8", "9", "10",
+            "11", "noon",
+            "1", "2", "3", "4", "5",
+            "6", "7", "8", "9", "10",
+            "11")
+        val xAxisFormatter = IndexAxisValueFormatter(hrsArr)
+
+        todaysTokesGraph?.apply {
+            this.legend.isEnabled = false
+            this.axisRight?.isEnabled = false
+            this.axisLeft?.isEnabled = false
+            this.description = des
+            this.setBackgroundColor(ContextCompat.getColor(activity!!, R.color.colorPrimary))
+            this.setDrawGridBackground(false)
+            this.setDrawMarkers(false)
+            this.setDrawValueAboveBar(false)
+            this.setFitBars(true)
+            // xAxis
+            this.xAxis?.position = XAxis.XAxisPosition.BOTTOM
+            this.xAxis?.textColor = textColor
+            this.xAxis?.granularity = 1f
+            this.xAxis?.setDrawGridLines(false)
+            this.xAxis?.valueFormatter = xAxisFormatter
         }
     }
 
