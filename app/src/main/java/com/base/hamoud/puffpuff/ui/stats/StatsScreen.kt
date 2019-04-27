@@ -54,12 +54,13 @@ class StatsScreen : Fragment() {
         weeklyTokesLineChart = view.findViewById(R.id.stats_screen_weekly_tokes_trend)
 
         // chart description
-        val barChatDescription = Description().also { it.isEnabled = false }
+        val blankDescription = Description().also { it.isEnabled = false }
         // x-axis value formatter
         val daysArr = arrayListOf("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
         val xAxisFormatter = IndexAxisValueFormatter(daysArr)
 
         val colorPrimaryText = ContextCompat.getColor(context!!, R.color.colorPrimaryText)
+        val colorPrimary = ContextCompat.getColor(context!!, R.color.colorPrimary)
 
         weeklyTokesLineChart.apply {
             this.legend.isEnabled = false
@@ -69,12 +70,10 @@ class StatsScreen : Fragment() {
             this.axisLeft?.setDrawAxisLine(false)
             this.axisLeft?.setDrawGridLines(false)
             // chart
-            this.description = barChatDescription
-            this.setBackgroundColor(ContextCompat.getColor(activity!!, R.color.colorPrimary))
+            this.description = blankDescription
+            this.setBackgroundColor(colorPrimary)
             this.setDrawGridBackground(false)
-            this.setDrawMarkers(false)
             this.setDrawValueAboveBar(true)
-            this.setPinchZoom(false)
             this.setFitBars(true)
             // xAxis
             this.xAxis?.position = XAxis.XAxisPosition.BOTTOM

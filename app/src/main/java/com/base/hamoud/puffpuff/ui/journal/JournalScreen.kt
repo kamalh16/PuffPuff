@@ -82,11 +82,10 @@ class JournalScreen : Fragment() {
 
     private fun observeOnTokesDataLive() {
         viewModel.todayTokesDataLive.observe(viewLifecycleOwner, Observer {
-            Timber.i("TodaysTokes: $it")
+            Timber.i("TodaysTokes: ${it?.size}")
             if (!it.isNullOrEmpty()) {
-                // todo
                 val dataSet = BarDataSet(it, "Todays Tokes")
-                Timber.i("DataSet: ${dataSet.toSimpleString()}")
+                Timber.i("DataSet: ${dataSet.entryCount}")
                 val colorPrimaryText = ContextCompat.getColor(context!!, R.color.colorPrimaryText)
                 val colorAccent = ContextCompat.getColor(context!!, R.color.colorAccent)
                 dataSet.apply {
@@ -99,8 +98,7 @@ class JournalScreen : Fragment() {
 
                 val lineData = BarData(dataSet)
                 todaysTokesGraph?.data = lineData
-
-                todaysTokesGraph?.invalidate()
+                resetTokesGraphToThisHour()
             }
         })
     }
@@ -194,50 +192,57 @@ class JournalScreen : Fragment() {
 
     private fun prepareTodaysTokesGraph() {
         todaysTokesGraph = view?.findViewById(R.id.journal_screen_todays_tokes_chart)
-        val textColor = ContextCompat.getColor(context!!, R.color.colorPrimaryText)
-        val barChatDescription = Description().also { it.isEnabled = false }
+        val colorPrimaryText = ContextCompat.getColor(context!!, R.color.colorPrimaryText)
+        val colorPrimary = ContextCompat.getColor(context!!, R.color.colorPrimary)
+        val blankDescription = Description().also { it.isEnabled = false }
 
         // x-axis value formatter
         val hrsArr = arrayListOf(
             "midnight",
-            "1", "2", "3", "4", "5",
-            "6", "7", "8", "9", "10",
-            "11", "noon",
-            "1", "2", "3", "4", "5",
-            "6", "7", "8", "9", "10",
-            "11")
+            "one", "two", "three", "four", "five",
+            "six", "seven", "eight", "nine", "ten",
+            "eleven", "noon",
+            "one", "two", "three", "four", "five",
+            "six", "seven", "eight", "nine", "ten",
+            "eleven")
         val xAxisFormatter = IndexAxisValueFormatter(hrsArr)
 
         todaysTokesGraph?.apply {
             this.legend.isEnabled = false
             // yAxis
             this.axisRight?.isEnabled = false
-            this.axisLeft?.isEnabled = true
             this.axisLeft?.granularity = 1f
             this.axisLeft?.axisMinimum = 0f
             this.axisLeft?.setDrawLabels(false)
             this.axisLeft?.setDrawAxisLine(false)
             this.axisLeft?.setDrawGridLines(false)
             // chart
-            this.description = barChatDescription
-            this.setBackgroundColor(ContextCompat.getColor(activity!!, R.color.colorPrimary))
+            this.description = blankDescription
+            this.setBackgroundColor(colorPrimary)
             this.setDrawGridBackground(false)
-            this.setDrawMarkers(false)
             this.setDrawValueAboveBar(true)
             this.setFitBars(true)
-            this.setPinchZoom(false)
             this.isVerticalScrollBarEnabled = false
             // xAxis
             this.xAxis?.position = XAxis.XAxisPosition.BOTTOM
-            this.xAxis?.textColor = textColor
-            this.xAxis?.axisLineColor = textColor
+            this.xAxis?.textColor = colorPrimaryText
+            this.xAxis?.axisLineColor = colorPrimaryText
             this.xAxis?.granularity = 1f
             this.xAxis?.setDrawGridLines(false)
+            this.xAxis?.setDrawAxisLine(false)
             this.xAxis?.valueFormatter = xAxisFormatter
         }
 
+    }
+
+    private fun resetTokesGraphToThisHour() {
+        Timber.i("reset")
         todaysTokesGraph?.resetZoom()
-        todaysTokesGraph?.zoom(2f, 1f, 12f, 0f, YAxis.AxisDependency.LEFT)
+        val now = DateTime.now()
+        todaysTokesGraph?.zoom(
+            2.5f, 1f, now.hourOfDay.toFloat(), 0f,
+            YAxis.AxisDependency.LEFT
+        )
     }
 
     private fun prepareTokeRvList() {

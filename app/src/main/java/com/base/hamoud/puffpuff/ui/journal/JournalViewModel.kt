@@ -39,7 +39,6 @@ class JournalViewModel(application: Application) : BaseAndroidViewModel(applicat
     fun getTodaysTokesData() {
         ioScope.launch {
             val todaysTokes = tokeRepo.getTokesFor(journalDate)
-            val firstTokeOfTheDay = tokeRepo.getFirstTokeOfTheDayFor(journalDate)
 
             todaysTokes.let { tokes ->
                 val entries = ArrayList<BarEntry>(tokes.size)
