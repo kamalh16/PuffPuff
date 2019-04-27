@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.base.hamoud.chronictrack.R
 import com.base.hamoud.chronictrack.ui.drawer.CalendarBottomSheetFragment
+import com.base.hamoud.chronictrack.utils.CustomDecimalFormatter
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.components.XAxis
@@ -91,6 +92,7 @@ class JournalScreen : Fragment() {
                     this.color = colorAccent
                     this.valueTextColor = colorAccent
                     this.barBorderWidth = 0.9f
+                    this.valueFormatter = CustomDecimalFormatter()
                 }
 
                 val lineData = BarData(dataSet)
@@ -98,8 +100,7 @@ class JournalScreen : Fragment() {
                 todaysTokesGraph?.invalidate()
 
                 // move to the latest entry
-                todaysTokesGraph?.zoomIn()
-                todaysTokesGraph?.zoomIn()
+//                todaysTokesGraph?.zoomIn()
             }
         })
     }
@@ -194,9 +195,7 @@ class JournalScreen : Fragment() {
     private fun prepareTodaysTokesGraph() {
         todaysTokesGraph = view?.findViewById(R.id.journal_screen_todays_tokes_chart)
         val textColor = ContextCompat.getColor(context!!, R.color.colorPrimaryText)
-        val des = Description().also {
-            it.text = "todays tokes over 24 hour period"
-        }
+        val barChatDescription = Description().also { it.isEnabled = false }
 
         // x-axis value formatter
         val hrsArr = arrayListOf(
@@ -211,14 +210,23 @@ class JournalScreen : Fragment() {
 
         todaysTokesGraph?.apply {
             this.legend.isEnabled = false
+            // yAxis
             this.axisRight?.isEnabled = false
-            this.axisLeft?.isEnabled = false
-            this.description = des
+            this.axisLeft?.isEnabled = true
+            this.axisLeft?.granularity = 1f
+            this.axisLeft?.axisMinimum = 0f
+            this.axisLeft?.setDrawLabels(false)
+            this.axisLeft?.setDrawAxisLine(false)
+            this.axisLeft?.setDrawGridLines(false)
+            // chart
+            this.description = barChatDescription
             this.setBackgroundColor(ContextCompat.getColor(activity!!, R.color.colorPrimary))
             this.setDrawGridBackground(false)
             this.setDrawMarkers(false)
-            this.setDrawValueAboveBar(false)
+            this.setDrawValueAboveBar(true)
             this.setFitBars(true)
+            this.setPinchZoom(false)
+            this.isVerticalScrollBarEnabled = false
             // xAxis
             this.xAxis?.position = XAxis.XAxisPosition.BOTTOM
             this.xAxis?.textColor = textColor
@@ -271,5 +279,4 @@ class JournalScreen : Fragment() {
             .toString(DateTimeFormat.longDate())
             .split(",")[0]// remove everything after "," to achieve "M, d"
     }
-
 }

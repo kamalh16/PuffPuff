@@ -50,13 +50,14 @@
 
             <com.github.mikephil.charting.charts.BarChart
                 android:id="@+id/stats_screen_weekly_tokes_trend"
-                android:layout_width="360dp"
+                android:layout_width="0dp"
                 android:layout_height="200dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:background="@color/colorAccent"
                 android:padding="8dp"
+                app:layout_constraintWidth_percent="0.85"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/stats_screen_title" />

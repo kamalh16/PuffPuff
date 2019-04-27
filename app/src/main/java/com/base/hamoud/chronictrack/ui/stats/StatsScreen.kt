@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import com.base.hamoud.chronictrack.utils.CustomDecimalFormatter
 import com.base.hamoud.chronictrack.R
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.Description
@@ -18,7 +19,6 @@ import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import timber.log.Timber
-import java.text.DecimalFormat
 
 class StatsScreen : Fragment() {
 
@@ -54,8 +54,7 @@ class StatsScreen : Fragment() {
         weeklyTokesLineChart = view.findViewById(R.id.stats_screen_weekly_tokes_trend)
 
         // chart description
-        val barChatDescription = Description()
-        barChatDescription.isEnabled = false
+        val barChatDescription = Description().also { it.isEnabled = false }
         // x-axis value formatter
         val daysArr = arrayListOf("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
         val xAxisFormatter = IndexAxisValueFormatter(daysArr)
@@ -69,7 +68,7 @@ class StatsScreen : Fragment() {
             this.axisLeft?.setDrawLabels(false)
             this.axisLeft?.setDrawAxisLine(false)
             this.axisLeft?.setDrawGridLines(false)
-
+            // chart
             this.description = barChatDescription
             this.setBackgroundColor(ContextCompat.getColor(activity!!, R.color.colorPrimary))
             this.setDrawGridBackground(false)
@@ -81,7 +80,6 @@ class StatsScreen : Fragment() {
             this.xAxis?.position = XAxis.XAxisPosition.BOTTOM
             this.xAxis?.textColor = textColor
             this.xAxis?.granularity = 1f
-            this.xAxis?.mDecimals = 0
             this.xAxis?.valueFormatter = xAxisFormatter
             this.xAxis?.setDrawGridLines(false)
             this.xAxis?.setDrawAxisLine(false)
@@ -100,7 +98,7 @@ class StatsScreen : Fragment() {
                     this.color = colorAccent
                     this.valueTextColor = colorAccent
                     this.barBorderWidth = 0.9f
-                    this.valueFormatter = customFormatter()
+                    this.valueFormatter = CustomDecimalFormatter()
                 }
                 Timber.i("DataSet: ${dataSet.toSimpleString()}")
 
@@ -120,14 +118,6 @@ class StatsScreen : Fragment() {
         val addTokeBtn = view?.findViewById<FloatingActionButton>(R.id.stats_screen_add_toke_btn)
         addTokeBtn?.setOnClickListener {
             findNavController().navigate(R.id.action_home_screen_to_add_toke_screen)
-        }
-    }
-
-    inner class customFormatter: IndexAxisValueFormatter() {
-        val decimalFormat: DecimalFormat = DecimalFormat("#")
-
-        override fun getFormattedValue(value: Float): String {
-            return decimalFormat.format(value)
         }
     }
 }
