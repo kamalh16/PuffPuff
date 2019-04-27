@@ -8,7 +8,7 @@
     <!-- Home Screen -->
     <fragment
         android:id="@+id/stats_screen"
-        android:name="com.base.hamoud.chronictrack.ui.stats.StatsScreen"
+        android:name="com.base.hamoud.puffpuff.ui.stats.StatsScreen"
         android:label="HomeScreen"
         tools:layout="@layout/screen_stats">
 
@@ -25,7 +25,7 @@
     <!-- Toke Log Screen -->
     <fragment
         android:id="@+id/journal_screen"
-        android:name="com.base.hamoud.chronictrack.ui.journal.JournalScreen"
+        android:name="com.base.hamoud.puffpuff.ui.journal.JournalScreen"
         android:label="TokeLogScreen"
         tools:layout="@layout/screen_journal">
 
@@ -50,21 +50,21 @@
     <!-- Add Toke Screen -->
     <fragment
         android:id="@+id/add_toke_screen"
-        android:name="com.base.hamoud.chronictrack.ui.addtoke.AddTokeScreen"
+        android:name="com.base.hamoud.puffpuff.ui.addtoke.AddTokeScreen"
         android:label="AddTokeScreen"
         tools:layout="@layout/screen_add_toke" />
 
     <!-- Edit Toke Screen -->
     <fragment
         android:id="@+id/edit_toke_screen"
-        android:name="com.base.hamoud.chronictrack.ui.edittoke.EditTokeScreen"
+        android:name="com.base.hamoud.puffpuff.ui.edittoke.EditTokeScreen"
         android:label="EditTokeScreen"
         tools:layout="@layout/screen_add_toke" />
 
     <!-- Settings Screen -->
     <fragment
         android:id="@+id/settings_screen"
-        android:name="com.base.hamoud.chronictrack.ui.settings.SettingsScreen"
+        android:name="com.base.hamoud.puffpuff.ui.settings.SettingsScreen"
         android:label="SettingsScreen"
         tools:layout="@layout/screen_settings">
 

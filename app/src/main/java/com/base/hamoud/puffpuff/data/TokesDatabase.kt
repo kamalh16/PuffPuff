@@ -1,0 +1,43 @@
+package com.base.hamoud.puffpuff.data
+
+import android.content.Context
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import com.base.hamoud.puffpuff.data.dao.TokeDao
+import com.base.hamoud.puffpuff.data.entity.Toke
+
+@Database(
+    entities = [
+        Toke::class],
+    version = 4,
+    exportSchema = false
+)
+abstract class TokesDatabase : RoomDatabase() {
+
+    abstract fun tokeDao(): TokeDao
+
+    companion object {
+
+        @Volatile
+        private var INSTANCE: TokesDatabase? = null
+
+        fun getInstance(context: Context): TokesDatabase {
+            if (INSTANCE == null) {
+                synchronized(TokesDatabase::class.java) {
+                    if (INSTANCE == null) {
+                        INSTANCE =
+                            Room.databaseBuilder(
+                                context.applicationContext,
+                                TokesDatabase::class.java,
+                                "Tokes_database"
+                            )
+                                .fallbackToDestructiveMigration()
+                                .build()
+                    }
+                }
+            }
+            return INSTANCE!!
+        }
+    }
+}
