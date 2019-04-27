@@ -15,6 +15,7 @@ import com.base.hamoud.chronictrack.data.entity.Toke
 import com.base.hamoud.chronictrack.data.model.Tools
 import com.base.hamoud.chronictrack.ui.edittoke.EditTokeScreen
 import com.github.marlonlom.utilities.timeago.TimeAgo
+import org.joda.time.DateTime
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -22,6 +23,7 @@ import java.util.*
 class JournalListAdapter internal constructor(val context: Context) :
     RecyclerView.Adapter<JournalListAdapter.HitViewHolder>() {
 
+    private val calendar = Calendar.getInstance()
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var tokeList = mutableListOf<Toke>()// cached copy of tokeList
 
@@ -41,13 +43,14 @@ class JournalListAdapter internal constructor(val context: Context) :
 
     override fun onBindViewHolder(holder: HitViewHolder, position: Int) {
         val tokeItem = tokeList[position]
-        val cal = Calendar.getInstance()
-        cal.timeInMillis = tokeItem.tokeDateTime
-        val tokeTime = formatTime(cal)
-        val tokeTimeAgo = getTimeAgo(tokeItem.tokeDateTime)
+        calendar.timeInMillis = tokeItem.tokeDateTime
+        val tokeDayAt = getTokeDayAt(DateTime(tokeItem.tokeDateTime))
+        val tokeTimeAt = getTokeTimeAt(calendar)
+        val tokeTimeAgo = getTokeTimeAgo(tokeItem.tokeDateTime)
 
         holder.tokeTimeView.text = String.format(
-            "%s %s - %s", context.getString(R.string.today_at), tokeTime, tokeTimeAgo
+            "%s, %s - %s",
+            tokeDayAt, tokeTimeAt, tokeTimeAgo
         )
         setTokeToolIcon(holder.tokeIconView, tokeItem.toolUsed)
         holder.tokeTypeView.text = tokeItem.tokeType
@@ -110,7 +113,7 @@ class JournalListAdapter internal constructor(val context: Context) :
      *
      * @return formatted [Calendar] as [String]
      */
-    private fun formatTime(date: Calendar): String {
+    private fun getTokeTimeAt(date: Calendar): String {
         val isDevice24HourClock = DateFormat.is24HourFormat(context.applicationContext)
         val pattern = if (isDevice24HourClock) {
             "H:mm a"
@@ -131,9 +134,26 @@ class JournalListAdapter internal constructor(val context: Context) :
      *
      * @return [String] time of how long ago [timeInMillis] occurred i.e "10 mins ago"
      */
-    private fun getTimeAgo(timeInMillis: Long): String {
+    private fun getTokeTimeAgo(timeInMillis: Long): String {
         return TimeAgo.using(timeInMillis)
             .replace("minutes", "mins")
             .replace("hours", "hrs")
     }
+
+    /**
+     * Get the day of the month for the passed in [dateTime].
+     *
+     * @param dateTime the toked at time
+     *
+     * @return [String] If its the same as today then return [R.string.label_today]
+     * otherwise return the name of the day of the month.
+     */
+    private fun getTokeDayAt(dateTime: DateTime): String {
+        return if (dateTime.dayOfMonth == DateTime.now().dayOfMonth) {
+            context.resources.getString(R.string.label_today)
+        } else {
+            dateTime.dayOfMonth().asText
+        }
+    }
+
 }
