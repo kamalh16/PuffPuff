@@ -21,6 +21,7 @@ import com.base.hamoud.chronictrack.utils.CustomDecimalFormatter
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
@@ -97,10 +98,8 @@ class JournalScreen : Fragment() {
 
                 val lineData = BarData(dataSet)
                 todaysTokesGraph?.data = lineData
-                todaysTokesGraph?.invalidate()
 
-                // move to the latest entry
-//                todaysTokesGraph?.zoomIn()
+                todaysTokesGraph?.invalidate()
             }
         })
     }
@@ -234,6 +233,9 @@ class JournalScreen : Fragment() {
             this.xAxis?.setDrawGridLines(false)
             this.xAxis?.valueFormatter = xAxisFormatter
         }
+
+        todaysTokesGraph?.resetZoom()
+        todaysTokesGraph?.zoom(2f, 1f, 12f, 0f, YAxis.AxisDependency.LEFT)
     }
 
     private fun prepareTokeRvList() {
