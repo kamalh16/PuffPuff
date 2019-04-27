@@ -66,7 +66,9 @@ class StatsScreen : Fragment() {
         weeklyTokesLineChart.apply {
             this.legend.isEnabled = false
             this.axisRight?.isEnabled = false
-            this.axisLeft?.isEnabled = false
+            this.axisLeft?.setDrawLabels(false)
+            this.axisLeft?.setDrawAxisLine(false)
+            this.axisLeft?.setDrawGridLines(false)
             this.description = barChatDescription
             this.setBackgroundColor(ContextCompat.getColor(activity!!, R.color.colorPrimary))
             this.setDrawGridBackground(false)
@@ -78,6 +80,9 @@ class StatsScreen : Fragment() {
             this.xAxis?.textColor = textColor
             this.xAxis?.granularity = 1f
             this.xAxis?.valueFormatter = xAxisFormatter
+            this.xAxis?.setDrawGridLines(false)
+            this.xAxis?.setDrawAxisLine(false)
+
         }
     }
 
