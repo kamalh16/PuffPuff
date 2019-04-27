@@ -101,6 +101,7 @@ class StatsScreen : Fragment() {
                     this.valueTextColor = colorPrimaryText
                     this.barBorderWidth = 0.9f
                     this.valueFormatter = CustomDecimalFormatter()
+                    this.valueTextSize = 10f
                 }
                 Timber.i("DataSet: ${dataSet.toSimpleString()}")
 
