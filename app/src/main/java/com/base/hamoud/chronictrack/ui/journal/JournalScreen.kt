@@ -63,7 +63,21 @@ class JournalScreen : Fragment() {
         observeOnTokeListLive()
         observeOnTotalTokesCountLive()
         observeOnLastTokedAtTimeLive()
+        observeOnTokesDataLive()
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        // trigger
+        viewModel.refreshTokeList()
+        viewModel.refreshTokesTotalCount()
+        viewModel.refreshLastTokedAtTime()
+        viewModel.getTodaysTokesData()
+    }
+
+    private fun observeOnTokesDataLive() {
         viewModel.todayTokesDataLive.observe(viewLifecycleOwner, Observer {
             Timber.i("TodaysTokes: $it")
             if (!it.isNullOrEmpty()) {
@@ -83,17 +97,6 @@ class JournalScreen : Fragment() {
                 tokesLineGraph?.invalidate()
             }
         })
-
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        // trigger
-        viewModel.refreshTokeList()
-        viewModel.refreshTokesTotalCount()
-        viewModel.refreshLastTokedAtTime()
-        viewModel.getTodaysTokesData()
     }
 
     private fun observeOnJournalDateLive() {
