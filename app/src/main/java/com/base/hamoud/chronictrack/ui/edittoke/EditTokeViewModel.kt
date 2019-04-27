@@ -78,8 +78,8 @@ class EditTokeViewModel(private var app: Application) : BaseAndroidViewModel(app
     }
 
     /**
-     * Format [now] to a readable time format based on the
-     * device's format (whether 24-hour format is set in the device's system settings).
+     * Format [now] to a readable time decimalFormat based on the
+     * device's decimalFormat (whether 24-hour decimalFormat is set in the device's system settings).
      *
      * @return formatted [OffsetDateTime] as [String]
      */

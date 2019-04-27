@@ -106,10 +106,10 @@ class JournalListAdapter internal constructor(val context: Context) :
     }
 
     /**
-     * Format [date] to a readable time format based on the
-     * device's format (whether 24-hour format is set in the device's system settings).
+     * Format [date] to a readable time decimalFormat based on the
+     * device's decimalFormat (whether 24-hour decimalFormat is set in the device's system settings).
      *
-     * @param date [Calendar] to format
+     * @param date [Calendar] to decimalFormat
      *
      * @return formatted [Calendar] as [String]
      */
