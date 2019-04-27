@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.base.hamoud.chronictrack.BaseAndroidViewModel
 import com.base.hamoud.chronictrack.data.entity.Toke
 import com.base.hamoud.chronictrack.data.repository.TokeRepo
+import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.Entry
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
@@ -16,7 +17,7 @@ class StatsViewModel(application: Application) : BaseAndroidViewModel(applicatio
 
     var tokeRepo: TokeRepo = TokeRepo(db.tokeDao())
 
-    var weeksTokesData: MutableLiveData<List<Entry>?> = MutableLiveData()
+    var weeksTokesData: MutableLiveData<List<BarEntry>?> = MutableLiveData()
 
     init {
 //        createFakeHitsWithRandomDates(20)
@@ -64,7 +65,7 @@ class StatsViewModel(application: Application) : BaseAndroidViewModel(applicatio
         ioScope.launch {
             val weeksTokes = tokeRepo.getThisWeeksTokes() // todo
             weeksTokes.let {
-                val entries = ArrayList<Entry>(it.size)
+                val entries = ArrayList<BarEntry>(it.size)
                 val weeksArr = IntArray(7) { 0 }
                 for (toke in it) {
                     // get tokeCount in hour
@@ -74,7 +75,7 @@ class StatsViewModel(application: Application) : BaseAndroidViewModel(applicatio
                 }
 
                 for ((count, day) in weeksArr.withIndex()) {
-                    entries.add(Entry(count.toFloat(), day.toFloat()))
+                    entries.add(BarEntry(count.toFloat(), day.toFloat()))
                 }
 
                 entries.sortBy {

@@ -10,12 +10,14 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.base.hamoud.chronictrack.R
-import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.components.LimitLine
 import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.github.mikephil.charting.formatter.ValueFormatter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import timber.log.Timber
 
@@ -23,7 +25,7 @@ class StatsScreen : Fragment() {
 
     private lateinit var viewModel: StatsViewModel
 
-    private lateinit var weeklyTokesLineChart: LineChart
+    private lateinit var weeklyTokesLineChart: BarChart
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,26 +41,7 @@ class StatsScreen : Fragment() {
 
         // prepare ui
         prepareView()
-        val textColor = ContextCompat.getColor(context!!, R.color.colorPrimaryText)
-        val des = Description().also {
-            it.text = "this weeks tokes over 7 day period"
-        }
-        weeklyTokesLineChart = view.findViewById(R.id.stats_screen_weekly_tokes_trend)
-        weeklyTokesLineChart.apply {
-            setBackgroundColor(ContextCompat.getColor(activity!!, R.color.colorPrimary))
-            setDrawGridBackground(false)
-            xAxis?.position = XAxis.XAxisPosition.BOTTOM
-            xAxis.labelCount
-            xAxis?.textColor = textColor
-            legend.isEnabled = false
-            axisRight?.textColor = textColor
-            axisLeft?.textColor = textColor
-            description = des
-        }
-        weeklyTokesLineChart.xAxis.addLimitLine(generateLimitlineFor(0f, "M"))
-        weeklyTokesLineChart.xAxis.addLimitLine(generateLimitlineFor(2f, "W"))
-        weeklyTokesLineChart.xAxis.addLimitLine(generateLimitlineFor(4f, "F"))
-        weeklyTokesLineChart.xAxis.addLimitLine(generateLimitlineFor(6f, "S"))
+        prepareWeeklyTokesChart(view)
 
         // observe
         observeOnChartData()
@@ -68,14 +51,33 @@ class StatsScreen : Fragment() {
 
     }
 
-    private fun generateLimitlineFor(limit: Float, label: String): LimitLine {
+    private fun prepareWeeklyTokesChart(view: View) {
+        weeklyTokesLineChart = view.findViewById(R.id.stats_screen_weekly_tokes_trend)
+
+        // chart description
+        val barChatDescription = Description()
+        barChatDescription.isEnabled = false
+        // x-axis value formatter
+        val daysArr = arrayListOf("S", "M", "T", "W", "T", "F", "S")
+        val xAxisFormatter = IndexAxisValueFormatter(daysArr)
+
         val textColor = ContextCompat.getColor(context!!, R.color.colorPrimaryText)
-        return LimitLine(limit, label).apply {
-            this.lineWidth = 1f
-            this.lineColor = textColor
-            this.labelPosition = LimitLine.LimitLabelPosition.RIGHT_TOP
-            this.textSize = 8f
-            this.textColor = textColor
+
+        weeklyTokesLineChart.apply {
+            this.legend.isEnabled = false
+            this.axisRight?.isEnabled = false
+            this.axisLeft?.isEnabled = false
+            this.description = barChatDescription
+            this.setBackgroundColor(ContextCompat.getColor(activity!!, R.color.colorPrimary))
+            this.setDrawGridBackground(false)
+            this.setDrawMarkers(false)
+            this.setDrawValueAboveBar(true)
+            this.setFitBars(true)
+            // xAxis
+            this.xAxis?.position = XAxis.XAxisPosition.BOTTOM
+            this.xAxis?.textColor = textColor
+            this.xAxis?.granularity = 1f
+            this.xAxis?.valueFormatter = xAxisFormatter
         }
     }
 
@@ -84,12 +86,18 @@ class StatsScreen : Fragment() {
             Timber.i("Weeks Tokes: $it")
             if (!it.isNullOrEmpty()) {
                 // todo
-                val dataSet = LineDataSet(it, "Weeks Tokes")
-                Timber.i("DataSet: ${dataSet.toSimpleString()}")
                 val colorAccent = ContextCompat.getColor(context!!, R.color.colorAccent)
-                dataSet.color = colorAccent
-                val lineData = LineData(dataSet)
-                weeklyTokesLineChart.data = lineData
+                val dataSet = BarDataSet(it, "Weeks Tokes")
+                dataSet.apply {
+                    this.color = colorAccent
+                    this.valueTextColor = colorAccent
+                    this.barBorderWidth = 0.9f
+                    this.valueFormatter =
+                }
+                Timber.i("DataSet: ${dataSet.toSimpleString()}")
+
+                val barChartData = BarData(dataSet)
+                weeklyTokesLineChart.data = barChartData
                 weeklyTokesLineChart.invalidate()
             }
         })
