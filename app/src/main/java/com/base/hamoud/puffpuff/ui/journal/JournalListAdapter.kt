@@ -152,7 +152,7 @@ class JournalListAdapter internal constructor(val context: Context) :
         return if (dateTime.dayOfMonth == DateTime.now().dayOfMonth) {
             context.resources.getString(R.string.label_today)
         } else {
-            dateTime.dayOfMonth().asText
+            dateTime.dayOfWeek().asShortText
         }
     }
 
