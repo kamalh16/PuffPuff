@@ -36,7 +36,7 @@ class JournalViewModel(application: Application) : BaseAndroidViewModel(applicat
         journalDateLive.postValue(dt)
     }
 
-    fun getTodaysTokesData() {
+    fun refreshTodaystokesData() {
         ioScope.launch {
             val todaysTokes = tokeRepo.getTokesFor(journalDate)
 

@@ -18,6 +18,7 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.github.mikephil.charting.formatter.ValueFormatter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import timber.log.Timber
 
@@ -81,7 +82,7 @@ class StatsScreen : Fragment() {
             this.xAxis?.textColor = colorPrimaryText
             this.xAxis?.axisLineColor = colorPrimaryText
             this.xAxis?.granularity = 1f
-            this.xAxis?.valueFormatter = xAxisFormatter
+            this.xAxis?.valueFormatter = xAxisFormatter as ValueFormatter?
             this.xAxis?.setDrawGridLines(false)
             this.xAxis?.setDrawAxisLine(false)
         }

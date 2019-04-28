@@ -67,7 +67,6 @@ class JournalScreen : Fragment() {
         observeOnTotalTokesCountLive()
         observeOnLastTokedAtTimeLive()
         observeOnTokesDataLive()
-
     }
 
     override fun onResume() {
@@ -77,7 +76,7 @@ class JournalScreen : Fragment() {
         viewModel.refreshTokeList()
         viewModel.refreshTokesTotalCount()
         viewModel.refreshLastTokedAtTime()
-        viewModel.getTodaysTokesData()
+        viewModel.refreshTodaystokesData()
     }
 
     private fun observeOnTokesDataLive() {
@@ -97,9 +96,14 @@ class JournalScreen : Fragment() {
                     this.valueTextSize = 10f
                 }
 
+                if (viewModel.journalDate.dayOfYear() == DateTime.now().dayOfYear()) {
+                    resetTokesGraphToThisHour()
+                } else {
+                    resetGraph()
+                }
+
                 val lineData = BarData(dataSet)
                 todaysTokesGraph?.data = lineData
-                resetTokesGraphToThisHour()
             }
         })
     }
@@ -116,7 +120,7 @@ class JournalScreen : Fragment() {
                 viewModel.refreshTokeList()
                 viewModel.refreshTokesTotalCount()
                 viewModel.refreshLastTokedAtTime()
-                viewModel.getTodaysTokesData()
+                viewModel.refreshTodaystokesData()
             }
         })
     }
@@ -244,6 +248,10 @@ class JournalScreen : Fragment() {
             2.5f, 1f, now.hourOfDay.toFloat(), 0f,
             YAxis.AxisDependency.LEFT
         )
+    }
+
+    private fun resetGraph() {
+        todaysTokesGraph?.resetZoom()
     }
 
     private fun prepareTokeRvList() {
