@@ -45,9 +45,10 @@ class MainActivity : AppCompatActivity() {
         // prepare ui
         prepareView()
         prepareBottomNavigationView()
+        prepareStartupPageNavGraphDestination()
 
-        // observe
-
+        // triggers
+        viewModel.getSavedStartupPage()
     }
 
     override fun onResume() {
@@ -178,6 +179,25 @@ class MainActivity : AppCompatActivity() {
                 )
             }
         }
+    }
+
+    private fun prepareStartupPageNavGraphDestination() {
+        val navController = findNavController(R.id.main_nav_host_fragment)
+        val inflater = navController.navInflater
+        val graph = inflater.inflate(R.navigation.nav_graph)
+        viewModel.saveStartupPageLive.observe(this, androidx.lifecycle.Observer {
+            when (it) {
+                MainNavScreen.STATS_SCREEN -> {
+                    graph.startDestination = R.id.stats_screen
+                    bottomNavigationView?.selectedItemId = R.id.stats_screen
+                }
+                else -> {
+                    graph.startDestination = R.id.journal_screen
+                    bottomNavigationView?.selectedItemId = R.id.journal_screen
+                }
+            }
+        })
+        navController.graph = graph
     }
 
     override fun onSupportNavigateUp() =

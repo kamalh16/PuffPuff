@@ -1,13 +1,17 @@
 package com.base.hamoud.puffpuff.ui.settings
 
 import android.app.Application
+import android.content.Context
 import com.base.hamoud.puffpuff.BaseAndroidViewModel
+import com.base.hamoud.puffpuff.data.repository.SharedPrefsRepo
 import com.base.hamoud.puffpuff.data.repository.TokeRepo
 import kotlinx.coroutines.launch
 
 class SettingsViewModel(application: Application) : BaseAndroidViewModel(application) {
 
     var tokeRepo: TokeRepo = TokeRepo(db.tokeDao())
+    var applicationContext: Context = application.applicationContext
+    val sharedPrefsRepo = SharedPrefsRepo(applicationContext)
 
     override fun onCleared() {
         super.onCleared()
@@ -20,4 +24,7 @@ class SettingsViewModel(application: Application) : BaseAndroidViewModel(applica
         }
     }
 
+    fun saveStartupPage(page: String) {
+        sharedPrefsRepo.saveStartupPage(page)
+    }
 }

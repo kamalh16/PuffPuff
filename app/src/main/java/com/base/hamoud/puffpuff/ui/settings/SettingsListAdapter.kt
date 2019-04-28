@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.base.hamoud.puffpuff.Constants
 import com.base.hamoud.puffpuff.R
 import com.base.hamoud.puffpuff.ui.main.MainActivity
+import com.base.hamoud.puffpuff.ui.main.MainNavScreen
 import com.base.hamoud.puffpuff.ui.settings.model.SettingsItem
 
 
@@ -72,8 +73,11 @@ class SettingsListAdapter(private val viewModel: SettingsViewModel) :
                     Toast.makeText(holder.itemView.context, "TODO: Set Toke Reminder", Toast.LENGTH_SHORT).show()
                 }
                 SettingsItem.SET_STARTUP_PAGE -> {
-                    // TODO
-                    Toast.makeText(holder.itemView.context, "TODO: Set Home Page", Toast.LENGTH_SHORT).show()
+                    when (viewModel.sharedPrefsRepo.getCurrentStartupPage()) {
+                        MainNavScreen.STATS_SCREEN ->
+                            viewModel.saveStartupPage(MainNavScreen.JOURNAL_SCREEN)
+                        else -> viewModel.saveStartupPage(MainNavScreen.STATS_SCREEN)
+                    }
                 }
                 SettingsItem.CLEAR_DATA -> {
                     showClearDataConfirmationDialog(holder.itemView.context)
