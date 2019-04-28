@@ -86,22 +86,6 @@ class StatsViewModel(application: Application) : BaseAndroidViewModel(applicatio
         }
     }
 
-    private fun moveFirstFourHoursToEnd(entries: ArrayList<BarEntry>): ArrayList<BarEntry> {
-        var x = 0
-        var tempEntries = entries
-        while (x < 4) {
-            tempEntries = moveFirstElementToLast(tempEntries)
-            x++
-        }
-        return tempEntries
-    }
-
-    private fun moveFirstElementToLast(entries: ArrayList<BarEntry>): ArrayList<BarEntry> {
-        val temp = entries.removeAt(0)
-        entries.add(temp)
-        return entries
-    }
-
     override fun onCleared() {
         super.onCleared()
         parentJob.cancel()
