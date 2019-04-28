@@ -43,10 +43,8 @@ class JournalViewModel(application: Application) : BaseAndroidViewModel(applicat
             todaysTokes.let { tokes ->
                 val entries = ArrayList<BarEntry>(tokes.size)
                 val twentyFourHrArr = IntArray(24) { 0 }
-                val cal = Calendar.getInstance()
                 for (toke in tokes) {
                     // get tokeCount in hour
-//                    cal.timeInMillis = toke.tokeDateTime
                     val tokeDatetime = DateTime(toke.tokeDateTime)
                     twentyFourHrArr[tokeDatetime.hourOfDay]++
                 }
