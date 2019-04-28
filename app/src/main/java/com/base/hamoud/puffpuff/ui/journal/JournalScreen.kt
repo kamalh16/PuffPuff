@@ -200,12 +200,12 @@ class JournalScreen : Fragment() {
         // x-axis value formatter
         val hrsArr = arrayListOf(
             "midnight",
-            "1am", "2am", "3am", "4am", "5am",
-            "6am", "7am", "8am", "9am", "10am",
-            "11am", "noon",
-            "1pm", "2pm", "3pm", "4pm", "5pm",
-            "6pm", "7pm", "8pm", "9pm", "10pm",
-            "11pm")
+            "1 am", "2 am", "3 am", "4 am", "5 am",
+            "6 am", "7 am", "8 am", "9 am", "10 am",
+            "11 am", "noon",
+            "1 pm", "2 pm", "3 pm", "4 pm", "5 pm",
+            "6 pm", "7 pm", "8 pm", "9 pm", "10 pm",
+            "11 pm")
         val xAxisFormatter = IndexAxisValueFormatter(hrsArr)
 
         todaysTokesGraph?.apply {
