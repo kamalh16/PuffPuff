@@ -70,15 +70,18 @@ class StatsViewModel(application: Application) : BaseAndroidViewModel(applicatio
                     cal.timeInMillis = toke.tokeDateTime
                     weeksArr[cal.get(Calendar.DAY_OF_WEEK) - 1]++
                 }
-
-                for ((count, day) in weeksArr.withIndex()) {
-                    entries.add(BarEntry(count.toFloat(), day.toFloat()))
+                var weeklyCount = 0
+                for ((day, count) in weeksArr.withIndex()) {
+                    weeklyCount += count
+                    entries.add(BarEntry(day.toFloat(), count.toFloat()))
                 }
 
                 entries.sortBy { elem ->
                     elem.x
                 }
+
                 weeksTokesData.postValue(entries)
+                weeksTokesCount.postValue(weeklyCount)
             }
         }
     }
@@ -97,13 +100,6 @@ class StatsViewModel(application: Application) : BaseAndroidViewModel(applicatio
         val temp = entries.removeAt(0)
         entries.add(temp)
         return entries
-    }
-
-    fun getThisWeeksTokesCount() {
-        ioScope.launch {
-            val weeksTokes = tokeRepo.getThisWeeksTokes()
-            weeksTokesCount.postValue(weeksTokes.size)
-        }
     }
 
     override fun onCleared() {

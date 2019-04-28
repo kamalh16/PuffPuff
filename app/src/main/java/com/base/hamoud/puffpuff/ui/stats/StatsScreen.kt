@@ -49,7 +49,6 @@ class StatsScreen : Fragment() {
 
         // triggers
         viewModel.getThisWeeksTokesData()
-        viewModel.getThisWeeksTokesCount()
     }
 
     private fun prepareWeeklyTokesChart(view: View) {
