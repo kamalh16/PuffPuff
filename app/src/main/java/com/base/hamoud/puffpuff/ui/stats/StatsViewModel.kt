@@ -6,6 +6,7 @@ import com.base.hamoud.puffpuff.BaseAndroidViewModel
 import com.base.hamoud.puffpuff.data.repository.TokeRepo
 import com.github.mikephil.charting.data.BarEntry
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -73,11 +74,16 @@ class StatsViewModel(application: Application) : BaseAndroidViewModel(applicatio
                 var weeklyCount = 0
                 for ((day, count) in weeksArr.withIndex()) {
                     weeklyCount += count
-                    entries.add(BarEntry(day.toFloat(), count.toFloat()))
-                }
 
-                entries.sortBy { elem ->
-                    elem.x
+                    // move sunday to end of week and shift other days left
+                    var tempDay = day
+                    if (day == 0) { // sunday
+                        tempDay = 6 // change to after saturday
+                    } else {
+                        tempDay -= 1
+                    }
+
+                    entries.add(BarEntry(tempDay.toFloat(), count.toFloat()))
                 }
 
                 weeksTokesData.postValue(entries)

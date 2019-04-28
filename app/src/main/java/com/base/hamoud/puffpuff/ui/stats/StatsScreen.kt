@@ -58,7 +58,8 @@ class StatsScreen : Fragment() {
         // chart description
         val blankDescription = Description().also { it.isEnabled = false }
         // x-axis value formatter
-        val daysArr = arrayListOf("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
+        val daysArr = arrayListOf("Mon", "Tue", "Wed", "Thu",
+            "Fri", "Sat", "Sun")
         val xAxisFormatter = IndexAxisValueFormatter(daysArr)
 
         val colorPrimaryText = ContextCompat.getColor(context!!, R.color.colorPrimaryText)
