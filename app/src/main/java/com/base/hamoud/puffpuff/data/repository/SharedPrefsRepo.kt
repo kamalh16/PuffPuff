@@ -17,8 +17,17 @@ class SharedPrefsRepo(private val applicationContext: Context ) {
             putString(STARTUP_PAGE_PREFS, page)
             commit()
         }
-        Toast.makeText(applicationContext, "TODO: Set $page", Toast.LENGTH_SHORT).show()
+
+        Toast.makeText(applicationContext, "Set ${getPageText(page)} as Startup Page", Toast.LENGTH_SHORT).show()
     }
+
+    private fun getPageText(page: String): String {
+        return when (page) {
+            MainNavScreen.STATS_SCREEN -> "Stats"
+            else -> "Journal"
+        }
+    }
+
 
     fun getCurrentStartupPage(): String? {
         return sharedPref.getString(STARTUP_PAGE_PREFS, MainNavScreen.JOURNAL_SCREEN)
