@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_toke_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:paddingTop="8dp">
+
+    <!-- Item Toke Tool Icon -->
+    <ImageView
+        android:id="@+id/item_toke_icon"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/icon_joint"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_toke_date_time_field" />
+
+    <!-- Item Toke Tool (pipe, bong, etc.) -->
+    <TextView
+        android:id="@+id/item_toke_tool_field"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="@font/montserrat"
+        android:padding="2dp"
+        android:text="@string/zero"
+        android:textColor="@color/colorPrimaryText"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/item_toke_icon"
+        app:layout_constraintStart_toStartOf="@+id/item_toke_icon"
+        app:layout_constraintTop_toBottomOf="@+id/item_toke_icon"
+        app:layout_constraintVertical_bias="0.0"
+        tools:text="Joint" />
+
+    <!-- Item Toke Type Label (sativa, hybrid, indica) -->
+    <TextView
+        android:id="@+id/item_toke_type_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/"
+        android:padding="2dp"
+        android:text="@string/label_toke_type"
+        android:textColor="@color/colorPrimaryTextLabelColor"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/item_toke_strain_label"
+        app:layout_constraintTop_toBottomOf="@+id/item_toke_strain_label"
+        tools:text="Toke Type" />
+
+    <!-- Item Toke Type (sativa, hybrid, indica) -->
+    <TextView
+        android:id="@+id/item_toke_type_field"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat"
+        android:padding="2dp"
+        android:text="@string/zero"
+        android:textColor="@color/colorPrimaryText"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/item_toke_strain_field"
+        app:layout_constraintTop_toTopOf="@+id/item_toke_type_label"
+        tools:text="Sativa" />
+
+    <!-- Item Toke Strain Label -->
+    <TextView
+        android:id="@+id/item_toke_strain_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/montserrat"
+        android:padding="2dp"
+        android:text="@string/label_toke_strain"
+        android:textColor="@color/colorPrimaryTextLabelColor"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/item_toke_tool_field"
+        app:layout_constraintTop_toBottomOf="@+id/item_toke_date_time_field"
+        tools:text="Toke Strain" />
+
+    <!-- Item Toke Strain (Alien OG, Sweet Lemon Haze, etc) -->
+    <TextView
+        android:id="@+id/item_toke_strain_field"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/montserrat"
+        android:padding="2dp"
+        android:text="@string/zero"
+        android:textColor="@color/colorPrimaryText"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/item_toke_strain_label"
+        app:layout_constraintTop_toTopOf="@+id/item_toke_strain_label"
+        tools:text="Sweet Lemon Haze" />
+
+    <!-- Item Toke Date & Time ("today at hh:mm:ss") -->
+    <TextView
+        android:id="@+id/item_toke_date_time_field"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/montserrat"
+        android:text="@string/zero"
+        android:textColor="@color/colorPrimaryText"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="5 mins ago | Today at 7:42:08 pm" />
+
+    <!-- Item Toke Border Bottom -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/colorItemTokeBorderBottom"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

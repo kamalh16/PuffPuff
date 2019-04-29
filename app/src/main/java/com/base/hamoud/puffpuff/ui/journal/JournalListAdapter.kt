@@ -37,7 +37,7 @@ class JournalListAdapter internal constructor(val context: Context) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HitViewHolder {
-        val itemView = inflater.inflate(R.layout.item_toke, parent, false)
+        val itemView = inflater.inflate(R.layout.item_toke_alt, parent, false)
         return HitViewHolder(itemView)
     }
 
