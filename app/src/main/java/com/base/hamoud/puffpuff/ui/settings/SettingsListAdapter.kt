@@ -18,10 +18,11 @@ import com.base.hamoud.puffpuff.ui.main.MainNavScreen
 import com.base.hamoud.puffpuff.ui.settings.model.SettingsItem
 
 
-class SettingsListAdapter(private val viewModel: SettingsViewModel) :
-      RecyclerView.Adapter<SettingsListAdapter.ViewHolder>() {
+class SettingsListAdapter(private val viewModel: SettingsViewModel)
+    : RecyclerView.Adapter<SettingsListAdapter.ViewHolder>() {
 
-    var optionsList: ArrayList<String> = ArrayList()
+    lateinit var userSettings: SettingsItem
+    private var optionsList: ArrayList<String> = ArrayList()
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -33,6 +34,7 @@ class SettingsListAdapter(private val viewModel: SettingsViewModel) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val itemView = inflater.inflate(R.layout.item_setting, parent, false)
+
         return ViewHolder(itemView)
     }
 
@@ -45,19 +47,24 @@ class SettingsListAdapter(private val viewModel: SettingsViewModel) :
 
         // set row icon
         when (item) {
-            SettingsItem.SWITCH_THEME -> {
+            SettingsItem.SWITCH_THEME_LABEL -> {
                 holder.itemIcon.setImageResource(R.drawable.ic_invert_colors_black_24dp)
             }
-            SettingsItem.SET_NEXT_TOKE_REMINDER -> {
+            SettingsItem.SET_NEXT_TOKE_REMINDER_LABEL -> {
                 holder.itemIcon.setImageResource(R.drawable.ic_add_alert_black_24dp)
             }
-            SettingsItem.SET_STARTUP_PAGE -> {
-                holder.itemIcon.setImageResource(R.drawable.ic_toke_log_black_24dp)
+            SettingsItem.SET_STARTUP_PAGE_LABEL -> {
+                when (userSettings.optionStartupPage) {
+                    MainNavScreen.STATS_SCREEN ->
+                        holder.itemIcon.setImageResource(R.drawable.ic_assessment_outline_24dp)
+                    else ->
+                        holder.itemIcon.setImageResource(R.drawable.ic_toke_log_black_24dp)
+                }
             }
-            SettingsItem.CLEAR_DATA -> {
+            SettingsItem.CLEAR_DATA_LABEL -> {
                 holder.itemIcon.setImageResource(R.drawable.ic_delete_sweep_black_24dp)
             }
-            SettingsItem.ABOUT -> {
+            SettingsItem.ABOUT_LABEL -> {
                 holder.itemIcon.setImageResource(R.drawable.ic_info_black_24dp)
             }
         }
@@ -65,26 +72,34 @@ class SettingsListAdapter(private val viewModel: SettingsViewModel) :
         // handle row onclick
         holder.itemView.setOnClickListener {
             when (item) {
-                SettingsItem.SWITCH_THEME -> {
+                SettingsItem.SWITCH_THEME_LABEL -> {
                     onClickSwitchThemeRow(holder.itemView.context)
                 }
-                SettingsItem.SET_NEXT_TOKE_REMINDER -> {
+                SettingsItem.SET_NEXT_TOKE_REMINDER_LABEL -> {
                     // TODO
-                    Toast.makeText(holder.itemView.context, "TODO: Set Toke Reminder", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(holder.itemView.context,
+                            "TODO: Set Toke Reminder", Toast.LENGTH_SHORT).show()
                 }
-                SettingsItem.SET_STARTUP_PAGE -> {
-                    when (viewModel.sharedPrefsRepo.getCurrentStartupPage()) {
-                        MainNavScreen.STATS_SCREEN ->
+                SettingsItem.SET_STARTUP_PAGE_LABEL -> {
+//                    viewModel.retrieveCurrentStartupPage()
+                    when (userSettings.optionStartupPage) {
+                        MainNavScreen.STATS_SCREEN -> {
                             viewModel.saveStartupPage(MainNavScreen.JOURNAL_SCREEN)
-                        else -> viewModel.saveStartupPage(MainNavScreen.STATS_SCREEN)
+                        }
+                        else -> {
+                            viewModel.saveStartupPage(MainNavScreen.STATS_SCREEN)
+                        }
                     }
                 }
-                SettingsItem.CLEAR_DATA -> {
+                SettingsItem.CLEAR_DATA_LABEL -> {
                     showClearDataConfirmationDialog(holder.itemView.context)
                 }
-                SettingsItem.ABOUT -> {
+                SettingsItem.ABOUT_LABEL -> {
                     // TODO
-                    Toast.makeText(holder.itemView.context, "TODO: Go to About", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                            holder.itemView.context,
+                            "TODO: Go to About",
+                            Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -99,35 +114,36 @@ class SettingsListAdapter(private val viewModel: SettingsViewModel) :
      *
      * @param itemList settings options [ArrayList<String>]
      */
-    fun setData(itemList: ArrayList<String>) {
-        optionsList = itemList
+    fun setUserSettingsData(newUserSettings: SettingsItem) {
+        userSettings = newUserSettings
+        optionsList = userSettings.itemList
         notifyDataSetChanged()
     }
 
     /**
-     * Prepare and show this confirmation dialog when [SettingsItem.CLEAR_DATA] is selected
+     * Prepare and show this confirmation dialog when [SettingsItem.CLEAR_DATA_LABEL] is selected
      *
      * @param ctx the [Context] in order to display a Toast message
      */
     private fun showClearDataConfirmationDialog(ctx: Context) {
         val dialog = AlertDialog.Builder(ctx)
         dialog
-              .setTitle("Clear all data?")
-              .setMessage("This will permanently delete all your saved Tokes data.")
-              .setPositiveButton("Clear") { dialogBox, _ ->
-                  viewModel.clearAllData()
-                  dialogBox.dismiss()
+                .setTitle("Clear all data?")
+                .setMessage("This will permanently delete all your saved Tokes data.")
+                .setPositiveButton("Clear") { dialogBox, _ ->
+                    viewModel.clearAllData()
+                    dialogBox.dismiss()
 
-                  Toast.makeText(
-                        ctx,
-                        "Deleted all saved Tokes data.",
-                        Toast.LENGTH_SHORT
-                  ).show()
-              }
-              .setNegativeButton("Cancel") { dialogBox, _ ->
-                  dialogBox.dismiss()
-              }
-              .show()
+                    Toast.makeText(
+                            ctx,
+                            "Deleted all saved Tokes data.",
+                            Toast.LENGTH_SHORT
+                    ).show()
+                }
+                .setNegativeButton("Cancel") { dialogBox, _ ->
+                    dialogBox.dismiss()
+                }
+                .show()
     }
 
     private fun onClickSwitchThemeRow(ctx: Context) {

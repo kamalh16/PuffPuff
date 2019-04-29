@@ -5,11 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.base.hamoud.puffpuff.R
-import com.base.hamoud.puffpuff.ui.settings.model.SettingsItem
 
 
 class SettingsScreen : Fragment() {
@@ -30,6 +30,11 @@ class SettingsScreen : Fragment() {
         // prepare ui
         prepareSettingsRvList()
 
+        // observe
+        observeUserSettingsLive()
+
+        //trigger
+        viewModel.postUserSettings()
     }
 
     /**
@@ -49,9 +54,16 @@ class SettingsScreen : Fragment() {
             // attach adapter
             settingsListAdapter = SettingsListAdapter(viewModel)
             it.adapter = settingsListAdapter
-            // set data
-            settingsListAdapter.setData(SettingsItem.itemList)
         }
     }
 
+
+    private fun observeUserSettingsLive() {
+        viewModel.userSettingsLive.observe(viewLifecycleOwner, Observer {
+            if (it != null) {
+                // set data
+                settingsListAdapter.setUserSettingsData(it)
+            }
+        })
+    }
 }
