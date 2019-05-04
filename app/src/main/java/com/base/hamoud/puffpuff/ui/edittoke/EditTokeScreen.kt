@@ -1,7 +1,5 @@
 package com.base.hamoud.puffpuff.ui.edittoke
 
-import android.app.DatePickerDialog
-import android.app.TimePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,14 +12,19 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.datetime.datePicker
+import com.afollestad.materialdialogs.datetime.timePicker
 import com.base.hamoud.puffpuff.R
 import com.base.hamoud.puffpuff.data.entity.Toke
 import com.base.hamoud.puffpuff.data.model.ChronicTypes
 import com.base.hamoud.puffpuff.data.model.Tools
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import org.joda.time.DateTime
+import java.util.*
 
 class EditTokeScreen : Fragment() {
 
@@ -43,8 +46,8 @@ class EditTokeScreen : Fragment() {
     private var saveButton: FloatingActionButton? = null
     private var deleteButton: FloatingActionButton? = null
     private var strainEditText: EditText? = null
-    private var timeInputTextView: TextView? = null
-    private var dateInputTextView: TextView? = null
+    private var timeInputView: MaterialButton? = null
+    private var dateInputView: MaterialButton? = null
     private var tokeTypeChipGroup: ChipGroup? = null
     private var tokeToolChipGroup: ChipGroup? = null
 
@@ -85,8 +88,8 @@ class EditTokeScreen : Fragment() {
 
     private fun observeDateTimeLiveData() {
         viewModel.dateTimeLiveData.observe(viewLifecycleOwner, Observer<DateTime> {
-            dateInputTextView?.text = viewModel.getFormattedTokeDate()
-            timeInputTextView?.text = viewModel.getFormattedTokeTime()
+            dateInputView?.text = viewModel.getFormattedTokeDate()
+            timeInputView?.text = viewModel.getFormattedTokeTime()
         })
     }
 
@@ -115,8 +118,8 @@ class EditTokeScreen : Fragment() {
         saveButton = null
         deleteButton = null
         strainEditText = null
-        timeInputTextView = null
-        dateInputTextView = null
+        timeInputView = null
+        dateInputView = null
         tokeTypeChipGroup = null
         tokeToolChipGroup = null
     }
@@ -127,46 +130,42 @@ class EditTokeScreen : Fragment() {
     }
 
     private fun prepareDateField() {
-        dateInputTextView = view?.findViewById(R.id.add_toke_date_field)
-        dateInputTextView?.text = viewModel.getFormattedTokeDate()
-
-        dateInputTextView?.setOnClickListener {
-            val datePickerDialog = DatePickerDialog(
-                activity,
-                DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+        dateInputView = view?.findViewById(R.id.add_toke_date_field)
+        dateInputView?.text = viewModel.getFormattedTokeDate()
+        // handle onClick
+        dateInputView?.setOnClickListener {
+            // show datePicker dialog
+            MaterialDialog(activity!!).show {
+                val calStartDate = Calendar.getInstance()
+                datePicker(null, calStartDate) { dialog, date ->
+                    // Use date (Calendar)
                     viewModel.updateDate(
-                        year = year,
-                        month = month + 1,
-                        dayOfMonth = dayOfMonth
+                        year = date.get(Calendar.YEAR),
+                        month = date.get(Calendar.MONTH) + 1,
+                        dayOfMonth = date.get(Calendar.DAY_OF_MONTH)
                     )
-
-                },
-                viewModel.tokeDateTime.year,
-                (viewModel.tokeDateTime.monthOfYear - 1),
-                viewModel.tokeDateTime.dayOfMonth
-            )
-            datePickerDialog.show()
+                }
+            }
         }
     }
 
     private fun prepareTimeField() {
-        timeInputTextView = view?.findViewById(R.id.add_toke_time_field)
-        timeInputTextView?.text = viewModel.getFormattedTokeTime()
-
-        timeInputTextView?.setOnClickListener {
-            val timePickerDialog = TimePickerDialog(
-                activity,
-                TimePickerDialog.OnTimeSetListener(function = { view, hourOfDay, minute ->
+        timeInputView = view?.findViewById(R.id.add_toke_time_field)
+        timeInputView?.text = viewModel.getFormattedTokeTime()
+        // handle onClick
+        timeInputView?.setOnClickListener {
+            // show timePicker dialog
+            MaterialDialog(activity!!).show {
+                val startTime = Calendar.getInstance()
+                val shouldShow24Hr = android.text.format.DateFormat.is24HourFormat(activity)
+                timePicker(startTime, false, shouldShow24Hr) { dialog, date ->
+                    // Use date (Calendar)
                     viewModel.updateTime(
-                        hour = hourOfDay,
-                        minute = minute
+                        hour = date.get(Calendar.HOUR_OF_DAY),
+                        minute = date.get(Calendar.MINUTE)
                     )
-                }),
-                viewModel.tokeDateTime.hourOfDay,
-                viewModel.tokeDateTime.minuteOfHour,
-                android.text.format.DateFormat.is24HourFormat(activity)
-            )
-            timePickerDialog.show()
+                }
+            }
         }
     }
 

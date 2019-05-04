@@ -1,16 +1,23 @@
 <resources>
 
+    <!-- MATERIAL THEME GUIDE -->
+    <!-- https://medium.com/over-engineering/setting-up-a-material-components-theme-for-android-fbf7774da739 -->
+
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+    <style name="AppTheme" parent="@style/Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorOnPrimary">@color/colorPrimaryText</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorPrimary">@color/colorPrimaryText</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="colorControlHighlight">@color/colorAccentRipple</item>
+        <item name="md_color_button_text">@color/colorAccent</item><!-- Material Dialogs -->
     </style>
 
-    <style name="ChipGroupTheme" parent="Theme.MaterialComponents.DayNight" />
+    <style name="MyMaterialComponentsTheme" parent="@style/Theme.MaterialComponents.DayNight">
+        <item name="colorPrimary">@color/colorAccent</item>
+    </style>
 
 </resources>
