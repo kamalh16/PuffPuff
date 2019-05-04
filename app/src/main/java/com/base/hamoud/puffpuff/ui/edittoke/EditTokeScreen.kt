@@ -136,8 +136,8 @@ class EditTokeScreen : Fragment() {
         dateInputView?.setOnClickListener {
             // show datePicker dialog
             MaterialDialog(activity!!).show {
-                val calStartDate = Calendar.getInstance()
-                datePicker(null, calStartDate) { dialog, date ->
+                val startDate = Calendar.getInstance()
+                datePicker(null, startDate) { dialog, date ->
                     // Use date (Calendar)
                     viewModel.updateDate(
                         year = date.get(Calendar.YEAR),
