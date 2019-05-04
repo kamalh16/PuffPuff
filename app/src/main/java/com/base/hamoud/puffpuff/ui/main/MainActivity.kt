@@ -56,6 +56,59 @@ class MainActivity : AppCompatActivity() {
         readIntentsAndPrepareRedirectionsForShortcuts()
     }
 
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        Timber.i(intent.toString())
+        val extras = intent?.extras
+        val navController = findNavController(R.id.main_nav_host_fragment)
+        val rootScreenNavOptions = NavOptions
+            .Builder()
+            .setEnterAnim(R.anim.fade_in)
+            .setExitAnim(R.anim.fade_out)
+            .build()
+        Timber.i(extras?.getString(MainNavScreen.toString()))
+        when (extras?.getString(MainNavScreen.toString())) {
+            MainNavScreen.STATS_SCREEN -> {
+                navController.currentDestination?.label = MainNavScreen.STATS_SCREEN
+                navController.navigate(
+                    R.id.stats_screen, null, rootScreenNavOptions
+                )
+            }
+            MainNavScreen.ADD_TOKE_SCREEN -> {
+                navController.currentDestination?.label = MainNavScreen.JOURNAL_SCREEN
+                navController.navigate(
+                    R.id.journal_screen, null, rootScreenNavOptions
+                )
+                navController.currentDestination?.label = MainNavScreen.ADD_TOKE_SCREEN
+                navController.navigate(
+                    R.id.add_toke_screen, null, rootScreenNavOptions
+                )
+            }
+            MainNavScreen.JOURNAL_SCREEN -> {
+                navController.currentDestination?.label = MainNavScreen.JOURNAL_SCREEN
+                navController.navigate(
+                    R.id.journal_screen, null, rootScreenNavOptions
+                )
+            }
+        }
+    }
+
+    override fun onSupportNavigateUp() =
+        findNavController(R.id.main_nav_host_fragment).navigateUp()
+
+    override fun onBackPressed() {
+        val navController = findNavController(R.id.main_nav_host_fragment)
+        // handle onBackPressed while on root screens:
+        // - if we're on a root screen finish() (close) the activity
+        // - if we're not on a root screen, pop the back stack
+        val currentDestinationLabel = navController.currentDestination?.label
+        if (currentDestinationLabel in rootScreenList) {
+            finish()
+        } else {
+            navController.popBackStack()
+        }
+    }
+
     private fun prepareView() {
         // prepare shortcuts
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
@@ -101,84 +154,51 @@ class MainActivity : AppCompatActivity() {
     private fun prepareShortcuts() {
         val shortcutManager = getSystemService<ShortcutManager>(ShortcutManager::class.java)
 
-        val homeIntent = Intent(this, MainActivity::class.java)
-        homeIntent.action = Intent.ACTION_VIEW
-        homeIntent.putExtra(MainNavScreen.toString(), MainNavScreen.STATS_SCREEN)
+        // Stats
+        val statsIntent = Intent(this, MainActivity::class.java)
+        statsIntent.action = Intent.ACTION_VIEW
+        statsIntent.putExtra(MainNavScreen.toString(), MainNavScreen.STATS_SCREEN)
 
-        val homeShortcut = ShortcutInfo.Builder(this, "home")
-            .setShortLabel("Home")
-            .setLongLabel("Go Home")
-            .setIcon(Icon.createWithResource(this, R.drawable.ic_home_alt_outline_black_24dp))
+        val statsLabel = resources.getString(R.string.label_stats)
+        val statsShortcut = ShortcutInfo.Builder(this, "shortcut_stats")
+            .setShortLabel(statsLabel)
+            .setIcon(Icon.createWithResource(this, R.drawable.ic_assessment_outline_24dp))
             .setIntent(
-                homeIntent
+                statsIntent
             )
             .build()
 
+        // Add Toke
         val addTokeIntent = Intent(this, MainActivity::class.java)
         addTokeIntent.action = Intent.ACTION_VIEW
         addTokeIntent.putExtra(MainNavScreen.toString(), MainNavScreen.ADD_TOKE_SCREEN)
 
-        val addTokeShortcut = ShortcutInfo.Builder(this, "add_toke")
-            .setShortLabel("Add Toke")
-            .setLongLabel("Add a Toke")
+        val addTokeLabel = resources.getString(R.string.label_add_toke)
+        val addTokeShortcut = ShortcutInfo.Builder(this, "shortcut_add_toke")
+            .setShortLabel(addTokeLabel)
             .setIcon(Icon.createWithResource(this, R.drawable.ic_toke_log_black_24dp))
             .setIntent(
                 addTokeIntent
             )
             .build()
 
-        val tokeLogIntent = Intent(this, MainActivity::class.java)
-        tokeLogIntent.action = Intent.ACTION_VIEW
-        tokeLogIntent.putExtra(MainNavScreen.toString(), MainNavScreen.JOURNAL_SCREEN)
+        // Journal
+        val journalIntent = Intent(this, MainActivity::class.java)
+        journalIntent.action = Intent.ACTION_VIEW
+        journalIntent.putExtra(MainNavScreen.toString(), MainNavScreen.JOURNAL_SCREEN)
 
-        val tokeLogShortcut = ShortcutInfo.Builder(this, "toke_log")
-            .setShortLabel("Toke Log")
-            .setLongLabel("Go to Toke Log")
+        val journalLabel = resources.getString(R.string.label_journal)
+        val journalShortcut = ShortcutInfo.Builder(this, "shortcut_toke_log")
+            .setShortLabel(journalLabel)
             .setIcon(Icon.createWithResource(this, R.drawable.ic_toke_log_black_24dp))
             .setIntent(
-                tokeLogIntent
+                journalIntent
             )
             .build()
 
+        // set
         shortcutManager!!.dynamicShortcuts =
-            Arrays.asList(homeShortcut, addTokeShortcut, tokeLogShortcut)
-    }
-
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-        Timber.i(intent.toString())
-        val extras = intent?.extras
-        val navController = findNavController(R.id.main_nav_host_fragment)
-        val rootScreenNavOptions = NavOptions
-            .Builder()
-            .setEnterAnim(R.anim.fade_in)
-            .setExitAnim(R.anim.fade_out)
-            .build()
-        Timber.i(extras?.getString(MainNavScreen.toString()))
-        when (extras?.getString(MainNavScreen.toString())) {
-            MainNavScreen.STATS_SCREEN -> {
-                navController.currentDestination?.label = MainNavScreen.STATS_SCREEN
-                navController.navigate(
-                    R.id.stats_screen, null, rootScreenNavOptions
-                )
-            }
-            MainNavScreen.ADD_TOKE_SCREEN -> {
-                navController.currentDestination?.label = MainNavScreen.JOURNAL_SCREEN
-                navController.navigate(
-                    R.id.journal_screen, null, rootScreenNavOptions
-                )
-                navController.currentDestination?.label = MainNavScreen.ADD_TOKE_SCREEN
-                navController.navigate(
-                    R.id.add_toke_screen, null, rootScreenNavOptions
-                )
-            }
-            MainNavScreen.JOURNAL_SCREEN -> {
-                navController.currentDestination?.label = MainNavScreen.JOURNAL_SCREEN
-                navController.navigate(
-                    R.id.journal_screen, null, rootScreenNavOptions
-                )
-            }
-        }
+            Arrays.asList(statsShortcut, addTokeShortcut, journalShortcut)
     }
 
     private fun prepareStartupPageNavGraphDestination() {
@@ -198,22 +218,6 @@ class MainActivity : AppCompatActivity() {
             }
         })
         navController.graph = graph
-    }
-
-    override fun onSupportNavigateUp() =
-        findNavController(R.id.main_nav_host_fragment).navigateUp()
-
-    override fun onBackPressed() {
-        val navController = findNavController(R.id.main_nav_host_fragment)
-        // handle onBackPressed while on root screens:
-        // - if we're on a root screen finish() (close) the activity
-        // - if we're not on a root screen, pop the back stack
-        val currentDestinationLabel = navController.currentDestination?.label
-        if (currentDestinationLabel in rootScreenList) {
-            finish()
-        } else {
-            navController.popBackStack()
-        }
     }
 
     private fun setAppTheme() {
