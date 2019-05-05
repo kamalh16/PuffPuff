@@ -7,14 +7,9 @@ import com.base.hamoud.puffpuff.data.repository.SharedPrefsRepo
 
 class MainViewModel(val app: Application) : BaseAndroidViewModel(app) {
 
-    val saveStartupPageLive: MutableLiveData<String> = MutableLiveData()
-
     override fun onCleared() {
         super.onCleared()
         parentJob.cancel()
     }
 
-    fun getSavedStartupPage() = run {
-        saveStartupPageLive.postValue(SharedPrefsRepo(app).getCurrentStartupPage())
-    }
 }

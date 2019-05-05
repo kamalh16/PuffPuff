@@ -1,28 +1,24 @@
 package com.base.hamoud.puffpuff.ui.settings
 
 import android.app.Application
-import android.content.Context
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.base.hamoud.puffpuff.BaseAndroidViewModel
 import com.base.hamoud.puffpuff.data.repository.SharedPrefsRepo
 import com.base.hamoud.puffpuff.data.repository.TokeRepo
-import com.base.hamoud.puffpuff.ui.main.MainNavScreen
-import com.base.hamoud.puffpuff.ui.settings.model.SettingsItem
+import com.base.hamoud.puffpuff.ui.settings.model.Settings
 import kotlinx.coroutines.launch
 
-class SettingsViewModel(application: Application) : BaseAndroidViewModel(application) {
+class SettingsViewModel(val app: Application) : BaseAndroidViewModel(app) {
 
-    var tokeRepo: TokeRepo = TokeRepo(db.tokeDao())
-    var applicationContext: Context = application.applicationContext
-    val sharedPrefsRepo = SharedPrefsRepo(applicationContext)
+    private var tokeRepo: TokeRepo = TokeRepo(db.tokeDao())
+    private val sharedPrefsRepo = SharedPrefsRepo(app)
 
-    val userSettingsLive = MutableLiveData<SettingsItem>()
-
-    val settingsItem: SettingsItem = SettingsItem
+    val settingsLive = MutableLiveData<Settings>()
+    val settingsOptionsLive = MutableLiveData<ArrayList<String>>()
 
     init {
-        settingsItem.optionStartupPage = sharedPrefsRepo.getCurrentStartupPage()!!
+        postSettingsValue()
+        postSettingsOptionsValue()
     }
 
     override fun onCleared() {
@@ -36,18 +32,29 @@ class SettingsViewModel(application: Application) : BaseAndroidViewModel(applica
         }
     }
 
-    fun saveStartupPage(page: String) {
-        sharedPrefsRepo.saveStartupPage(page)
-        Toast.makeText(applicationContext, "Startup Page: $page", Toast.LENGTH_LONG).show()
-        retrieveCurrentStartupPage()
+    fun saveSettings(settings: Settings) {
+        saveTheme(settings.theme)
+        saveNextTokeReminderTime(settings.nextTokeReminderTime)
     }
 
-    private fun retrieveCurrentStartupPage() {
-        settingsItem.optionStartupPage = sharedPrefsRepo.getCurrentStartupPage()!!
-        postUserSettings()
+    private fun saveTheme(theme: String) {
+        sharedPrefsRepo.saveThemeChoice(theme)
     }
 
-    fun postUserSettings() {
-        userSettingsLive.postValue(settingsItem)
+    private fun saveNextTokeReminderTime(time: Long) {
+        sharedPrefsRepo.saveNextTokeReminderTime(time)
+    }
+
+    private fun postSettingsValue() {
+        settingsLive.postValue(
+            Settings(
+                theme = sharedPrefsRepo.getThemeChoice(),
+                nextTokeReminderTime = sharedPrefsRepo.getNextTokeReminderTime()
+            )
+        )
+    }
+
+    private fun postSettingsOptionsValue() {
+        settingsOptionsLive.postValue(Settings.RowOption.list)
     }
 }
