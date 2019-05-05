@@ -242,7 +242,7 @@ class JournalScreen : Fragment() {
 
     private fun resetTokesGraphToThisHour() {
         Timber.i("reset")
-        todaysTokesGraph?.resetZoom()
+        resetGraph()
         val now = DateTime.now()
         todaysTokesGraph?.zoom(
             2.5f, 1f, now.hourOfDay.toFloat(), 0f,

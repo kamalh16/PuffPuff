@@ -3,6 +3,7 @@ package com.base.hamoud.puffpuff.ui.stats
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.base.hamoud.puffpuff.BaseAndroidViewModel
+import com.base.hamoud.puffpuff.data.model.Tools
 import com.base.hamoud.puffpuff.data.repository.TokeRepo
 import com.github.mikephil.charting.data.BarEntry
 import kotlinx.coroutines.launch
@@ -13,8 +14,9 @@ class StatsViewModel(application: Application) : BaseAndroidViewModel(applicatio
 
     var tokeRepo: TokeRepo = TokeRepo(db.tokeDao())
 
-    var weeksTokesData: MutableLiveData<List<BarEntry>?> = MutableLiveData()
-    var weeksTokesCount: MutableLiveData<Int> = MutableLiveData()
+    var weeksTokesDataLive: MutableLiveData<List<BarEntry>?> = MutableLiveData()
+    var weeksTokesCountLive: MutableLiveData<Int> = MutableLiveData()
+    var weeksToolsUsedLive: MutableLiveData<IntArray> = MutableLiveData()
 
     init {
 //        createFakeHitsWithRandomDates(20)
@@ -62,19 +64,23 @@ class StatsViewModel(application: Application) : BaseAndroidViewModel(applicatio
         ioScope.launch {
             val weeksTokes = tokeRepo.getThisWeeksTokes()
             weeksTokes.let {
-                var entries = ArrayList<BarEntry>(it.size)
+                val entries = ArrayList<BarEntry>(it.size)
                 val weeksArr = IntArray(7) { 0 }
+                val toolsArr = IntArray(Tools.values().size) { 0 }
                 for (toke in it) {
                     // get tokeCount in hour
                     val cal = Calendar.getInstance()
                     cal.timeInMillis = toke.tokeDateTime
                     weeksArr[cal.get(Calendar.DAY_OF_WEEK) - 1]++
+                    val toolUsedInt: Int = Tools.valueOf(toke.toolUsed).ordinal
+                    toolsArr[toolUsedInt]++
                 }
                 var weeklyCount = 0
                 weeklyCount = populateEntriesAndCalculateWeeklyCount(weeksArr, weeklyCount, entries)
 
-                weeksTokesData.postValue(entries)
-                weeksTokesCount.postValue(weeklyCount)
+                weeksTokesDataLive.postValue(entries)
+                weeksTokesCountLive.postValue(weeklyCount)
+                weeksToolsUsedLive.postValue(toolsArr)
             }
         }
     }

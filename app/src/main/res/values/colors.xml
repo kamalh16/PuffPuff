@@ -11,4 +11,11 @@
     <color name="colorPrimaryTextLabelColor">#AFADAD</color>
     <color name="colorSwipeToDeleteBg">#F44336</color>
     <color name="colorItemTokeBorderBottom">#efefef</color>
+
+    <color name="pieChart1">#108577</color>
+    <color name="pieChart2">#208577</color>
+    <color name="pieChart3">#308577</color>
+    <color name="pieChart4">#408577</color>
+    <color name="pieChart5">#508577</color>
+    <color name="pieChart6">#608577</color>
 </resources>
