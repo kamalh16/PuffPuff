@@ -9,25 +9,33 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.content.edit
 import androidx.recyclerview.widget.RecyclerView
-import com.base.hamoud.puffpuff.Constants
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.datetime.datePicker
 import com.base.hamoud.puffpuff.R
 import com.base.hamoud.puffpuff.ui.main.MainActivity
-import com.base.hamoud.puffpuff.ui.main.MainNavScreen
-import com.base.hamoud.puffpuff.ui.settings.model.SettingsItem
+import com.base.hamoud.puffpuff.ui.settings.model.Settings
+import com.base.hamoud.puffpuff.ui.settings.model.Settings.RowOption.ROW_ABOUT
+import com.base.hamoud.puffpuff.ui.settings.model.Settings.RowOption.ROW_CLEAR_DATA
+import com.base.hamoud.puffpuff.ui.settings.model.Settings.RowOption.ROW_SET_NEXT_TOKE_REMINDER
+import com.base.hamoud.puffpuff.ui.settings.model.Settings.RowOption.ROW_SWITCH_THEME
+import java.util.*
+import kotlin.collections.ArrayList
 
 
-class SettingsListAdapter(private val viewModel: SettingsViewModel)
-    : RecyclerView.Adapter<SettingsListAdapter.ViewHolder>() {
+class SettingsListAdapter(
+    private val viewModel: SettingsViewModel,
+    private val settings: Settings
+) :
+    RecyclerView.Adapter<SettingsListAdapter.ViewHolder>() {
 
-    lateinit var userSettings: SettingsItem
     private var optionsList: ArrayList<String> = ArrayList()
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val itemLabel: TextView = itemView.findViewById(R.id.item_settings_option_label)
-        val itemIcon: ImageView = itemView.findViewById(R.id.item_settings_icon)
+        val itemLabel: TextView = itemView.findViewById(R.id.item_settings_row_label)
+        val itemSubLabel: TextView = itemView.findViewById(R.id.item_settings_row_sub_label)
+        val itemIcon: ImageView = itemView.findViewById(R.id.item_settings_row_icon)
 
     }
 
@@ -39,6 +47,8 @@ class SettingsListAdapter(private val viewModel: SettingsViewModel)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        // TODO break down below code blocks into separate methods.
+
         // get the data model based on position
         val item = optionsList[position]
 
@@ -47,59 +57,53 @@ class SettingsListAdapter(private val viewModel: SettingsViewModel)
 
         // set row icon
         when (item) {
-            SettingsItem.SWITCH_THEME_LABEL -> {
+            ROW_SWITCH_THEME -> {
                 holder.itemIcon.setImageResource(R.drawable.ic_invert_colors_black_24dp)
+                holder.itemSubLabel.text = settings.theme
             }
-            SettingsItem.SET_NEXT_TOKE_REMINDER_LABEL -> {
+            ROW_SET_NEXT_TOKE_REMINDER -> {
                 holder.itemIcon.setImageResource(R.drawable.ic_add_alert_black_24dp)
-            }
-            SettingsItem.SET_STARTUP_PAGE_LABEL -> {
-                when (userSettings.optionStartupPage) {
-                    MainNavScreen.STATS_SCREEN ->
-                        holder.itemIcon.setImageResource(R.drawable.ic_assessment_outline_24dp)
-                    else ->
-                        holder.itemIcon.setImageResource(R.drawable.ic_toke_log_black_24dp)
+
+                if (settings.nextTokeReminderTime > 0) {
+                    holder.itemSubLabel.text =
+                        settings.nextTokeReminderTime.toString()//TODO format Long > readable time
+                } else {
+                    holder.itemSubLabel.text = "Not set"
                 }
             }
-            SettingsItem.CLEAR_DATA_LABEL -> {
+            ROW_CLEAR_DATA -> {
                 holder.itemIcon.setImageResource(R.drawable.ic_delete_sweep_black_24dp)
+                holder.itemSubLabel.text = "Delete saved data"
             }
-            SettingsItem.ABOUT_LABEL -> {
+            ROW_ABOUT -> {
                 holder.itemIcon.setImageResource(R.drawable.ic_info_black_24dp)
+                holder.itemSubLabel.visibility = View.GONE
             }
         }
 
         // handle row onclick
         holder.itemView.setOnClickListener {
             when (item) {
-                SettingsItem.SWITCH_THEME_LABEL -> {
-                    onClickSwitchThemeRow(holder.itemView.context)
+                ROW_SWITCH_THEME -> {
+                    switchAppTheme(holder.itemView.context)
                 }
-                SettingsItem.SET_NEXT_TOKE_REMINDER_LABEL -> {
-                    // TODO
-                    Toast.makeText(holder.itemView.context,
-                            "TODO: Set Toke Reminder", Toast.LENGTH_SHORT).show()
+                ROW_SET_NEXT_TOKE_REMINDER -> {
+                    // TODO - handle functionality
+                    Toast.makeText(
+                        holder.itemView.context,
+                        "TODO: Set Toke Reminder", Toast.LENGTH_SHORT
+                    ).show()
                 }
-                SettingsItem.SET_STARTUP_PAGE_LABEL -> {
-//                    viewModel.retrieveCurrentStartupPage()
-                    when (userSettings.optionStartupPage) {
-                        MainNavScreen.STATS_SCREEN -> {
-                            viewModel.saveStartupPage(MainNavScreen.JOURNAL_SCREEN)
-                        }
-                        else -> {
-                            viewModel.saveStartupPage(MainNavScreen.STATS_SCREEN)
-                        }
-                    }
-                }
-                SettingsItem.CLEAR_DATA_LABEL -> {
+                ROW_CLEAR_DATA -> {
                     showClearDataConfirmationDialog(holder.itemView.context)
                 }
-                SettingsItem.ABOUT_LABEL -> {
-                    // TODO
+                ROW_ABOUT -> {
+                    // TODO - handle functionality
                     Toast.makeText(
-                            holder.itemView.context,
-                            "TODO: Go to About",
-                            Toast.LENGTH_SHORT).show()
+                        holder.itemView.context,
+                        "TODO: Go to About",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
@@ -112,56 +116,61 @@ class SettingsListAdapter(private val viewModel: SettingsViewModel)
     /**
      * Set the [SettingsListAdapter] data and call [notifyDataSetChanged]
      *
-     * @param itemList settings options [ArrayList<String>]
+     * @param options settings options [ArrayList<String>]
      */
-    fun setUserSettingsData(newUserSettings: SettingsItem) {
-        userSettings = newUserSettings
-        optionsList = userSettings.itemList
+    fun setData(options: ArrayList<String>) {
+        optionsList = options
         notifyDataSetChanged()
     }
 
     /**
-     * Prepare and show this confirmation dialog when [SettingsItem.CLEAR_DATA_LABEL] is selected
+     * Prepare and show this confirmation dialog when [Settings.ROW_CLEAR_DATA] is selected
      *
      * @param ctx the [Context] in order to display a Toast message
      */
     private fun showClearDataConfirmationDialog(ctx: Context) {
+        //FIXME: convert to affolestad's MaterialDialog(ctx)
         val dialog = AlertDialog.Builder(ctx)
         dialog
-                .setTitle("Clear all data?")
-                .setMessage("This will permanently delete all your saved Tokes data.")
-                .setPositiveButton("Clear") { dialogBox, _ ->
-                    viewModel.clearAllData()
-                    dialogBox.dismiss()
+            .setTitle("Clear all data?")
+            .setPositiveButton("Clear") { dialogBox, _ ->
+                viewModel.clearAllData()
+                dialogBox.dismiss()
 
-                    Toast.makeText(
-                            ctx,
-                            "Deleted all saved Tokes data.",
-                            Toast.LENGTH_SHORT
-                    ).show()
-                }
-                .setNegativeButton("Cancel") { dialogBox, _ ->
-                    dialogBox.dismiss()
-                }
-                .show()
+                Toast.makeText(
+                    ctx,
+                    "Deleted all saved Tokes data.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            .setNegativeButton("Cancel") { dialogBox, _ ->
+                dialogBox.dismiss()
+            }
+            .show()
     }
 
-    private fun onClickSwitchThemeRow(ctx: Context) {
-        val preferences = ctx.getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE)
-        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
-            // change to LIGHT THEME
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            // update shared prefs
-            preferences.edit { putBoolean(Constants.PREF_IS_DARK_THEME, false) }
-            // recreate activity for changes to take effect
-            (ctx as MainActivity).recreate()
-        } else {
-            // change to DARK THEME
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            // update shared prefs
-            preferences.edit { putBoolean(Constants.PREF_IS_DARK_THEME, true) }
-            // recreate activity for changes to take effect
-            (ctx as MainActivity).recreate()
+    private fun switchAppTheme(ctx: Context) {
+        when (AppCompatDelegate.getDefaultNightMode()) {
+            AppCompatDelegate.MODE_NIGHT_YES -> {
+                // save settings
+                settings.apply {
+                    theme = Settings.Value.LIGHT_THEME
+                    viewModel.saveSettings(this)
+                }
+                // change to LIGHT THEME & recreate activity for changes to take effect
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                (ctx as MainActivity).recreate()
+            }
+            else -> {
+                // save settings
+                settings.apply {
+                    theme = Settings.Value.DARK_THEME
+                    viewModel.saveSettings(this)
+                }
+                // change to DARK THEME & recreate activity for changes to take effect
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                (ctx as MainActivity).recreate()
+            }
         }
     }
 
