@@ -200,15 +200,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setAppTheme() {
-        // FIXME: viewModel's job
-//        val prefs = getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE)
-//        if (prefs.getBoolean(Constants.PREF_IS_DARK_THEME, false)) {
-//            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-//            setDarkThemeStatusBarColor()
-//        } else {
-//            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-//            setLightThemeStatusBarColor()
-//        }
+        // FIXME: viewModel's job through repo
+        val prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE)
+        if (prefs.getString("pref_theme", "Light Theme") == "Dark Theme") {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            setDarkThemeStatusBarColor()
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            setLightThemeStatusBarColor()
+        }
     }
 
     /**
