@@ -53,7 +53,6 @@ class SettingsScreen : Fragment() {
             // setup rv
             it.layoutManager = LinearLayoutManager(activity)
             it.setHasFixedSize(true)
-
         }
     }
 

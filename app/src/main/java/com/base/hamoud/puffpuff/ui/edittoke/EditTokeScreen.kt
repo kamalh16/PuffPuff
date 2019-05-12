@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -324,19 +323,17 @@ class EditTokeScreen : Fragment() {
      * @param tokeId the id of the toke to delete
      */
     private fun showDeleteTokeConfirmationDialog(tokeId: String) {
-        val dialog = AlertDialog.Builder(activity!!)
-        dialog
-            .setTitle("Delete Toke?")
-            .setMessage("This will permanently delete the Toke.")
-            .setPositiveButton("Delete") { dialogBox, _ ->
+        MaterialDialog(activity!!).show {
+            title(R.string.dialog_confirmation_are_you_sure)
+            message(R.string.dialog_delete_toke_description)
+            positiveButton(R.string.delete) { dialog ->
+                // delete and dismiss
                 viewModel.deleteToke(tokeId)
-                dialogBox.dismiss()
+                dialog.dismiss()
                 findNavController().navigate(R.id.journal_screen)
             }
-            .setNegativeButton("Cancel") { dialogBox, _ ->
-                dialogBox.dismiss()
-            }
-            .show()
+            negativeButton(R.string.cancel) { dismiss() }
+        }
     }
 
 
