@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.base.hamoud.puffpuff">
 
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
     <application
         android:name="com.base.hamoud.puffpuff.PuffPuffApp"
         android:allowBackup="true"
@@ -20,6 +22,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Declare foreground service -->
+        <service
+            android:name=".ui.settings.NextTokeReminderService"
+            android:enabled="true"
+            android:exported="true" />
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

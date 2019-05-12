@@ -1,5 +1,6 @@
 package com.base.hamoud.puffpuff.ui.settings
 
+import android.app.Activity
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -18,10 +19,11 @@ import com.base.hamoud.puffpuff.ui.settings.model.Settings.RowOption.ROW_ABOUT
 import com.base.hamoud.puffpuff.ui.settings.model.Settings.RowOption.ROW_CLEAR_DATA
 import com.base.hamoud.puffpuff.ui.settings.model.Settings.RowOption.ROW_SET_NEXT_TOKE_REMINDER
 import com.base.hamoud.puffpuff.ui.settings.model.Settings.RowOption.ROW_SWITCH_THEME
-import com.base.hamoud.puffpuff.utils.mapNextTokeReminderValueToLong
+import kotlin.collections.ArrayList
 
 
 class SettingsListAdapter(
+    private val activity: Activity,
     private val viewModel: SettingsViewModel
 ) :
     RecyclerView.Adapter<SettingsListAdapter.ViewHolder>() {
@@ -156,30 +158,40 @@ class SettingsListAdapter(
      * @param ctx the [Context] in order to display a Toast message
      */
     private fun showSetNextTokeReminderDialog(ctx: Context) {
+        val userSettingsNextTokeReminder =
+            getNextTokeReminderIndexPosition(settings.nextTokeReminderTime)
         MaterialDialog(ctx).show {
             title(R.string.dialog_title_set_next_toke_reminder)
             message(R.string.dialog_set_next_toke_reminder_description)
-            listItemsSingleChoice(R.array.next_toke_reminder_values_arr, initialSelection = 4)
-            { dialog, index, text ->
+            listItemsSingleChoice(
+                res = R.array.next_toke_reminder_values_arr,
+                initialSelection = userSettingsNextTokeReminder,
+                waitForPositiveButton = false
+            ) { dialog, index, text ->
 
                 // apply and save user choice
                 settings.apply {
-                    nextTokeReminderTime = mapNextTokeReminderValueToLong(text)
+                    nextTokeReminderTime = convertNextTokeReminderStringToLongValue(text)
                 }
 
                 viewModel.saveSettings(settings)
                 viewModel.getUserSettings()
+
+                // TODO: start next time user takes a toke.
+                // TODO: for now use to test here.
+                if (settings.nextTokeReminderTime > 0) {
+                    (activity as MainActivity).startNextTokeReminderNotificationService()
+                } else {
+                    (activity as MainActivity).stopNextTokeReminderNotificationService()
+                }
 
                 Toast.makeText(
                     ctx,
                     "Set next Toke reminder to: $text",
                     Toast.LENGTH_SHORT
                 ).show()
-            }
-            positiveButton(R.string.ok) {
 
-                // TODO : start notification timer
-                dismiss()
+                dialog.dismiss()
             }
             negativeButton(R.string.cancel) { dismiss() }
         }
@@ -210,5 +222,59 @@ class SettingsListAdapter(
             }
         }
     }
+
+
+    private fun convertNextTokeReminderStringToLongValue(string: String): Long {
+        return when (string) {
+            "5 mins" -> {
+                5
+            }
+            "10 mins" -> {
+                10
+            }
+            "15 mins" -> {
+                15
+            }
+            "30 mins" -> {
+                30
+            }
+            "45 mins" -> {
+                45
+            }
+            "60 mins" -> {
+                60
+            }
+            else -> {
+                0 // "Off"
+            }
+        }
+    }
+
+    private fun getNextTokeReminderIndexPosition(reminderTime: Long): Int {
+        return when (reminderTime) {
+            5L -> {
+                1
+            }
+            10L -> {
+                2
+            }
+            15L -> {
+                3
+            }
+            30L -> {
+                4
+            }
+            45L -> {
+                5
+            }
+            60L -> {
+                6
+            }
+            else -> {
+                0 // "Off"
+            }
+        }
+    }
+
 
 }

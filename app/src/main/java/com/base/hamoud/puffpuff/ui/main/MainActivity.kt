@@ -17,9 +17,9 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
-import com.base.hamoud.puffpuff.Constants
 import com.base.hamoud.puffpuff.R
 import com.base.hamoud.puffpuff.ui.main.MainNavScreen.rootScreenList
+import com.base.hamoud.puffpuff.ui.settings.NextTokeReminderService
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import timber.log.Timber
 import java.util.*
@@ -197,6 +197,18 @@ class MainActivity : AppCompatActivity() {
         // set
         shortcutManager!!.dynamicShortcuts =
             Arrays.asList(statsShortcut, addTokeShortcut, journalShortcut)
+    }
+
+    fun startNextTokeReminderNotificationService() {
+        val intent = Intent(this, NextTokeReminderService::class.java)
+        intent.action = NextTokeReminderService.ACTION_START_FOREGROUND_SERVICE
+        startService(intent)
+    }
+
+    fun stopNextTokeReminderNotificationService() {
+        val intent = Intent(this, NextTokeReminderService::class.java)
+        intent.action = NextTokeReminderService.ACTION_STOP_FOREGROUND_SERVICE
+        startService(intent)
     }
 
     private fun setAppTheme() {

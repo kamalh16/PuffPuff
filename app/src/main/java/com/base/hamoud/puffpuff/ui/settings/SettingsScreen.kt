@@ -51,7 +51,7 @@ class SettingsScreen : Fragment() {
         settingsRvList = view?.findViewById(R.id.settings_screen_options_recyclerview)
         settingsRvList?.let {
             // setup rv and attach adapter w/ default settings
-            settingsListAdapter = SettingsListAdapter(viewModel)
+            settingsListAdapter = SettingsListAdapter(activity!!, viewModel)
             it.adapter = settingsListAdapter
             it.layoutManager = LinearLayoutManager(activity)
             it.setHasFixedSize(true)

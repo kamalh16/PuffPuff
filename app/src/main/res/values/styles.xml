@@ -14,6 +14,7 @@
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="colorControlHighlight">@color/colorAccentRipple</item>
         <item name="md_color_button_text">@color/colorAccent</item><!-- Material Dialogs -->
+        <item name="md_corner_radius">4dp</item><!-- Material Dialogs -->
     </style>
 
     <style name="MyMaterialComponentsTheme" parent="@style/Theme.MaterialComponents.DayNight">
