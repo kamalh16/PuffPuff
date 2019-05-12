@@ -7,11 +7,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.datetime.datePicker
 import com.base.hamoud.puffpuff.R
 import com.base.hamoud.puffpuff.ui.main.MainActivity
 import com.base.hamoud.puffpuff.ui.settings.model.Settings
@@ -19,8 +17,6 @@ import com.base.hamoud.puffpuff.ui.settings.model.Settings.RowOption.ROW_ABOUT
 import com.base.hamoud.puffpuff.ui.settings.model.Settings.RowOption.ROW_CLEAR_DATA
 import com.base.hamoud.puffpuff.ui.settings.model.Settings.RowOption.ROW_SET_NEXT_TOKE_REMINDER
 import com.base.hamoud.puffpuff.ui.settings.model.Settings.RowOption.ROW_SWITCH_THEME
-import com.google.android.material.snackbar.Snackbar
-import java.util.*
 import kotlin.collections.ArrayList
 
 
@@ -132,7 +128,7 @@ class SettingsListAdapter(
     private fun showClearDataConfirmationDialog(ctx: Context) {
         MaterialDialog(ctx).show {
             title(R.string.dialog_confirmation_are_you_sure)
-            message(R.string.dialog_title_clear_data_description)
+            message(R.string.dialog_clear_data_description)
             positiveButton(R.string.clear) { dialog ->
                 // clear and dismiss
                 viewModel.clearAllData()

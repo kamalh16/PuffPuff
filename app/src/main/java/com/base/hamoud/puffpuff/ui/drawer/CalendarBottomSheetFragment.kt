@@ -26,7 +26,7 @@ class CalendarBottomSheetFragment : BottomSheetDialogFragment() {
     private lateinit var viewModel: JournalViewModel
 
     private var calendarView: CalendarView? = null
-    private var calendarOkBtn: Button? = null
+    private var closeBtn: Button? = null
 
     var calendarDateTime: DateTime = DateTime.now()
 
@@ -76,14 +76,14 @@ class CalendarBottomSheetFragment : BottomSheetDialogFragment() {
         calendarView?.date = calendarDateTime.millis // set the current journal date
         calendarView?.setOnDateChangeListener { _, year, month, dayOfMonth ->
             calendarDateTime = DateTime().withDate(year, month + 1, dayOfMonth)
+            // update journalDate
+            viewModel.updateJournalDate(calendarDateTime)
         }
     }
 
     private fun prepareOkBtn() {
-        calendarOkBtn = view?.findViewById(R.id.bottom_sheet_calendar_view_ok_btn)
-        calendarOkBtn?.setOnClickListener {
-            // update journalDate and dismiss the bottom sheet
-            viewModel.updateJournalDate(calendarDateTime)
+        closeBtn = view?.findViewById(R.id.bottom_sheet_calendar_view_close_btn)
+        closeBtn?.setOnClickListener {
             dialog?.dismiss()
         }
     }

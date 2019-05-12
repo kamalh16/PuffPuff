@@ -1,6 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Puff Puff</string>
 
+    <string name="attribution_launcher_icon">Launcher icon and icons made/designed by <a href="https://www.flaticon.com/authors/flat-icons-com">Flat-icons-com</a> from www.flaticon.com</string>
+
     <string name="label_today">Today</string>
     <string name="label_stats">Stats</string>
     <string name="label_journal" tools:ignore="Typos">Journal</string>
@@ -14,9 +16,14 @@
     <string name="label_toke_strain">Strain</string>
 
     <string name="dialog_confirmation_are_you_sure">Are you sure?</string>
-    <string name="dialog_title_clear_data_description">This will delete all your saved data. You will not be able to undo this action.</string>
+    <string name="dialog_clear_data_description">Permanently delete all your saved data?\n\nWarning: You cannot undo this action.</string>
+    <string name="dialog_delete_toke_description">Permanently delete this toke?\n\nWarning: You cannot undo this action.</string>
     <string name="clear">Clear</string>
+    <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
+    <string name="close">Close</string>
+    <string name="ok">Ok</string>
+    <string name="next_toke">Next Toke</string>
 
     <string name="zero">0</string>
     <string name="indica">Indica</string>
@@ -47,7 +54,4 @@
         <item>Dab</item>
     </string-array>
 
-    <string name="attribution_launcher_icon">Launcher icon and icons made/designed by <a href="https://www.flaticon.com/authors/flat-icons-com">Flat-icons-com</a> from www.flaticon.com</string>
-    <string name="next_toke">Next Toke</string>
-    <string name="ok">Ok</string>
 </resources>
