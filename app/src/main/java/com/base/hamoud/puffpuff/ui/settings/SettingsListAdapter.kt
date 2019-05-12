@@ -19,6 +19,7 @@ import com.base.hamoud.puffpuff.ui.settings.model.Settings.RowOption.ROW_ABOUT
 import com.base.hamoud.puffpuff.ui.settings.model.Settings.RowOption.ROW_CLEAR_DATA
 import com.base.hamoud.puffpuff.ui.settings.model.Settings.RowOption.ROW_SET_NEXT_TOKE_REMINDER
 import com.base.hamoud.puffpuff.ui.settings.model.Settings.RowOption.ROW_SWITCH_THEME
+import com.google.android.material.snackbar.Snackbar
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -129,13 +130,13 @@ class SettingsListAdapter(
      * @param ctx the [Context] in order to display a Toast message
      */
     private fun showClearDataConfirmationDialog(ctx: Context) {
-        //FIXME: convert to affolestad's MaterialDialog(ctx)
-        val dialog = AlertDialog.Builder(ctx)
-        dialog
-            .setTitle("Clear all data?")
-            .setPositiveButton("Clear") { dialogBox, _ ->
+        MaterialDialog(ctx).show {
+            title(R.string.dialog_confirmation_are_you_sure)
+            message(R.string.dialog_title_clear_data_description)
+            positiveButton(R.string.clear) { dialog ->
+                // clear and dismiss
                 viewModel.clearAllData()
-                dialogBox.dismiss()
+                dialog.dismiss()
 
                 Toast.makeText(
                     ctx,
@@ -143,10 +144,8 @@ class SettingsListAdapter(
                     Toast.LENGTH_SHORT
                 ).show()
             }
-            .setNegativeButton("Cancel") { dialogBox, _ ->
-                dialogBox.dismiss()
-            }
-            .show()
+            negativeButton(R.string.cancel) { dismiss() }
+        }
     }
 
     private fun switchAppTheme(ctx: Context) {

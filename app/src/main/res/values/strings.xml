@@ -13,6 +13,11 @@
     <string name="label_toke_tool">Tool</string>
     <string name="label_toke_strain">Strain</string>
 
+    <string name="dialog_confirmation_are_you_sure">Are you sure?</string>
+    <string name="dialog_title_clear_data_description">This will delete all your saved data. You will not be able to undo this action.</string>
+    <string name="clear">Clear</string>
+    <string name="cancel">Cancel</string>
+
     <string name="zero">0</string>
     <string name="indica">Indica</string>
     <string name="strain_name">Strain Name</string>
