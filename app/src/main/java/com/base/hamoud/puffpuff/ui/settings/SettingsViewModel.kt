@@ -13,12 +13,12 @@ class SettingsViewModel(val app: Application) : BaseAndroidViewModel(app) {
     private var tokeRepo: TokeRepo = TokeRepo(db.tokeDao())
     private val sharedPrefsRepo = SharedPrefsRepo(app)
 
-    val settingsLive = MutableLiveData<Settings>()
-    val settingsOptionsLive = MutableLiveData<ArrayList<String>>()
+    val userSettingsLive = MutableLiveData<Settings>()
+    val settingsRowListLive = MutableLiveData<ArrayList<String>>()
 
     init {
-        postSettingsValue()
-        postSettingsOptionsValue()
+        getUserSettings()
+        postSettingsRowList()
     }
 
     override fun onCleared() {
@@ -32,29 +32,17 @@ class SettingsViewModel(val app: Application) : BaseAndroidViewModel(app) {
         }
     }
 
+    fun getUserSettings() {
+        val userSettings = sharedPrefsRepo.getUserSettings()
+        userSettingsLive.postValue(userSettings)
+    }
+
     fun saveSettings(settings: Settings) {
-        saveTheme(settings.theme)
-        saveNextTokeReminderTime(settings.nextTokeReminderTime)
+        sharedPrefsRepo.saveThemeChoice(settings.theme)
+        sharedPrefsRepo.saveNextTokeReminderTime(settings.nextTokeReminderTime)
     }
 
-    private fun saveTheme(theme: String) {
-        sharedPrefsRepo.saveThemeChoice(theme)
-    }
-
-    private fun saveNextTokeReminderTime(time: Long) {
-        sharedPrefsRepo.saveNextTokeReminderTime(time)
-    }
-
-    private fun postSettingsValue() {
-        settingsLive.postValue(
-            Settings(
-                theme = sharedPrefsRepo.getThemeChoice(),
-                nextTokeReminderTime = sharedPrefsRepo.getNextTokeReminderTime()
-            )
-        )
-    }
-
-    private fun postSettingsOptionsValue() {
-        settingsOptionsLive.postValue(Settings.RowOption.list)
+    private fun postSettingsRowList() {
+        settingsRowListLive.postValue(Settings.RowOption.list)
     }
 }

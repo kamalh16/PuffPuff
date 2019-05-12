@@ -324,7 +324,7 @@ class EditTokeScreen : Fragment() {
      */
     private fun showDeleteTokeConfirmationDialog(tokeId: String) {
         MaterialDialog(activity!!).show {
-            title(R.string.dialog_confirmation_are_you_sure)
+            title(R.string.dialog_title_are_you_sure)
             message(R.string.dialog_delete_toke_description)
             positiveButton(R.string.delete) { dialog ->
                 // delete and dismiss

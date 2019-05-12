@@ -25,11 +25,18 @@ class SharedPrefsRepo(private val applicationContext: Context) {
     private val sharedPref: SharedPreferences =
         applicationContext.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE)
 
+    fun getUserSettings(): Settings {
+        return Settings().apply {
+            this.theme = getThemeChoice()
+            this.nextTokeReminderTime = getNextTokeReminderTime()
+        }
+    }
+
     fun saveThemeChoice(theme: String) {
         sharedPref.edit { putString(PREF_THEME, theme) }
     }
 
-    fun getThemeChoice(): String {
+    private fun getThemeChoice(): String {
         return sharedPref.getString(PREF_THEME, DEFAULT_THEME)
     }
 
@@ -37,7 +44,7 @@ class SharedPrefsRepo(private val applicationContext: Context) {
         sharedPref.edit { putLong(PREF_NEXT_TOKE_REMINDER, time) }
     }
 
-    fun getNextTokeReminderTime(): Long {
+    private fun getNextTokeReminderTime(): Long {
         return sharedPref.getLong(PREF_NEXT_TOKE_REMINDER, DEFAULT_NEXT_TOKE_REMINDER)
     }
 }

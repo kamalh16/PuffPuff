@@ -15,15 +15,18 @@
     <string name="label_toke_tool">Tool</string>
     <string name="label_toke_strain">Strain</string>
 
-    <string name="dialog_confirmation_are_you_sure">Are you sure?</string>
+    <string name="dialog_title_are_you_sure">Are you sure?</string>
+    <string name="dialog_title_set_next_toke_reminder">Set next Toke reminder</string>
     <string name="dialog_clear_data_description">Permanently delete all your saved data?\n\nWarning: You cannot undo this action.</string>
     <string name="dialog_delete_toke_description">Permanently delete this toke?\n\nWarning: You cannot undo this action.</string>
+    <string name="dialog_set_next_toke_reminder_description">Set a countdown timer for how long to wait before being reminded to take another Toke.</string>
     <string name="clear">Clear</string>
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
     <string name="close">Close</string>
     <string name="ok">Ok</string>
     <string name="next_toke">Next Toke</string>
+    <string name="fill_in_mins">%s mins</string>
 
     <string name="zero">0</string>
     <string name="indica">Indica</string>
@@ -52,6 +55,16 @@
         <item>Pipe</item>
         <item>Edible</item>
         <item>Dab</item>
+    </string-array>
+
+    <string-array name="next_toke_reminder_values_arr">
+        <item>Off</item>
+        <item>5 mins</item>
+        <item>10 mins</item>
+        <item>15 mins</item>
+        <item>30 mins</item>
+        <item>45 mins </item>
+        <item>60 mins</item>
     </string-array>
 
 </resources>

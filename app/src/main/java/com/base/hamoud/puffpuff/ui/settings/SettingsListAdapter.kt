@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.list.listItemsSingleChoice
 import com.base.hamoud.puffpuff.R
 import com.base.hamoud.puffpuff.ui.main.MainActivity
 import com.base.hamoud.puffpuff.ui.settings.model.Settings
@@ -17,15 +18,15 @@ import com.base.hamoud.puffpuff.ui.settings.model.Settings.RowOption.ROW_ABOUT
 import com.base.hamoud.puffpuff.ui.settings.model.Settings.RowOption.ROW_CLEAR_DATA
 import com.base.hamoud.puffpuff.ui.settings.model.Settings.RowOption.ROW_SET_NEXT_TOKE_REMINDER
 import com.base.hamoud.puffpuff.ui.settings.model.Settings.RowOption.ROW_SWITCH_THEME
-import kotlin.collections.ArrayList
+import com.base.hamoud.puffpuff.utils.mapNextTokeReminderValueToLong
 
 
 class SettingsListAdapter(
-    private val viewModel: SettingsViewModel,
-    private val settings: Settings
+    private val viewModel: SettingsViewModel
 ) :
     RecyclerView.Adapter<SettingsListAdapter.ViewHolder>() {
 
+    private var settings: Settings = Settings()
     private var optionsList: ArrayList<String> = ArrayList()
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -44,15 +45,17 @@ class SettingsListAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        // TODO break down below code blocks into separate methods.
-
-        // get the data model based on position
         val item = optionsList[position]
+        setRowLabel(holder.itemLabel, item)
+        setRowIcon(holder, item)
+        handleRowOnClick(holder.itemView, item)
+    }
 
-        // set row label
-        holder.itemLabel.text = item
+    private fun setRowLabel(itemLabel: TextView, item: String) {
+        itemLabel.text = item
+    }
 
-        // set row icon
+    private fun setRowIcon(holder: ViewHolder, item: String) {
         when (item) {
             ROW_SWITCH_THEME -> {
                 holder.itemIcon.setImageResource(R.drawable.ic_invert_colors_black_24dp)
@@ -63,9 +66,9 @@ class SettingsListAdapter(
 
                 if (settings.nextTokeReminderTime > 0) {
                     holder.itemSubLabel.text =
-                        settings.nextTokeReminderTime.toString()//TODO format Long > readable time
+                        "${settings.nextTokeReminderTime} mins"
                 } else {
-                    holder.itemSubLabel.text = "Not set"
+                    holder.itemSubLabel.text = "Off"
                 }
             }
             ROW_CLEAR_DATA -> {
@@ -77,27 +80,25 @@ class SettingsListAdapter(
                 holder.itemSubLabel.visibility = View.GONE
             }
         }
+    }
 
+    private fun handleRowOnClick(itemView: View, item: String) {
         // handle row onclick
-        holder.itemView.setOnClickListener {
+        itemView.setOnClickListener {
             when (item) {
                 ROW_SWITCH_THEME -> {
-                    switchAppTheme(holder.itemView.context)
+                    switchAppTheme(it.context)
                 }
                 ROW_SET_NEXT_TOKE_REMINDER -> {
-                    // TODO - handle functionality
-                    Toast.makeText(
-                        holder.itemView.context,
-                        "TODO: Set Toke Reminder", Toast.LENGTH_SHORT
-                    ).show()
+                    showSetNextTokeReminderDialog(it.context)
                 }
                 ROW_CLEAR_DATA -> {
-                    showClearDataConfirmationDialog(holder.itemView.context)
+                    showClearDataConfirmationDialog(it.context)
                 }
                 ROW_ABOUT -> {
                     // TODO - handle functionality
                     Toast.makeText(
-                        holder.itemView.context,
+                        it.context,
                         "TODO: Go to About",
                         Toast.LENGTH_SHORT
                     ).show()
@@ -120,14 +121,19 @@ class SettingsListAdapter(
         notifyDataSetChanged()
     }
 
+    fun setUserSettings(userSettings: Settings) {
+        settings = userSettings
+        notifyDataSetChanged()
+    }
+
     /**
-     * Prepare and show this confirmation dialog when [Settings.ROW_CLEAR_DATA] is selected
+     * Prepare and show this confirmation dialog when [Settings.RowOption.ROW_CLEAR_DATA] is selected
      *
      * @param ctx the [Context] in order to display a Toast message
      */
     private fun showClearDataConfirmationDialog(ctx: Context) {
         MaterialDialog(ctx).show {
-            title(R.string.dialog_confirmation_are_you_sure)
+            title(R.string.dialog_title_are_you_sure)
             message(R.string.dialog_clear_data_description)
             positiveButton(R.string.clear) { dialog ->
                 // clear and dismiss
@@ -143,6 +149,42 @@ class SettingsListAdapter(
             negativeButton(R.string.cancel) { dismiss() }
         }
     }
+
+    /**
+     * Prepare and show this confirmation dialog when [Settings.RowOption.ROW_SET_NEXT_TOKE_REMINDER] is selected
+     *
+     * @param ctx the [Context] in order to display a Toast message
+     */
+    private fun showSetNextTokeReminderDialog(ctx: Context) {
+        MaterialDialog(ctx).show {
+            title(R.string.dialog_title_set_next_toke_reminder)
+            message(R.string.dialog_set_next_toke_reminder_description)
+            listItemsSingleChoice(R.array.next_toke_reminder_values_arr, initialSelection = 4)
+            { dialog, index, text ->
+
+                // apply and save user choice
+                settings.apply {
+                    nextTokeReminderTime = mapNextTokeReminderValueToLong(text)
+                }
+
+                viewModel.saveSettings(settings)
+                viewModel.getUserSettings()
+
+                Toast.makeText(
+                    ctx,
+                    "Set next Toke reminder to: $text",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            positiveButton(R.string.ok) {
+
+                // TODO : start notification timer
+                dismiss()
+            }
+            negativeButton(R.string.cancel) { dismiss() }
+        }
+    }
+
 
     private fun switchAppTheme(ctx: Context) {
         when (AppCompatDelegate.getDefaultNightMode()) {

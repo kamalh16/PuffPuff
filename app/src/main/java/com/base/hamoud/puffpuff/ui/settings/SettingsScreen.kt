@@ -35,8 +35,8 @@ class SettingsScreen : Fragment() {
         prepareSettingsRvList()
 
         // observe
-        observeSettingsLive()
-        observeSettingsOptionsLive()
+        observeUserSettingsLive()
+        observeSettingsRowListLive()
     }
 
     /**
@@ -50,22 +50,22 @@ class SettingsScreen : Fragment() {
     private fun prepareSettingsRvList() {
         settingsRvList = view?.findViewById(R.id.settings_screen_options_recyclerview)
         settingsRvList?.let {
-            // setup rv
+            // setup rv and attach adapter w/ default settings
+            settingsListAdapter = SettingsListAdapter(viewModel)
+            it.adapter = settingsListAdapter
             it.layoutManager = LinearLayoutManager(activity)
             it.setHasFixedSize(true)
         }
     }
 
-    private fun observeSettingsLive() {
-        viewModel.settingsLive.observe(viewLifecycleOwner, Observer {
-            // init and attach rv adapter w/ settings
-            settingsListAdapter = SettingsListAdapter(viewModel, it)
-            settingsRvList?.adapter = settingsListAdapter
+    private fun observeUserSettingsLive() {
+        viewModel.userSettingsLive.observe(viewLifecycleOwner, Observer {
+            settingsListAdapter?.setUserSettings(it)
         })
     }
 
-    private fun observeSettingsOptionsLive() {
-        viewModel.settingsOptionsLive.observe(viewLifecycleOwner, Observer {
+    private fun observeSettingsRowListLive() {
+        viewModel.settingsRowListLive.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 // set data
                 settingsListAdapter?.setData(it)

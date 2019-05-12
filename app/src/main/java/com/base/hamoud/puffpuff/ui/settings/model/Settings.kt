@@ -4,8 +4,8 @@ package com.base.hamoud.puffpuff.ui.settings.model
  * Encapsulate in-app Settings from a data source (i.e. shared prefs)
  */
 data class Settings(
-    var theme: String,
-    var nextTokeReminderTime: Long
+    var theme: String = Value.LIGHT_THEME,
+    var nextTokeReminderTime: Long = 0
 ) {
 
     /**
@@ -15,10 +15,10 @@ data class Settings(
         /**
          * label names
          */
-        val ROW_SWITCH_THEME = "Switch Theme"
-        val ROW_SET_NEXT_TOKE_REMINDER = "Next Toke Reminder"
-        val ROW_CLEAR_DATA = "Clear Data"
-        val ROW_ABOUT = "About"
+        const val ROW_SWITCH_THEME = "Switch Theme"
+        const val ROW_SET_NEXT_TOKE_REMINDER = "Next Toke Reminder"
+        const val ROW_CLEAR_DATA = "Clear Data"
+        const val ROW_ABOUT = "About"
 
         /**
          * Array of label names
