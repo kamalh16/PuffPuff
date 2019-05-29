@@ -45,10 +45,8 @@ class MainActivity : AppCompatActivity() {
         // prepare ui
         prepareView()
         prepareBottomNavigationView()
-        prepareStartupPageNavGraphDestination()
 
         // triggers
-        viewModel.getSavedStartupPage()
     }
 
     override fun onResume() {
@@ -201,28 +199,10 @@ class MainActivity : AppCompatActivity() {
             Arrays.asList(statsShortcut, addTokeShortcut, journalShortcut)
     }
 
-    private fun prepareStartupPageNavGraphDestination() {
-        val navController = findNavController(R.id.main_nav_host_fragment)
-        val inflater = navController.navInflater
-        val graph = inflater.inflate(R.navigation.nav_graph)
-        viewModel.saveStartupPageLive.observe(this, androidx.lifecycle.Observer {
-            when (it) {
-                MainNavScreen.STATS_SCREEN -> {
-                    graph.startDestination = R.id.stats_screen
-                    bottomNavigationView?.selectedItemId = R.id.stats_screen
-                }
-                else -> {
-                    graph.startDestination = R.id.journal_screen
-                    bottomNavigationView?.selectedItemId = R.id.journal_screen
-                }
-            }
-        })
-        navController.graph = graph
-    }
-
     private fun setAppTheme() {
-        val prefs = getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE)
-        if (prefs.getBoolean(Constants.PREF_IS_DARK_THEME, false)) {
+        // FIXME: viewModel's job through repo
+        val prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE)
+        if (prefs.getString("pref_theme", "Light Theme") == "Dark Theme") {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             setDarkThemeStatusBarColor()
         } else {

@@ -17,9 +17,13 @@ class SettingsScreen : Fragment() {
     private lateinit var viewModel: SettingsViewModel
 
     private var settingsRvList: RecyclerView? = null
-    private lateinit var settingsListAdapter: SettingsListAdapter
+    private var settingsListAdapter: SettingsListAdapter? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.screen_settings, container, false)
     }
 
@@ -31,10 +35,8 @@ class SettingsScreen : Fragment() {
         prepareSettingsRvList()
 
         // observe
-        observeUserSettingsLive()
-
-        //trigger
-        viewModel.postUserSettings()
+        observeSettingsLive()
+        observeSettingsOptionsLive()
     }
 
     /**
@@ -51,18 +53,22 @@ class SettingsScreen : Fragment() {
             // setup rv
             it.layoutManager = LinearLayoutManager(activity)
             it.setHasFixedSize(true)
-            // attach adapter
-            settingsListAdapter = SettingsListAdapter(viewModel)
-            it.adapter = settingsListAdapter
         }
     }
 
+    private fun observeSettingsLive() {
+        viewModel.settingsLive.observe(viewLifecycleOwner, Observer {
+            // init and attach rv adapter w/ settings
+            settingsListAdapter = SettingsListAdapter(viewModel, it)
+            settingsRvList?.adapter = settingsListAdapter
+        })
+    }
 
-    private fun observeUserSettingsLive() {
-        viewModel.userSettingsLive.observe(viewLifecycleOwner, Observer {
+    private fun observeSettingsOptionsLive() {
+        viewModel.settingsOptionsLive.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 // set data
-                settingsListAdapter.setUserSettingsData(it)
+                settingsListAdapter?.setData(it)
             }
         })
     }
