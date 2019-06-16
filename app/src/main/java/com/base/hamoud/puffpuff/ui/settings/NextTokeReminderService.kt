@@ -78,6 +78,7 @@ class NextTokeReminderService : Service() {
         val notification = notificationBuilder.setOngoing(true)
             .setSmallIcon(com.base.hamoud.puffpuff.R.mipmap.ic_launcher)
             .setContentTitle("Next toke reminder")
+            .setUsesChronometer(true)
             .setPriority(NotificationManager.IMPORTANCE_MIN)
             .setCategory(Notification.CATEGORY_SERVICE)
             .build()
