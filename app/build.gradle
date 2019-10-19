@@ -44,6 +44,7 @@ dependencies {
     def timber_version = "4.7.1"
     def logger_version = "2.2.0"
     def anychart_version = "1.1.2"
+    def app_center_sdk_version = '2.4.0'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -92,6 +93,10 @@ dependencies {
     // material-dialogs (https://github.com/afollestad/material-dialogs)
     implementation 'com.afollestad.material-dialogs:core:2.8.1'
     implementation 'com.afollestad.material-dialogs:datetime:2.8.1'
+
+    // Appcenter
+    implementation "com.microsoft.appcenter:appcenter-analytics:$app_center_sdk_version"
+    implementation "com.microsoft.appcenter:appcenter-crashes:$app_center_sdk_version"
 
     // region Test helpers
     testImplementation 'junit:junit:4.12'
