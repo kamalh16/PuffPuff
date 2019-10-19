@@ -10,6 +10,9 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import net.danlew.android.joda.JodaTimeAndroid
 import timber.log.Timber
+import com.microsoft.appcenter.AppCenter
+import com.microsoft.appcenter.analytics.Analytics
+import com.microsoft.appcenter.crashes.Crashes
 
 
 class PuffPuffApp : Application() {
@@ -20,6 +23,11 @@ class PuffPuffApp : Application() {
         JodaTimeAndroid.init(this)
         forceInitDatabase()
         initLogger()
+
+        AppCenter.start(
+            this, "deeb5afd-021a-49a2-80bf-f6d375153f6e",
+            Analytics::class.java, Crashes::class.java
+        )
     }
 
     /**
