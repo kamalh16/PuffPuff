@@ -50,16 +50,16 @@
     <!-- Add Toke Screen -->
     <fragment
         android:id="@+id/add_toke_screen"
-        android:name="com.base.hamoud.puffpuff.ui.addtoke.AddTokeScreen"
+        android:name="com.base.hamoud.puffpuff.ui.addstrain.AddStrainScreen"
         android:label="AddTokeScreen"
-        tools:layout="@layout/screen_add_toke" />
+        tools:layout="@layout/screen_add_strain" />
 
     <!-- Edit Toke Screen -->
     <fragment
         android:id="@+id/edit_toke_screen"
         android:name="com.base.hamoud.puffpuff.ui.edittoke.EditTokeScreen"
         android:label="EditTokeScreen"
-        tools:layout="@layout/screen_add_toke" />
+        tools:layout="@layout/screen_add_strain" />
 
     <!-- Settings Screen -->
     <fragment
