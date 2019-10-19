@@ -1,11 +1,10 @@
-package com.base.hamoud.puffpuff.ui.edittoke
+package com.base.hamoud.puffpuff.ui.addstrain
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -15,7 +14,6 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.datetime.datePicker
 import com.afollestad.materialdialogs.datetime.timePicker
 import com.base.hamoud.puffpuff.R
-import com.base.hamoud.puffpuff.data.entity.Toke
 import com.base.hamoud.puffpuff.data.model.ChronicTypes
 import com.base.hamoud.puffpuff.data.model.Tools
 import com.google.android.material.button.MaterialButton
@@ -25,25 +23,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import org.joda.time.DateTime
 import java.util.*
 
-class EditTokeScreen : Fragment() {
 
-    companion object {
+class AddStrainScreen : Fragment() {
 
-        private const val ARG_TOKE_ID = "tokeId"
+    private lateinit var viewModel: AddStrainViewModel
 
-        fun bundleArgs(tokeId: String): Bundle {
-            return Bundle().apply {
-                this.putString(ARG_TOKE_ID, tokeId)
-            }
-        }
-    }
-
-    private var tokeId: String? = null
-    private lateinit var viewModel: EditTokeViewModel
-
-    private var screenTitleLabel: TextView? = null
     private var saveButton: FloatingActionButton? = null
-    private var deleteButton: FloatingActionButton? = null
     private var strainEditText: EditText? = null
     private var timeInputView: MaterialButton? = null
     private var dateInputView: MaterialButton? = null
@@ -55,17 +40,13 @@ class EditTokeScreen : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        // retrieve tokeId from bundle args
-        tokeId = arguments?.getString(ARG_TOKE_ID)
-
         return inflater.inflate(R.layout.screen_add_strain, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProviders.of(this).get(EditTokeViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(AddStrainViewModel::class.java)
 
         // prepare ui
         prepareView()
@@ -75,9 +56,7 @@ class EditTokeScreen : Fragment() {
         observeOnLastAddedTokeLive()
 
         // trigger
-        tokeId?.let {
-            viewModel.getTokeForEdit(it)
-        }
+        viewModel.getLastAddedToke()
     }
 
     override fun onDestroyView() {
@@ -93,7 +72,7 @@ class EditTokeScreen : Fragment() {
     }
 
     private fun observeOnLastAddedTokeLive() {
-        viewModel.tokeForEditLive.observe(viewLifecycleOwner, Observer { toke ->
+        viewModel.lastAddedTokeLive.observe(viewLifecycleOwner, Observer { toke ->
             toke?.let {
                 strainEditText?.setText(it.strain)
                 setTypeChipGroupSelection(it.tokeType)
@@ -103,29 +82,21 @@ class EditTokeScreen : Fragment() {
     }
 
     private fun prepareView() {
-        prepareScreenTitleLabel()
         prepareDateField()
         prepareTimeField()
         prepareTypeChipGroup()
         prepareToolChipGroup()
         prepareStrainField()
         prepareSaveBtn()
-        prepareDeleteBtn()
     }
 
     private fun cleanupReferences() {
         saveButton = null
-        deleteButton = null
         strainEditText = null
         timeInputView = null
         dateInputView = null
         tokeTypeChipGroup = null
         tokeToolChipGroup = null
-    }
-
-    private fun prepareScreenTitleLabel() {
-        screenTitleLabel = view?.findViewById(R.id.add_strain_screen_label)
-        screenTitleLabel?.setText(R.string.label_edit_strain)
     }
 
     private fun prepareDateField() {
@@ -177,27 +148,8 @@ class EditTokeScreen : Fragment() {
         saveButton = view?.findViewById(R.id.add_toke_save_button)
         saveButton?.setOnClickListener {
             viewModel.strainSelection = strainEditText?.text.toString()
-            tokeId?.let {
-                val toke = Toke(
-                    id = it,
-                    tokeType = viewModel.typeSelection,
-                    strain = viewModel.strainSelection,
-                    tokeDateTime = viewModel.tokeDateTime.millis,
-                    toolUsed = viewModel.toolSelection
-                )
-                viewModel.updateToke(toke)
-            }
+            viewModel.saveToke()
             findNavController().navigate(R.id.journal_screen)
-        }
-    }
-
-    private fun prepareDeleteBtn() {
-        deleteButton = view?.findViewById(R.id.add_toke_delete_button)
-        deleteButton?.visibility = View.VISIBLE
-        deleteButton?.setOnClickListener {
-            tokeId?.let {
-                showDeleteTokeConfirmationDialog(it)
-            }
         }
     }
 
@@ -211,6 +163,7 @@ class EditTokeScreen : Fragment() {
                 chip.isClickable = chip.id != group.checkedChipId
             }
 
+            // set viewModel.typeSelection
             when (checkedId) {
                 R.id.add_toke_cbd_chip -> {
                     viewModel.typeSelection = ChronicTypes.CBD.name
@@ -226,6 +179,9 @@ class EditTokeScreen : Fragment() {
                 }
             }
         }
+
+        // set default checked chip
+        tokeTypeChipGroup?.check(R.id.add_toke_sativa_chip)
     }
 
     private fun prepareToolChipGroup() {
@@ -316,25 +272,5 @@ class EditTokeScreen : Fragment() {
                 tokeToolChipGroup?.check(0)
         }
     }
-
-    /**
-     * Prepare and show this confirmation dialog when [deleteButton] is clicked
-     *
-     * @param tokeId the id of the toke to delete
-     */
-    private fun showDeleteTokeConfirmationDialog(tokeId: String) {
-        MaterialDialog(activity!!).show {
-            title(R.string.dialog_confirmation_are_you_sure)
-            message(R.string.dialog_delete_toke_description)
-            positiveButton(R.string.delete) { dialog ->
-                // delete and dismiss
-                viewModel.deleteToke(tokeId)
-                dialog.dismiss()
-                findNavController().navigate(R.id.journal_screen)
-            }
-            negativeButton(R.string.cancel) { dismiss() }
-        }
-    }
-
 
 }

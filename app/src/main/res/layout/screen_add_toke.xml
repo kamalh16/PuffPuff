@@ -1,276 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:orientation="vertical">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:fillViewport="true"
+        android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@color/colorPrimary"
-        android:fitsSystemWindows="true">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
         <!-- Add Toke Screen Label -->
         <TextView
-            android:id="@+id/add_toke_screen_label"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginTop="48dp"
-            android:fontFamily="@font/roboto_condensed_bold"
-            android:gravity="start"
-            android:paddingStart="16dp"
-            android:paddingTop="16dp"
-            android:paddingEnd="16dp"
-            android:paddingBottom="8dp"
-            android:text="@string/label_add_toke"
-            android:textColor="@color/colorPrimaryText"
-            android:textSize="38sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <!-- Screen Label Border Bottom -->
-        <View
-            android:id="@+id/add_toke_screen_label_border_bottom"
-            android:layout_width="0dp"
-            android:layout_height="2dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:background="@color/colorAccent"
-            app:layout_constraintEnd_toEndOf="@+id/add_toke_screen_label"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/add_toke_screen_label"
-            app:layout_constraintWidth_percent="1" />
-
-        <!-- Add Toke Date Field -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/add_toke_date_field"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
-            android:fontFamily="@font/montserrat"
-            android:gravity="start"
-            android:padding="8dp"
-            android:textColor="@color/colorPrimaryText"
-            android:textSize="18sp"
-            android:theme="@style/MyMaterialComponentsTheme"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/add_toke_screen_label_border_bottom"
-            tools:text="3 / 3 / 2019" />
-
-        <!-- Add Toke Time Field -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/add_toke_time_field"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="16dp"
-            android:fontFamily="@font/montserrat"
-            android:gravity="end"
-            android:padding="8dp"
-            android:textColor="@color/colorPrimaryText"
-            android:textSize="18sp"
-            android:theme="@style/MyMaterialComponentsTheme"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/add_toke_screen_label_border_bottom"
-            tools:text="6:05" />
-
-        <!-- Add Toke Type Label -->
-        <TextView
-            android:id="@+id/add_toke_type_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/montserrat"
-            android:text="@string/label_toke_type"
-            android:textColor="@color/colorPrimaryTextLabelColor"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/add_toke_strain_type_chip_group" />
-
-        <!-- Add Toke Type ChipGroup -->
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/add_toke_strain_type_chip_group"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="59dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="16dp"
-            android:theme="@style/MyMaterialComponentsTheme"
-            app:chipSpacingHorizontal="16dp"
-            app:chipSpacingVertical="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/add_toke_type_label"
-            app:layout_constraintTop_toBottomOf="@+id/add_toke_date_field"
-            app:singleSelection="true">
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/add_toke_hybrid_chip"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:id="@+id/add_toke_screen_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checkable="true"
-                android:clickable="true"
-                android:focusable="true"
-                android:text="@string/hybrid"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Chip"
+                android:layout_marginTop="48dp"
+                android:fontFamily="@font/roboto_condensed_bold"
+                android:gravity="start"
+                android:paddingStart="16dp"
+                android:paddingTop="16dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="8dp"
+                android:text="@string/label_add_toke"
                 android:textColor="@color/colorPrimaryText"
-                app:checkedIcon="@drawable/ic_check_mark_24dp"
-                app:checkedIconVisible="true"
-                app:chipBackgroundColor="@color/colorPrimary"
-                app:chipStrokeColor="@color/colorPrimaryText"
-                app:chipStrokeWidth="1dp"
-                app:ensureMinTouchTargetSize="true" />
+                android:textSize="38sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/add_toke_sativa_chip"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
+        <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checkable="true"
-                android:clickable="true"
-                android:focusable="true"
-                android:text="@string/sativa"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Chip"
-                android:textColor="@color/colorPrimaryText"
-                app:checkedIcon="@drawable/ic_check_mark_24dp"
-                app:checkedIconVisible="true"
-                app:chipBackgroundColor="@color/colorPrimary"
-                app:chipStrokeColor="@color/colorPrimaryText"
-                app:chipStrokeWidth="1dp"
-                app:ensureMinTouchTargetSize="true" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/add_toke_indica_chip"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checkable="true"
-                android:clickable="true"
-                android:focusable="true"
-                android:text="@string/indica"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Chip"
-                android:textColor="@color/colorPrimaryText"
-                app:checkedIcon="@drawable/ic_check_mark_24dp"
-                app:checkedIconVisible="true"
-                app:chipBackgroundColor="@color/colorPrimary"
-                app:chipStrokeColor="@color/colorPrimaryText"
-                app:chipStrokeWidth="1dp"
-                app:ensureMinTouchTargetSize="true" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/add_toke_cbd_chip"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checkable="true"
-                android:clickable="true"
-                android:focusable="true"
-                android:text="@string/cbd"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Chip"
-                android:textColor="@color/colorPrimaryText"
-                app:checkedIcon="@drawable/ic_check_mark_24dp"
-                app:checkedIconVisible="true"
-                app:chipBackgroundColor="@color/colorPrimary"
-                app:chipIconEnabled="false"
-                app:chipStrokeColor="@color/colorPrimaryText"
-                app:chipStrokeWidth="1dp"
-                app:ensureMinTouchTargetSize="true" />
-        </com.google.android.material.chip.ChipGroup>
-
-        <!-- Add Toke Tool Label -->
-        <TextView
-            android:id="@+id/add_toke_tool_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:fontFamily="@font/montserrat"
-            android:text="@string/label_toke_tool"
-            android:textColor="@color/colorPrimaryTextLabelColor"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/add_toke_tool_chip_group" />
-
-        <!-- Add Toke Tool ChipGroup -->
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/add_toke_tool_chip_group"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="64dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="32dp"
-            android:theme="@style/MyMaterialComponentsTheme"
-            app:chipSpacingHorizontal="16dp"
-            app:chipSpacingVertical="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/add_toke_tool_label"
-            app:layout_constraintTop_toBottomOf="@+id/add_toke_strain_type_chip_group"
-            app:singleSelection="true" />
-
-        <!-- Add Toke Strain Label -->
-        <TextView
-            android:id="@+id/add_toke_strain_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:fontFamily="@font/montserrat"
-            android:text="@string/label_toke_strain"
-            android:textColor="@color/colorPrimaryTextLabelColor"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="@+id/add_toke_strain_name_field"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/add_toke_strain_name_field" />
-
-        <!-- Add Toke Strain Name -->
-        <AutoCompleteTextView
-            android:id="@+id/add_toke_strain_name_field"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="48dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="80dp"
-            android:fontFamily="@font/montserrat"
-            android:hint="@string/strain_name"
-            android:inputType="textCapWords"
-            android:textColor="@color/colorPrimaryText"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/add_toke_strain_label"
-            app:layout_constraintTop_toBottomOf="@+id/add_toke_tool_chip_group" />
-
-        <!-- Edit Toke Delete Floating Action Bottom -->
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/add_toke_delete_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
-            android:layout_marginBottom="16dp"
-            android:src="@drawable/ic_delete_white_24dp"
-            android:visibility="gone"
-            app:backgroundTint="@color/colorAccent"
-            app:fabCustomSize="48dp"
-            app:layout_constraintBottom_toTopOf="@id/add_toke_save_button"
-            app:layout_constraintRight_toRightOf="parent"
-            app:tint="@color/colorPrimary" />
-
-        <!-- Add Toke Save Floating Action Bottom -->
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/add_toke_save_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:src="@drawable/ic_check_mark_24dp"
-            app:backgroundTint="@color/colorAccent"
-            app:fabCustomSize="64dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:tint="@color/colorPrimary" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/add_toke_screen_label" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>
