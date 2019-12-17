@@ -7,7 +7,8 @@
     <string name="label_stats">Stats</string>
     <string name="label_journal" tools:ignore="Typos">Journal</string>
     <string name="label_add_toke" tools:ignore="Typos">Add Toke</string>
-    <string name="label_edit_toke" tools:ignore="Typos">Edit Toke</string>
+    <string name="label_add_strain" tools:ignore="Typos">Add Strain</string>
+    <string name="label_edit_strain" tools:ignore="Typos">Edit Strain</string>
     <string name="label_settings">Settings</string>
     <string name="label_dark_theme">Dark Theme</string>
     <string name="label_about">About</string>
